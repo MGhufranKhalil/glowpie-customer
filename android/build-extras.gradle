@@ -1,0 +1,2 @@
+// This file is included at the beginning of `build.gradle`
+ext.cdvReleaseSigningPropertiesFile = './release-keys.properties'
