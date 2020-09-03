@@ -54,32 +54,32 @@ export const RegisterAccountScreen = connect(
       super(props);
 
       this.state = {
-        first_name: '',
-        last_name: '',
         email: '',
         password: '',
+        confirm_password: '',
         agree: false,
         loading: false,
         error: '',
       };
 
-      this.onChangeFirstName = value =>
-        this.setState({first_name: value, error: ''});
-      this.onChangeLastName = value =>
-        this.setState({last_name: value, error: ''});
+      // this.onChangeFirstName = value => this.setState({first_name: value, error: ''});
+      // this.onChangeLastName = value => this.setState({last_name: value, error: ''});
       this.onChangeEmail = value => this.setState({email: value, error: ''});
-      this.onChangePassword = value =>
-        this.setState({password: value, error: ''});
+      this.onChangePassword = value => this.setState({password: value, error: ''});
+      this.onChangeConfirmPassword = value =>
+        this.setState({confirm_password: value, error: ''});
+
       this.onChangeAccept = value => {
         hideMessage();
         this.setState({agree: value, error: ''});
       };
 
       this.onRegister = () => {
-        this.setState({loading: true});
-        const {first_name, last_name, email, password, agree} = this.state;
-        const payload = {first_name, last_name, email, password, agree};
-        this.props.onRegister(payload);
+        // this.setState({loading: true});
+        // const {email, password, confirm_password, agree} = this.state;
+        // const payload = {email, password, confirm_password, agree};
+        // this.props.onRegister(payload);
+        this.props.navigation.navigate('verification');
       };
       this.logIn = () => this.props.navigation.navigate('login');
 
@@ -87,10 +87,9 @@ export const RegisterAccountScreen = connect(
 
     render() {
       const {
-        first_name,
-        last_name,
         email,
         password,
+        confirm_password,
         agree,
         loading,
       } = this.state;
@@ -107,9 +106,9 @@ export const RegisterAccountScreen = connect(
               {/* <Header /> */}
 
               <Button
-                style={style.SKIP_BUTTON}
+                style={styles.TOP_RIGHT_CORNER_BUTTON}
                 text="Sign in"
-                textStyleOverride={style.SIGNUP_BUTTON_TEXT}
+                textStyleOverride={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
                 onPress={this.logIn}
               />
 
@@ -179,10 +178,12 @@ export const RegisterAccountScreen = connect(
                     testID="start-button"
                     preset="primary"
                     text={'Sign up'}
-                    onPress={this.onStart}
+                    onPress={this.onRegister}
+                    // onPress={ () => this.props.navigation.navigate('verification')}
+                    // onPress={ () => console.log('test')}
                     // icon="next"
-                    disabled={loading}
-                    loading={loading}
+                    // disabled={loading}
+                    // loading={loading}
                   />
                 </View>
               </View>

@@ -308,19 +308,7 @@ const FULLSCREEN_POPUP: ViewStyle = {
 const NO_RADIUS = {
   borderRadius: 0,
 };
-
-const SKIP_BUTTON = {
-  position: 'absolute',
-  top: 20,
-  right: 10,
-  justifyContent: 'center',
-  borderRadius: 30,
-  paddingVertical: 10,
-  fontFamily: typography.bold,
-  backgroundColor: color.white,
-  // color:color.secondary
-};
-
+ 
 // const LOGO = {
 //   width: SM ? 70 : 100,
 //   height: SM ? 70 : 100,
@@ -350,6 +338,19 @@ const SIGN_IN_TEXT = {
 const SEP = {
   width: 10,
 };
+ 
+const TOP_RIGHT_CORNER_BUTTON = {
+  position: 'absolute',
+  top: 20,
+  right: 10,
+  justifyContent: 'center',
+  borderRadius: 30,
+  paddingVertical: 10,
+  fontFamily: typography.bold,
+  backgroundColor: color.white,
+  // color:color.secondary
+}
+const TOP_RIGHT_CORNER_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
 export const styles = StyleSheet.create({
   FULL,
   SCREEN,
@@ -381,7 +382,8 @@ export const styles = StyleSheet.create({
   BUTTON_FULL_WIDTH,
   BUTTON_FULL_WIDTH_TEXT,
   NO_RADIUS,
-  SKIP_BUTTON,
+  TOP_RIGHT_CORNER_BUTTON,
+  TOP_RIGHT_CORNER_BUTTON_TEXT,
   SEP,
   SIGN_IN_TEXT,
   TEXT_BOLD,

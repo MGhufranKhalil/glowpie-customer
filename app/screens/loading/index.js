@@ -106,7 +106,7 @@ export const LoadingScreen = connect(
             backgroundColor={color.transparent}>
             <View style={style.VFLEX}>
               <SwipeSlider />
-              <Button style={style.SKIP_BUTTON} text="Skip" />
+              <Button style={style.SKIP_BUTTON} text="Skip" onPress={this.toHome}/>
               <Button style={style.START_BUTTON} text="Get Started" onPress={this.toHome} />
               <StatusBar barStyle="default" />
             </View>

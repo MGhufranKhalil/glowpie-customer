@@ -104,9 +104,9 @@ export const LoginScreen = connect(
 
             <View style={style.VFLEX_PADDED}>
               <Button
-                style={style.SKIP_BUTTON}
+                style={styles.TOP_RIGHT_CORNER_BUTTON}
                 text="Sign Up"
-                textStyleOverride={style.SIGNUP_BUTTON_TEXT}
+                textStyleOverride={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
                 onPress={this.signUp}
               />
 
@@ -175,7 +175,7 @@ export const LoginScreen = connect(
                   />
                 </View>
               </View>
- 
+
               {/* <View style={style.HEADING}>
                 <Text style={style.HEADING_TEXT} text="Welcome" />
                 <Text

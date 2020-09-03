@@ -42,17 +42,7 @@ const TERMS_LINK = {
   fontFamily: typography.semibold,
 };
 
-const SKIP_BUTTON = {
-  position: 'absolute',
-  top: 20,
-  right: 10,
-  justifyContent: 'center',
-  borderRadius: 30,
-  paddingVertical: 10,
-  fontFamily: typography.bold,
-  backgroundColor: color.white,
-  // color:color.secondary
-};
+ 
 const WELCOME_IMAGE = {
   position: 'absolute',
   resizeMode: 'cover',
@@ -83,7 +73,6 @@ export const style = StyleSheet.create({
   SWITCH,
   SWITCH_TEXT,
   TERMS_LINK,
-  SKIP_BUTTON, 
   WELCOME_IMAGE, 
   SIGNUP_BUTTON_TEXT,
   LOGO,

@@ -36,7 +36,6 @@ export class ButtonFullWidth extends React.Component {
 
   render() {
     const {text, icon, loading, disabled, children} = this.props;
-    {console.log(this.textStyle)}
     this.content = children || <Text text={text} style={this.textStyle} />;
     const onPress = loading ? () => {} : this.props.onPress;
     if (icon || loading) {

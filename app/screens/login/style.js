@@ -119,17 +119,7 @@ const WELCOME_IMAGE = {
   left: 0,
   marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
 };
-const SKIP_BUTTON = {
-  position: 'absolute',
-  top: 20,
-  right: 10,
-  justifyContent: 'center',
-  borderRadius: 30,
-  paddingVertical: 10,
-  fontFamily: typography.bold,
-  backgroundColor:color.white,
-  // color:color.secondary
-};
+ 
 const SIGNUP_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
 
 
@@ -187,7 +177,6 @@ export const style = StyleSheet.create({
   SOCIAL_BUTTON_ICON,
   SOCIAL_BUTTON_TEXT,
   WELCOME_IMAGE,
-  SKIP_BUTTON,
   CONTAINER,
   LOGO,
   TEXT_HEADER,

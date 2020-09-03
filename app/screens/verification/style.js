@@ -7,12 +7,12 @@ import {
   Dimensions,
 } from 'react-native';
 import {color, styles, font, spacing, typography} from '../../theme';
-import {SM, XL} from '../../utils/helpers';
+import {SM, XL, SW} from '../../utils/helpers';
 
 const VFLEX_PADDED = {
   ...styles.VFLEX_PADDED,
-  justifyContent: 'flex-start',
-  backgroundColor: color.screen_bg,
+  justifyContent: 'flex-end',
+  paddingBottom: 0,
 };
 
 const CONTAINER = {
@@ -22,9 +22,9 @@ const CONTAINER = {
 
 const OTP = {
   marginTop: 30,
-  borderTopWidth: 1,
-  borderColor: color.gray,
-  paddingTop: 30,
+  // borderTopWidth: 1,
+  // borderColor: color.gray,
+  // paddingTop: 30,
   paddingHorizontal: 15,
 };
 
@@ -33,21 +33,52 @@ const OTP_CONTAINER = {
 };
 
 const OTP_TEXT_FIELD = {
-  height: SM ? 48 : 56,
+  height: SM ? 48 : 50,
+  width: SM ? 48 : 40,
   backgroundColor: color.white,
   borderColor: color.gray,
   borderWidth: 1,
   borderRadius: 6,
   textAlign: 'center',
   fontSize: font.h3,
-  fontFamily: typography.semibold,
+  fontFamily: typography.bold,
   color: color.dark,
+  paddingLeft:10,
+  fontWeight:'900',
 };
 
 const OTP_HIGHLIGHT = {
   borderColor: color.secondary,
 };
+const WELCOME_IMAGE = {
+  position: 'absolute',
+  resizeMode: 'cover',
+  height: XL || SM ? '70%' : '65%',
+  top: 0,
+  left: 0,
+  marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+};
+const ACCEPT_SWITCH = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+};
 
+const SWITCH = {
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
+const SWITCH_TEXT = {
+  fontSize: font.text + 2,
+};
+
+const TERMS_LINK = {
+  paddingLeft: 5,
+  fontSize: font.text + 2,
+  fontFamily: typography.semibold,
+};
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -55,4 +86,9 @@ export const style = StyleSheet.create({
   OTP_CONTAINER,
   OTP_TEXT_FIELD,
   OTP_HIGHLIGHT,
+  WELCOME_IMAGE,
+  TERMS_LINK,
+  SWITCH_TEXT,
+  SWITCH,
+  ACCEPT_SWITCH
 });

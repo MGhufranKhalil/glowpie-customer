@@ -3,24 +3,30 @@ import {validate} from '../../utils/validate';
 
 export const registrationValidator = payload => {
   const rules = {
-    first_name: {
-      length: {
-        minimum: 1,
-        message: 'First Name required',
-      },
-    },
-    last_name: {
-      length: {
-        minimum: 1,
-        message: 'Last Name required',
-      },
-    },
+    // first_name: {
+    //   length: {
+    //     minimum: 1,
+    //     message: 'First Name required',
+    //   },
+    // },
+    // last_name: {
+    //   length: {
+    //     minimum: 1,
+    //     message: 'Last Name required',
+    //   },
+    // },
     email: {
       email: {
         message: 'Require a valid Email address to signup',
       },
     },
     password: {
+      length: {
+        minimum: MIN_PASSWORD_LENGTH,
+        message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+      },
+    },
+    confirm_password: {
       length: {
         minimum: MIN_PASSWORD_LENGTH,
         message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,

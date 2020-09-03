@@ -106,7 +106,7 @@ export const LoadingScreen = connect(
             />
 
             <View style={style.VFLEX_PADDED}>
-              <Button style={style.SKIP_BUTTON} text="Skip" />
+              <Button style={styles.TOP_RIGHT_CORNER_BUTTON} text="Skip" />
 
               <View style={style.CONTAINER}>
                 <Image source={imgLogo} style={style.LOGO} />

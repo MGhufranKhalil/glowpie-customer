@@ -66,15 +66,7 @@ const MESSAGE = {
 const SEP = {
   width: 10,
 };
-const SKIP_BUTTON = {
-  position: 'absolute',
-  top: 20,
-  right: 10,
-  justifyContent: 'center',
-  borderRadius: 30,
-  paddingVertical: 10,
-  fontFamily: typography.bold,
-};
+ 
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -85,5 +77,5 @@ export const style = StyleSheet.create({
   TEXT,
   TEXT_BOLD,
   MESSAGE,
-  SEP,SKIP_BUTTON
+  SEP 
 });
