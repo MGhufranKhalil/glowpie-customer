@@ -175,7 +175,7 @@ export const LoginScreen = connect(
                   />
                 </View>
               </View>
-
+ 
               {/* <View style={style.HEADING}>
                 <Text style={style.HEADING_TEXT} text="Welcome" />
                 <Text
