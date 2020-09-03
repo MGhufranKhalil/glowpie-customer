@@ -30,12 +30,13 @@ export class ButtonFullWidth extends React.Component {
       justifyContent: 'space-between',
     };
     this.viewStyle = mergeAll(flatten([styles.BUTTON_FULL_WIDTH, styleOverride]));
-    this.textStyle = mergeAll(flatten([styles.BUTTON_TEXT, textStyleOverride]));
+    this.textStyle = mergeAll(flatten([styles.BUTTON_FULL_WIDTH_TEXT, {textStyleOverride}]));
     this.iconStyle = mergeAll(flatten([styles.BUTTON_ICON, iconStyleOverride]));
   }
 
   render() {
     const {text, icon, loading, disabled, children} = this.props;
+    {console.log(this.textStyle)}
     this.content = children || <Text text={text} style={this.textStyle} />;
     const onPress = loading ? () => {} : this.props.onPress;
     if (icon || loading) {

@@ -228,6 +228,18 @@ const BUTTON_FULL_WIDTH = {
   borderRadius: 50,
 };
 
+const BUTTON_FULL_WIDTH_TEXT = {
+  fontFamily: typography.semibold,
+  fontSize: font.text + 4,
+  lineHeight: 20,
+  color: color.white,
+  textAlign: 'center',
+  alignSelf: 'flex-start',
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+};
+
 const BUTTON_TEXT = {
   fontFamily: typography.semibold,
   fontSize: font.text + 4,
@@ -297,6 +309,47 @@ const NO_RADIUS = {
   borderRadius: 0,
 };
 
+const SKIP_BUTTON = {
+  position: 'absolute',
+  top: 20,
+  right: 10,
+  justifyContent: 'center',
+  borderRadius: 30,
+  paddingVertical: 10,
+  fontFamily: typography.bold,
+  backgroundColor: color.white,
+  // color:color.secondary
+};
+
+// const LOGO = {
+//   width: SM ? 70 : 100,
+//   height: SM ? 70 : 100,
+//   marginLeft: 16,
+// };
+const TEXT_HEADER = {
+  ...CONTENT,
+  fontSize: SM ? font.h1 * 1.8 : font.h1,
+  fontFamily: typography.regular,
+  color: color.white,
+};
+const TEXT = {
+  ...CONTENT,
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 1.3 + 3,
+  color: color.black,
+};
+const TEXT_BOLD = {
+  ...TEXT,
+  fontFamily: typography.bold,
+};
+const SIGN_IN_TEXT = {
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 0.6,
+  fontFamily: typography.bold,
+  paddingTop: 5,
+  paddingBottom: 5,
+};
+const SEP = {
+  width: 10,
+};
 export const styles = StyleSheet.create({
   FULL,
   SCREEN,
@@ -326,5 +379,11 @@ export const styles = StyleSheet.create({
   FOOTER_VIEW_FULL,
   FULLSCREEN_POPUP,
   BUTTON_FULL_WIDTH,
-  NO_RADIUS
+  BUTTON_FULL_WIDTH_TEXT,
+  NO_RADIUS,
+  SKIP_BUTTON,
+  SEP,
+  SIGN_IN_TEXT,
+  TEXT_BOLD,
+  TEXT_HEADER
 });

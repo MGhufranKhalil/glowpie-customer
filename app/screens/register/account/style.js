@@ -7,13 +7,12 @@ import {
   Dimensions,
 } from 'react-native';
 import {color, styles, font, spacing, typography} from '../../../theme';
-import {SM, XL} from '../../../utils/helpers';
+import {SM, XL,SW} from '../../../utils/helpers';
 
 const VFLEX_PADDED = {
   ...styles.VFLEX_PADDED,
-  justifyContent: 'flex-start',
+  justifyContent: 'flex-end',
   paddingBottom: 0,
-  backgroundColor: color.screen_bg,
 };
 
 const CONTAINER = {
@@ -43,6 +42,40 @@ const TERMS_LINK = {
   fontFamily: typography.semibold,
 };
 
+const SKIP_BUTTON = {
+  position: 'absolute',
+  top: 20,
+  right: 10,
+  justifyContent: 'center',
+  borderRadius: 30,
+  paddingVertical: 10,
+  fontFamily: typography.bold,
+  backgroundColor: color.white,
+  // color:color.secondary
+};
+const WELCOME_IMAGE = {
+  position: 'absolute',
+  resizeMode: 'cover',
+  height: XL || SM ? '70%' : '65%',
+  top: 0,
+  left: 0,
+  marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+};
+const SIGNUP_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
+
+const LOGO = {
+  width: SM ? 70 : 100,
+  height: SM ? 70 : 100,
+  marginLeft: 16,
+};
+const PERSONAL = {
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 1,
+  fontFamily: typography.bold,
+  paddingTop: 5,
+  paddingBottom: 5,
+};
+
+
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -50,4 +83,9 @@ export const style = StyleSheet.create({
   SWITCH,
   SWITCH_TEXT,
   TERMS_LINK,
+  SKIP_BUTTON, 
+  WELCOME_IMAGE, 
+  SIGNUP_BUTTON_TEXT,
+  LOGO,
+  PERSONAL
 });

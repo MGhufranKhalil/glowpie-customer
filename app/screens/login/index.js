@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import {Button} from '../../components/button';
+import {Button, ButtonFullWidth} from '../../components/button';
 import {Checkbox} from '../../components/checkbox';
 import {Icon} from '../../components/icon';
 import {Link} from '../../components/link';
@@ -163,13 +163,13 @@ export const LoginScreen = connect(
                   />
                 </View>
                 <View>
-                  <Button
+                  <ButtonFullWidth
                     style={styles.NO_RADIUS}
                     testID="start-button"
                     preset="primary"
                     text={'Sign In'}
                     onPress={this.onStart}
-                    icon="next"
+                    // icon="next"
                     disabled={loading}
                     loading={loading}
                   />

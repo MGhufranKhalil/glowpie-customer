@@ -1,16 +1,17 @@
 import * as React from 'react';
 import {View, ScrollView, Image, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import {Button} from '../../../components/button';
+import {Button, ButtonFullWidth} from '../../../components/button';
 import {Checkbox} from '../../../components/checkbox';
 import {Header} from '../../../components/header';
 import {Icon} from '../../../components/icon';
 import {Link} from '../../../components/link';
 import {Text} from '../../../components/text';
-import {TextField} from '../../../components/text-field';
+
+import {TextField, TextFieldBottom} from '../../../components/text-field';
 import {Switch} from '../../../components/switch';
 import {Screen} from '../../../components/screen';
-import {color, font, styles} from '../../../theme';
+import {color, font, styles, backgroundImages, imgLogo} from '../../../theme';
 import {SM, XSM} from '../../../utils/helpers';
 import Config from 'react-native-config';
 import {style} from './style';
@@ -80,6 +81,8 @@ export const RegisterAccountScreen = connect(
         const payload = {first_name, last_name, email, password, agree};
         this.props.onRegister(payload);
       };
+      this.logIn = () => this.props.navigation.navigate('login');
+
     }
 
     render() {
@@ -91,18 +94,99 @@ export const RegisterAccountScreen = connect(
         agree,
         loading,
       } = this.state;
-      const preset = 'scroll';
+      const preset = 'fixed';
       return (
         <View testID="RegisterAccountScreen" style={styles.FULL}>
-          <Screen style={styles.SCREEN} preset={preset}>
+          <Screen style={styles.CONTAINER_PADDED} preset={preset}>
+            <Image
+              source={backgroundImages.SignIn}
+              style={style.WELCOME_IMAGE}
+            />
             <View style={style.VFLEX_PADDED}>
-              <Header
-                mode="big"
-                heading="Let's Sign Up Now"
-                sub="Enter your account information below"
-                progress="20"
+              {/*  */}
+              {/* <Header /> */}
+
+              <Button
+                style={style.SKIP_BUTTON}
+                text="Sign in"
+                textStyleOverride={style.SIGNUP_BUTTON_TEXT}
+                onPress={this.logIn}
               />
+
               <View style={style.CONTAINER}>
+                <Image source={imgLogo} style={style.LOGO} />
+                <Text text="WELCOME." style={styles.TEXT_HEADER} />
+                <Text>
+                  <Text text="To" style={styles.TEXT_BOLD} />
+                  <Text text="  " style={styles.SEP} />
+                  <Text text="Glow" style={styles.TEXT_BOLD} />
+                  <Text text="  " style={styles.SEP} />
+                  <Text text="Pie" style={styles.TEXT_BOLD} />
+                </Text>
+              </View>
+
+              <View style={styles.FOOTER_VIEW_FULL}>
+                <View style={{padding: 15}}>
+                  <Text text="Personal" style={style.PERSONAL} />
+
+                  <TextFieldBottom
+                    label="EMAIL"
+                    // onChangeText={this.onChangeId}
+                    maxLength={40}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    // value={loginid}
+                    // icon="email"
+                    keyboardType="email-address"
+                  />
+                  <TextFieldBottom
+                    label="PASSWORD"
+                    // onChangeText={this.onChangeId}
+                    maxLength={40}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    // value={loginid}
+                    // icon="email"
+                    keyboardType="password"
+                    secureTextEntry={true}
+                  />
+                  <TextFieldBottom
+                    label="Confirm Password"
+                    // onChangeText={this.onChangeId}
+                    maxLength={40}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    // value={loginid}
+                    // icon="email"
+                    keyboardType="password"
+                    secureTextEntry={true}
+                  />
+                  <View style={style.ACCEPT_SWITCH}>
+                    <View style={style.SWITCH}>
+                      <Text style={style.SWITCH_TEXT}>I agree to the</Text>
+                      <Link
+                        url=""
+                        text="Terms & Conditions"
+                        labelStyle={style.TERMS_LINK}
+                      />
+                    </View>
+                    <Switch onToggle={this.onChangeAccept} value={agree} />
+                  </View>
+                </View>
+                <View>
+                  <ButtonFullWidth
+                    style={styles.NO_RADIUS}
+                    testID="start-button"
+                    preset="primary"
+                    text={'Sign up'}
+                    onPress={this.onStart}
+                    // icon="next"
+                    disabled={loading}
+                    loading={loading}
+                  />
+                </View>
+              </View>
+              {/* <View style={style.CONTAINER}>
                 <TextField
                   label="First Name"
                   onChangeText={this.onChangeFirstName}
@@ -149,8 +233,8 @@ export const RegisterAccountScreen = connect(
                   </View>
                   <Switch onToggle={this.onChangeAccept} value={agree} />
                 </View>
-              </View>
-              <View style={styles.FOOTER_VIEW}>
+              </View> */}
+              {/* <View style={styles.FOOTER_VIEW}>
                 <Button
                   testID="signup-button"
                   preset="primary"
@@ -160,7 +244,7 @@ export const RegisterAccountScreen = connect(
                   disabled={loading}
                   loading={loading}
                 />
-              </View>
+              </View> */}
             </View>
           </Screen>
         </View>
