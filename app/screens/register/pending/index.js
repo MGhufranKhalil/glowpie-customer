@@ -237,56 +237,7 @@ export const RegisterPendingScreen = connect(
       );
     }
 
-    /* renderBox(flag, route, title, sub, img) {
-      const shown = flag ? true : false;
-      console.tron.log(flag, shown, route, title, sub, img);
-      const fn = () => this.props.navigation.push(route);
-      return (
-        <View style={style.BOX}>
-          <Image source={img} style={style.BOX_IMAGE} />
-          <View style={style.BOX_INFO}>
-            <Text text={title} style={style.BOX_TITLE} />
-            <Text text={sub} style={style.BOX_SUBTITLE} />
-            <Button onPress={fn} style={style.BOX_BUTTON}>
-              <Text
-                text={shown ? 'Edit' : "Let's Start"}
-                style={style.BOX_BUTTON_TEXT}
-              />
-            </Button>
-            {flag && <Image source={signupComplete} style={style.BOX_TICK} />}
-          </View>
-        </View>
-      );
-    } */
-
-    /* renderBoxes() {
-      const {vendor} = this.props;
-      return (
-        <View>
-          {this.renderBox(
-            isVendorInfoComplete(vendor, 'address'),
-            'registerBusiness',
-            'Business Details',
-            'Update business details and location',
-            signupBusinessDetails,
-          )}
-          {this.renderBox(
-            isVendorInfoComplete(vendor, 'hours'),
-            'registerHours',
-            'Business Hours',
-            'Add working and break hours',
-            signupHoursDetails,
-          )}
-          {this.renderBox(
-            isVendorInfoComplete(vendor, 'services'),
-            'registerServices',
-            'Business Services',
-            'Setup business service offerings',
-            signupServicesDetails,
-          )}
-        </View>
-      );
-    } */
+    
     renderGender(){
       const {isMale, isFemale } = this.state;
         return (
@@ -446,13 +397,16 @@ export const RegisterPendingScreen = connect(
             style={styles.CONTAINER_PADDED}
             preset="fixed"
             backgroundColor={color.transparent}>
+
             <Image
               source={backgroundImages.SignIn}
               style={style.WELCOME_IMAGE}
             />
 
             <View style={style.VFLEX_PADDED}>
+
               {!infoComplete && (
+                 
                 <View style={styles.FOOTER_VIEW_FULL}>
                   <View style={{padding: 15}}>
                     {/* <Text text="General Information" style={style.PERSONAL} /> */}

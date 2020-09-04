@@ -17,7 +17,7 @@ export const signupServicesDetails = require('./images/business_Service_icon_for
 export const signupComplete = require('./images/done_icon_for_sign_up.png');
 export const uploadImage = require('./images/upload_image.png');
 export const servicePlaceholder = require('./images/service_image_uploader_icon.png');
-export const femaleButtonUnactive = require('./images/buttons/Female.png');
+// export const femaleButtonUnactive = require('./images/buttons/Female.png');
 
 // export const iconFacebook = require('./images/fb.png');
 // export const iconGoogle = require('./images/google.png');
