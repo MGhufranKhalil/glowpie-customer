@@ -51,7 +51,7 @@ const VerificationNavigator = createStackNavigator(
   },
 );
 
-const RegistrationNavigator = createStackNavigator(
+/* const RegistrationNavigator = createStackNavigator(
   {
     registerPending: {screen: RegisterPendingScreen},
     registerBusiness: {screen: RegisterBusinessScreen},
@@ -60,6 +60,20 @@ const RegistrationNavigator = createStackNavigator(
     registerServices: {screen: RegisterServicesScreen},
     editService: {screen: EditServiceScreen},
     editHours: {screen: EditHoursScreen},
+  },
+  {
+    headerMode: 'none',
+  },
+); */
+const RegistrationNavigator = createStackNavigator(
+  {
+    registerPending: {screen: RegisterPendingScreen},
+    // registerBusiness: {screen: RegisterBusinessScreen},
+    // registerAddress: {screen: RegisterAddressScreen},
+    // registerHours: {screen: RegisterHoursScreen},
+    // registerServices: {screen: RegisterServicesScreen},
+    // editService: {screen: EditServiceScreen},
+    // editHours: {screen: EditHoursScreen},
   },
   {
     headerMode: 'none',

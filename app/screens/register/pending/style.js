@@ -9,6 +9,11 @@ const LOGO = {
   marginTop: '50%',
 };
 
+const VFLEX_PADDED = {
+  ...styles.VFLEX_PADDED,
+  justifyContent: 'flex-end',
+  paddingBottom: 0,
+};
 const VFLEX = {
   ...styles.VFLEX,
   justifyContent: 'flex-start',
@@ -76,9 +81,15 @@ const UPLOADING_IMAGE = {
 
 const UPLOAD_IMAGE_TEXT = {
   ...styles.CONTENT,
-  fontFamily: typography.bold,
+  // fontFamily: typography,
   marginLeft: 8,
   fontSize: font.text - 1,
+};
+const UPLOAD_IMAGE_SUBTEXT = {
+  ...styles.CONTENT,
+  fontFamily: typography.semibold,
+  marginLeft: 8,
+  fontSize: font.h4,
 };
 
 const BOX = {
@@ -170,6 +181,77 @@ const CONTINUE_BUTTON = {
   bottom: 20,
   width: SW - 30,
 };
+const ACCEPT_SWITCH = {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+};
+
+const SWITCH = {
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
+const SWITCH_TEXT = {
+  fontSize: font.text + 2,
+};
+const MALE_ACTIVE = {
+  padding: 0,
+  margin: 0,
+  paddingHorizontal: 28,
+  borderRadius: 8,
+  paddingVertical: 17,
+};
+
+const MALE_ACTIVE_TEXT = {
+  fontSize: 14,
+};
+ 
+const MALE_INACTIVE = {
+  borderWidth: 1,
+  borderColor: color.gray,
+  borderRadius: 4,
+  backgroundColor: color.white,
+  padding: 0,
+  margin: 0,
+  paddingHorizontal: 22,
+  paddingVertical: 15,
+};
+
+const MALE_INACTIVE_TEXT = {
+  fontSize: 12,
+  color: color.dark,
+  paddingHorizontal: 8,
+};
+
+
+
+const FEMALE_ACTIVE_TEXT = {
+  fontSize: 14,
+};
+const FEMALE_INACTIVE_TEXT = {
+  fontSize: 12,
+  color: color.dark,
+};
+const FEMALE_ACTIVE = {
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  paddingVertical: 17,
+};
+const FEMALE_INACTIVE = {
+  borderWidth: 1,
+  borderColor: color.gray,
+  borderRadius: 4,
+  backgroundColor: color.white,
+  padding: 0,
+  margin: 0,
+  paddingHorizontal: 22,
+  paddingVertical: 15,
+};
+const GENDER_TEXT = {
+  fontFamily: typography.bold,
+};
 
 export const style = StyleSheet.create({
   LOGO,
@@ -184,6 +266,7 @@ export const style = StyleSheet.create({
   UPLOADED_IMAGE,
   UPLOADING_IMAGE,
   UPLOAD_IMAGE_TEXT,
+  UPLOAD_IMAGE_SUBTEXT,
   BOX,
   BOX_IMAGE,
   BOX_INFO,
@@ -196,4 +279,17 @@ export const style = StyleSheet.create({
   IMAGE_TICK,
   CONTINUE_TEXT,
   CONTINUE_BUTTON,
+  VFLEX_PADDED,
+  ACCEPT_SWITCH,
+  SWITCH,
+  SWITCH_TEXT,
+  GENDER_TEXT,
+  FEMALE_INACTIVE_TEXT,
+  FEMALE_INACTIVE,
+  FEMALE_ACTIVE,
+  FEMALE_ACTIVE_TEXT,
+  MALE_ACTIVE,
+  MALE_ACTIVE_TEXT,
+  MALE_INACTIVE,
+  MALE_INACTIVE_TEXT
 });

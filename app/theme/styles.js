@@ -323,7 +323,7 @@ const TEXT_HEADER = {
 const TEXT = {
   ...CONTENT,
   fontSize: SM ? font.h1 * 1.2 : font.h1 * 1.3 + 3,
-  color: color.black,
+  color: color.white,
 };
 const TEXT_BOLD = {
   ...TEXT,

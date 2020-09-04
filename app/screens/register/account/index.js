@@ -108,7 +108,7 @@ export const RegisterAccountScreen = connect(
               <Button
                 style={styles.TOP_RIGHT_CORNER_BUTTON}
                 text="Sign in"
-                textStyleOverride={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
+                textStyle={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
                 onPress={this.logIn}
               />
 

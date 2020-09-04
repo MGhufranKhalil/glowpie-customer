@@ -29,7 +29,7 @@ const OTP = {
 };
 
 const OTP_CONTAINER = {
-  height: SM ? 70 : 90,
+  height: SM ? 70 : 140,
 };
 
 const OTP_TEXT_FIELD = {
@@ -60,9 +60,11 @@ const WELCOME_IMAGE = {
 };
 const ACCEPT_SWITCH = {
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  // justifyContent: 'space-between',
+  // alignItems: 'center',
   width: '100%',
+  paddingTop: 10,
+  paddingBottom: 10,
 };
 
 const SWITCH = {
@@ -71,8 +73,25 @@ const SWITCH = {
 };
 
 const SWITCH_TEXT = {
-  fontSize: font.text + 2,
+  fontSize: font.text,
+  color:color.darkgray,
+  fontFamily:typography.regular
 };
+const RESEND_BUTTON = {
+  top: 0,
+  right: 10,
+  justifyContent: 'center',
+  borderRadius: 30,
+  paddingVertical: 10,
+  paddingHorizontal:25,
+  marginLeft: 10,
+  backgroundColor: '#ffbadc',
+  color: color.secondary,
+}
+const RESEND_BUTTON_TEXT = {
+  fontSize: 12, 
+  fontFamily: typography.regular
+}
 
 const TERMS_LINK = {
   paddingLeft: 5,
@@ -90,5 +109,7 @@ export const style = StyleSheet.create({
   TERMS_LINK,
   SWITCH_TEXT,
   SWITCH,
-  ACCEPT_SWITCH
+  ACCEPT_SWITCH,
+  RESEND_BUTTON,
+  RESEND_BUTTON_TEXT
 });

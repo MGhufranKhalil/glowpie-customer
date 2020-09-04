@@ -10,7 +10,9 @@ import {
 import {connect} from 'react-redux';
 import {Screen} from '../../../components/screen';
 import {Header} from '../../../components/header';
-import {Button} from '../../../components/button';
+import {Button, ButtonFullWidth} from '../../../components/button';
+import {TextFieldBottom} from '../../../components/text-field';
+
 import {Text} from '../../../components/text';
 import ImagePicker from 'react-native-image-picker';
 import {
@@ -23,6 +25,8 @@ import {
   signupServicesDetails,
   signupComplete,
   uploadImage,
+  backgroundImages,
+  femaleButtonUnactive,
   bigTick,
 } from '../../../theme';
 import {uploadVendorImage} from '../../../store/actions/vendor';
@@ -30,7 +34,7 @@ import {capitalizeFirstLetter, SW, imageUrl} from '../../../utils/helpers';
 import {isVendorInfoComplete} from '../../../utils/app';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {style} from './style';
-
+import LinearGradient from 'react-native-linear-gradient';
 /*
 --- image selection response object ---
 fileSize:3253337
@@ -77,7 +81,10 @@ const UploadButton = props => {
         <Text text="Uploading..." style={style.UPLOAD_IMAGE_TEXT} />
       )}
       {!props.loading && (
-        <Text text="Upload image" style={style.UPLOAD_IMAGE_TEXT} />
+        <View>
+          <Text text="Upload image" style={style.UPLOAD_IMAGE_TEXT} />
+          <Text text="Profile Photo" style={style.UPLOAD_IMAGE_SUBTEXT} />
+        </View>
       )}
     </View>
   );
@@ -102,9 +109,19 @@ export const RegisterPendingScreen = connect(
 
       this.state = {
         uploading: false,
+        isMale: true,
+        isFemale: false,
       };
 
       this.pickImage = this.pickImage.bind(this);
+
+      this.onGenderChange = (male,female) => {
+        if(male == 1 ){
+          this.setState({isMale: true,isFemale:false});
+        }else if(female ==1){
+          this.setState({isMale: false, isFemale: true});
+        }
+      };
     }
 
     componentWillReceiveProps(props) {
@@ -220,7 +237,7 @@ export const RegisterPendingScreen = connect(
       );
     }
 
-    renderBox(flag, route, title, sub, img) {
+    /* renderBox(flag, route, title, sub, img) {
       const shown = flag ? true : false;
       console.tron.log(flag, shown, route, title, sub, img);
       const fn = () => this.props.navigation.push(route);
@@ -240,9 +257,9 @@ export const RegisterPendingScreen = connect(
           </View>
         </View>
       );
-    }
+    } */
 
-    renderBoxes() {
+    /* renderBoxes() {
       const {vendor} = this.props;
       return (
         <View>
@@ -269,6 +286,80 @@ export const RegisterPendingScreen = connect(
           )}
         </View>
       );
+    } */
+    renderGender(){
+      const {isMale, isFemale } = this.state;
+        return (
+          <View style={style.ACCEPT_SWITCH}>
+
+            <View style={{width: '30%'}}>
+              <Text style={style.GENDER_TEXT}>Select Gender</Text>
+            </View>
+  
+            <View style={{width: '30%'}}>
+            {!isMale &&
+              <Button
+                testID="signup-button"
+                preset="primary"
+                text="Male"
+                onPress={() => this.onGenderChange(1, 0)}
+                // icon="next"
+                // disabled={loading}
+                // loading={loading}
+                style={style.MALE_INACTIVE}
+                textStyle={style.MALE_INACTIVE_TEXT}
+              />
+            }
+            {isMale &&
+              <Button
+                testID="signup-button"
+                preset="primary"
+                text="Male"
+                onPress={() => this.onGenderChange(1, 0)}
+                // icon="next"
+                // disabled={loading}
+                // loading={loading}
+                style={style.MALE_ACTIVE}
+                textStyle={style.MALE_ACTIVE_TEXT}
+              />
+            }
+
+            </View>
+  
+            <View style={{width: '30%'}}>
+            {!isFemale &&
+              <Button
+                testID="signup-button"
+                preset="primary"
+                text="Female"
+                onPress={() => this.onGenderChange(0, 1)}
+                // icon="next"
+                // disabled={loading}
+                // loading={loading}
+  
+                style={style.FEMALE_INACTIVE}
+                textStyle={style.FEMALE_INACTIVE_TEXT}
+              />
+            }
+
+            {isFemale && 
+              <Button
+                testID="signup-button"
+                preset="primary"
+                text="Female"
+                onPress={() => this.onGenderChange(0, 1)}
+                // icon="next"
+                // disabled={loading}
+                // loading={loading}
+  
+                style={style.FEMALE_ACTIVE}
+                textStyle={style.FEMALE_ACTIVE_TEXT}
+              />
+            }
+
+            </View>
+          </View>
+        );
     }
 
     render() {
@@ -277,6 +368,7 @@ export const RegisterPendingScreen = connect(
       const {first_name} = vendor.account || {};
       const {business, address, hours, services} = vendor;
       let {image} = vendor.account;
+      
       const {uploading} = this.state;
       const imageStyle =
         image && !uploading
@@ -307,41 +399,169 @@ export const RegisterPendingScreen = connect(
         backgroundColor: color.primary,
         width: progress,
       };
+      if (infoComplete && this.renderInfoComplete()) {
+        return (
+          <View testID="RegPendingScreen" style={styles.FULL}>
+            <Screen
+              style={styles.CONTAINER}
+              preset="fixed"
+              backgroundColor={color.transparent}>
+              <View style={style.VFLEX}>
+                {infoComplete && this.renderInfoComplete()}
+                {!infoComplete && (
+                  <View style={style.PAGE_HEADER}>
+                    <UploadButton
+                      image={image}
+                      loading={uploading}
+                      onPress={this.pickImage}
+                      style={imageStyle}
+                    />
+                    <Text
+                      style={style.PAGE_HEADER_HEADING}
+                      text={`Hi ${capitalizeFirstLetter(first_name)},`}
+                    />
+                    <Text
+                      style={style.PAGE_HEADER_SUB}
+                      text="To start offering your services to clients, please complete your profile details."
+                    />
+                    <View style={style.PROGRESS_CONTAINER}>
+                      <View style={style.PROGRESS} />
+                      <View style={progressStyle} />
+                      <Text
+                        style={style.PROGRESS_TEXT}
+                        text={`${progressText}%`}
+                      />
+                    </View>
+                  </View>
+                )}
+                {/* {!infoComplete && this.renderBoxes()} */}
+              </View>
+            </Screen>
+          </View>
+        );
+      }
       return (
         <View testID="RegPendingScreen" style={styles.FULL}>
           <Screen
-            style={styles.CONTAINER}
+            style={styles.CONTAINER_PADDED}
             preset="fixed"
             backgroundColor={color.transparent}>
-            <View style={style.VFLEX}>
-              {infoComplete && this.renderInfoComplete()}
+            <Image
+              source={backgroundImages.SignIn}
+              style={style.WELCOME_IMAGE}
+            />
+
+            <View style={style.VFLEX_PADDED}>
               {!infoComplete && (
-                <View style={style.PAGE_HEADER}>
-                  <UploadButton
-                    image={image}
-                    loading={uploading}
-                    onPress={this.pickImage}
-                    style={imageStyle}
-                  />
-                  <Text
-                    style={style.PAGE_HEADER_HEADING}
-                    text={`Hi ${capitalizeFirstLetter(first_name)},`}
-                  />
-                  <Text
-                    style={style.PAGE_HEADER_SUB}
-                    text="To start offering your services to clients, please complete your profile details."
-                  />
-                  <View style={style.PROGRESS_CONTAINER}>
-                    <View style={style.PROGRESS} />
-                    <View style={progressStyle} />
+                <View style={styles.FOOTER_VIEW_FULL}>
+                  <View style={{padding: 15}}>
+                    {/* <Text text="General Information" style={style.PERSONAL} /> */}
                     <Text
-                      style={style.PROGRESS_TEXT}
-                      text={`${progressText}%`}
+                      style={styles.PAGE_HEADER_HEADING}
+                      text="General Information"
+                    />
+                    <UploadButton
+                      image={image}
+                      loading={uploading}
+                      onPress={this.pickImage}
+                      style={imageStyle}
+                    />
+                    <View style={style.ACCEPT_SWITCH}>
+                      <View style={{width: '49%'}}>
+                        <TextFieldBottom
+                          label="First Name"
+                          // onChangeText={this.onChangeId}
+                          maxLength={40}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          // value={loginid}
+                          // icon="email"
+                          keyboardType="password"
+                          secureTextEntry={true}
+                        />
+                      </View>
+
+                      <View style={{width: '49%'}}>
+                        <TextFieldBottom
+                          label="Last Name"
+                          // onChangeText={this.onChangeId}
+                          maxLength={40}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          // value={loginid}
+                          // icon="email"
+                          keyboardType="password"
+                          secureTextEntry={true}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={style.ACCEPT_SWITCH}>
+                      <View style={{width: '30%'}}>
+                        <TextFieldBottom
+                          label="Date of Birth"
+                          // onChangeText={this.onChangeId}
+                          maxLength={40}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          // value={loginid}
+                          // icon="email"
+                          keyboardType="password"
+                          secureTextEntry={true}
+                          inputPlaceholder="mm"
+                        />
+                      </View>
+
+                      <View style={{width: '30%'}}>
+                        <TextFieldBottom
+                          // label="Last Name"
+                          // onChangeText={this.onChangeId}
+                          maxLength={40}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          // value={loginid}
+                          // icon="email"
+                          keyboardType="password"
+                          secureTextEntry={true}
+                          inputPlaceholder="dd"
+                        />
+                      </View>
+
+                      <View style={{width: '30%'}}>
+                        <TextFieldBottom
+                          // label="Last Name"
+                          // onChangeText={this.onChangeId}
+                          maxLength={40}
+                          autoCorrect={false}
+                          autoCapitalize="none"
+                          // value={loginid}
+                          // icon="email"
+                          keyboardType="password"
+                          secureTextEntry={true}
+                          inputPlaceholder="yyyy"
+                        />
+                      </View>
+                    </View>
+                    {this.renderGender()}
+                    
+                    
+                  </View>
+                  <View>
+                    <ButtonFullWidth
+                      style={styles.NO_RADIUS}
+                      testID="start-button"
+                      preset="primary"
+                      text={'Sign up'}
+                      onPress={this.onRegister}
+                      // onPress={ () => this.props.navigation.navigate('verification')}
+                      // onPress={ () => console.log('test')}
+                      // icon="next"
+                      // disabled={loading}
+                      // loading={loading}
                     />
                   </View>
                 </View>
               )}
-              {!infoComplete && this.renderBoxes()}
             </View>
           </Screen>
         </View>

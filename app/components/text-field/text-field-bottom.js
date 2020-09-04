@@ -51,6 +51,7 @@ const inputStyle = {
 export class TextFieldBottom extends Component {
   state = {
     isFocused: false,
+    inputPlacholder:""
   };
 
   componentWillMount() {
@@ -65,17 +66,19 @@ export class TextFieldBottom extends Component {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || this.props.value ? 1 : 0,
       duration: 100,
+      useNativeDriver: false,
     }).start();
 
     Animated.timing(this.interpolatedColor, {
       toValue: this.state.isFocused || this.props.value ? 1 : 0,
       duration: 100,
+      useNativeDriver: false
     }).start();
    
   }
 
   render() {
-    const {label, mask, containerStyle, ...props} = this.props;
+    const {label, mask, containerStyle, inputPlacholder, ...props} = this.props;
     const icon = this.props.icon
       ? this.state.isFocused || this.props.value !== ''
         ? `${this.props.icon}_x`
@@ -109,6 +112,8 @@ export class TextFieldBottom extends Component {
     const containerOverrideStyle = mergeAll(
       flatten([icon ? container : containerNoIcon, containerStyle]),
     );
+    const inputPlaceholder = this.props.inputPlaceholder ? this.props.inputPlaceholder : this.state.inputPlaceholder;
+    
     let borderBottomColor = this.interpolatedColor.interpolate({
       inputRange: [0, 1],
       outputRange: [color.darkgray, color.primary],
@@ -130,6 +135,7 @@ export class TextFieldBottom extends Component {
               onBlur={this.handleBlur}
               blurOnSubmit
               underlineColorAndroid="transparent"
+              placeholder={inputPlaceholder}
             />
           )}
           {icon && <Icon icon={icon} style={ICON} />}
@@ -149,6 +155,7 @@ export class TextFieldBottom extends Component {
               blurOnSubmit
               underlineColorAndroid="transparent"
               type={'custom'}
+              placeholder={inputPlaceholder}
               options={{
                 mask: mask,
               }}

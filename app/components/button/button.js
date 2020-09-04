@@ -22,16 +22,17 @@ export class Button extends React.Component {
       disabled,
       ...rest
     } = props;
-
     this.rest = rest;
     this.iconView = {
       flexDirection: 'row',
       width: '100%',
       justifyContent: 'space-between',
     };
+
     this.viewStyle = mergeAll(flatten([styles.BUTTON, styleOverride]));
-    this.textStyle = mergeAll(flatten([styles.BUTTON_TEXT, this.props.textStyleOverride]));
+    this.textStyle = mergeAll(flatten([styles.BUTTON_TEXT, textStyleOverride]));
     this.iconStyle = mergeAll(flatten([styles.BUTTON_ICON, iconStyleOverride]));
+
   }
 
   render() {

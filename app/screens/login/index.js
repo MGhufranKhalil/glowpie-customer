@@ -106,7 +106,7 @@ export const LoginScreen = connect(
               <Button
                 style={styles.TOP_RIGHT_CORNER_BUTTON}
                 text="Sign Up"
-                textStyleOverride={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
+                textStyle={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
                 onPress={this.signUp}
               />
 
@@ -158,7 +158,7 @@ export const LoginScreen = connect(
                   <Link
                     style={style.FORGOT_LINK}
                     labelStyle={style.FORGOT_LINK_TEXT}
-                    text="FORGOT PASSWORD?"
+                    text="Forgot Password?"
                     onClick={this.forgotPassword}
                   />
                 </View>

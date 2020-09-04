@@ -36,7 +36,7 @@ const FORGOT_LINK_TEXT = {
   lineHeight: SM ? 14 : 22,
   fontFamily: typography.regular,
   fontSize: font.text + 2,
-  color: color.black,
+  color: color.dark,
 };
 
 const OR_TEXT = {
@@ -140,7 +140,7 @@ const TEXT_HEADER = {
 const TEXT = {
   ...styles.CONTENT,
   fontSize: SM ? font.h1 * 1.2 : font.h1 * 1.3 + 3,
-  color: color.black,
+  color: color.white,
 };
 const TEXT_BOLD = {
   ...TEXT,

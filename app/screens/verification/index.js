@@ -10,7 +10,7 @@ import {Text} from '../../components/text';
 import {PhoneField} from '../../components/phone-field';
 //import {CodeField} from '../../components/code-field';
 import {Screen} from '../../components/screen';
-import {color, styles, font, imgLogo, backgroundImages} from '../../theme';
+import {color, styles, font, imgLogo, backgroundImages, typography} from '../../theme';
 
 import {SM, XSM, sanitizeNumber} from '../../utils/helpers';
 import Config from 'react-native-config';
@@ -37,7 +37,6 @@ export const VerificationScreen = connect(
 )(
   class extends React.Component {
     componentWillReceiveProps(props) {
-      console.log('test');
       console.tron.log(props);
       if (props.status.code_verified) {
         console.tron.log(
@@ -63,6 +62,21 @@ export const VerificationScreen = connect(
         }
       }
     }
+    componentDidMount(){
+      this.interval = setInterval(
+        () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+        1000
+      );
+    }
+    componentDidUpdate(){
+      if(this.state.timer === 1){ 
+        clearInterval(this.interval);
+      }
+    }
+
+    componentWillUnmount(){
+    clearInterval(this.interval);
+    }
 
     constructor(props) {
       super(props);
@@ -73,6 +87,7 @@ export const VerificationScreen = connect(
         sending_code: false,
         verifying: false,
         error: '',
+        timer:50,
       };
 
       this.onChangePhone = value => this.setState({phone: value, error: ''});
@@ -87,10 +102,11 @@ export const VerificationScreen = connect(
       };
 
       this.verifyCode = () => {
-        this.setState({sending_code: false, verifying: true});
-        const {code} = this.state;
-        const payload = {code};
-        this.props.onVerifyCode(payload);
+        // this.setState({sending_code: false, verifying: true});
+        // const {code} = this.state;
+        // const payload = {code};
+        // this.props.onVerifyCode(payload);
+        this.props.navigation.navigate('registerPending');
       };
     }
 
@@ -127,16 +143,13 @@ export const VerificationScreen = connect(
                     text="Please enter the code you received."
                   />
                   <View style={style.OTP_CONTAINER}>
-                    <View style={{marginTop:20,marginBottom:10}}>
-
-                      <OtpInputs
-                        handleChange={this.onChangeCode}
-                        numberOfInputs={6}
-                        inputContainerStyles={style.OTP_TEXT_FIELD}
-                        focusStyles={style.OTP_HIGHLIGHT}
-                        keyboardType="phone-pad"
-                      />
-                    </View>
+                    <OtpInputs
+                      handleChange={this.onChangeCode}
+                      numberOfInputs={6}
+                      inputContainerStyles={style.OTP_TEXT_FIELD}
+                      focusStyles={style.OTP_HIGHLIGHT}
+                      keyboardType="phone-pad"
+                    />
 
                     {/* <View>
                       <View>
@@ -163,24 +176,15 @@ export const VerificationScreen = connect(
 
                     <View style={style.ACCEPT_SWITCH}>
                       <Button
-                        style={{
-                          // position: 'absolute',
-                          top: 0,
-                          right: 10,
-                          justifyContent: 'center',
-                          borderRadius: 30,
-                          paddingVertical: 10,
-                          backgroundColor: '#ffbadc',
-                          color:color.white,
-                          marginTop:10,
-                          marginBottom:30
-                        }}
+                        style={style.RESEND_BUTTON}
                         text="Resend Pin"
-                        textStyleOverride={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
+                        textStyle={style.RESEND_BUTTON_TEXT}
                         onPress={this.logIn}
                       />
                       <View style={style.SWITCH}>
-                        <Text style={style.SWITCH_TEXT}>I agree to the</Text>
+                        <Text style={style.SWITCH_TEXT}>
+                          00:{this.state.timer} Remain
+                        </Text>
                       </View>
                     </View>
 
