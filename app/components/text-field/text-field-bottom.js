@@ -101,6 +101,7 @@ export class TextFieldBottom extends Component {
         inputRange: [0, 1],
         outputRange: [color.darkgray, color.secondary],
       }),
+      fontFamily:typography.bold,
       // borderBottomColor: this.interpolatedColor.interpolate({
       //   inputRange: [0, 1],
       //   outputRange: [color.darkgray, color.primary],

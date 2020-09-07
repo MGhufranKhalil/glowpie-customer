@@ -69,8 +69,9 @@ export const VerificationScreen = connect(
       );
     }
     componentDidUpdate(){
-      if(this.state.timer === 1){ 
+      if(this.state.timer === 0){ 
         clearInterval(this.interval);
+        this.sendCode;
       }
     }
 
@@ -156,35 +157,14 @@ export const VerificationScreen = connect(
                       keyboardType="phone-pad"
                     />
 
-                    {/* <View>
-                      <View>
-                        <Button
-                          style={{
-                            // position: 'absolute',
-                            top: 20,
-                            right: 10,
-                            justifyContent: 'center',
-                            borderRadius: 30,
-                            paddingVertical: 10,
-                          
-                            // color:color.secondary
-                          }}
-                          text="Sign in"
-                          textStyleOverride={
-                            styles.TOP_RIGHT_CORNER_BUTTON_TEXT
-                          }
-                          onPress={this.logIn}
-                        />
-                      </View>
-                      <Text></Text>
-                    </View> */}
+                     
 
                     <View style={style.ACCEPT_SWITCH}>
                       <Button
                         style={style.RESEND_BUTTON}
                         text="Resend Pin"
                         textStyle={style.RESEND_BUTTON_TEXT}
-                        onPress={this.logIn}
+                        onPress={this.sendCode}
                       />
                       <View style={style.SWITCH}>
                         <Text style={style.SWITCH_TEXT}>
@@ -193,17 +173,7 @@ export const VerificationScreen = connect(
                       </View>
                     </View>
 
-                    {/* <View style={style.ACCEPT_SWITCH}>
-                      <View style={style.SWITCH}>
-                        <Text style={style.SWITCH_TEXT}>I agree to the</Text>
-                        <Link
-                          url=""
-                          text="Terms & Conditions"
-                          labelStyle={style.TERMS_LINK}
-                        />
-                      </View>
-                      <Switch />
-                    </View> */}
+                    
                   </View>
                 </View>
 
@@ -218,54 +188,7 @@ export const VerificationScreen = connect(
                   />
                 </View>
               </View>
-              {/* <View style={style.CONTAINER}>
-                <Text preset="message">
-                  Please enter your phone number below for verification.
-                </Text>
-                <PhoneField
-                  label={last_code_sent ? 'RESEND' : 'SEND'}
-                  labelColor={last_code_sent ? color.secondary : color.primary}
-                  onChangeText={this.onChangePhone}
-                  onSubmit={this.sendCode}
-                  maxLength={20}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={phone}
-                  keyboardType="phone-pad"
-                  loading={sending_code}
-                  disabled={sending_code}
-                /> 
-              </View>*/}
-              {/* {last_code_sent && (  
-              <View style={style.OTP}>
-                <Text style={styles.PAGE_HEADER_HEADING} text="ENTER CODE" />
-                <Text
-                  style={styles.PAGE_HEADER_SUB}
-                  text="Please enter the code you received."
-                />
-                <View style={style.OTP_CONTAINER}>
-                  <OtpInputs
-                    handleChange={this.onChangeCode}
-                    numberOfInputs={6}
-                    inputContainerStyles={style.OTP_TEXT_FIELD}
-                    focusStyles={style.OTP_HIGHLIGHT}
-                    keyboardType="phone-pad"
-                  />
-                </View>
-              </View>
-            )} */}
-              {/* {last_code_sent && (  
-              <View style={styles.FOOTER_VIEW}>
-                <Button
-                  preset="primary"
-                  text="Sign Up Now"
-                  onPress={this.verifyCode}
-                  icon="next"
-                  disabled={sending_code || verifying}
-                  loading={verifying}
-                />
-              </View>
-              )} */}
+               
             </View>
           </Screen>
         </View>
