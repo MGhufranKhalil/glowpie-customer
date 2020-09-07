@@ -15,6 +15,9 @@ import {
   REG_SERVICE_SUCCESS,
   REG_SERVICE_ERROR,
   REG_POST_VERIFICATION,
+  REG_GENERAL_REQUEST,
+  REG_GENERAL_SUCCESS,
+  REG_GENERAL_ERROR,
 } from '../actions/registration';
 import {getActionError} from '../../utils/helpers';
 import {saveString, remove} from '../../utils/storage';
@@ -23,6 +26,7 @@ const initialState = {
   registered: false,
   token: '',
   error: '',
+  registered_general: false,
   registered_business: false,
   registered_address: false,
   registered_hours: false,
@@ -45,6 +49,7 @@ export default (state = initialState, action) => {
   // console.tron.log(action);
   switch (action.type) {
     case REG_ACCOUNT_REQUEST:
+    case REG_GENERAL_REQUEST:
     case REG_BUSINESS_REQUEST:
     case REG_ADDRESS_REQUEST:
     case REG_HOURS_REQUEST:
@@ -63,6 +68,16 @@ export default (state = initialState, action) => {
           ...state,
           registered: true,
           token: action.payload.data.token,
+          error: '',
+        };
+      }
+      return generalError(state, action);
+    case REG_GENERAL_SUCCESS:
+      if (success && code && [200, 201].indexOf(Number(code)) >= 0) {
+        console.tron.log('registered general info');
+        return {
+          ...state,
+          registered_general: true,
           error: '',
         };
       }
@@ -108,6 +123,7 @@ export default (state = initialState, action) => {
       }
       return generalError(state, action);
     case REG_ACCOUNT_ERROR:
+    case REG_GENERAL_ERROR:
     case REG_BUSINESS_ERROR:
     case REG_ADDRESS_ERROR:
     case REG_HOURS_ERROR:

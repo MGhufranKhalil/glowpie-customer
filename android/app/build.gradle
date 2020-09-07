@@ -147,12 +147,24 @@ android {
         }
     }
     signingConfigs {
-				release {
-		      storeFile file('release-key.keystore')
-		      storePassword 'G9jduw$rf8Mj'
-		      keyAlias 'appsignkey'
-		      keyPassword 'G9jduw$rf8Mj'
-		    }
+                release {
+                    if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                        storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                        storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                        keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                        keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+                    }
+		          // storeFile file('release-key.keystore')
+		          // storePassword 'C&jf4dii2urE'
+		          // keyAlias 'appsignkey'
+		          // keyPassword 'C&jf4dii2urE'
+	            }
+			// 	release {
+		    //   storeFile file('release-key.keystore')
+		    //   storePassword 'G9jduw$rf8Mj'
+		    //   keyAlias 'appsignkey'
+		    //   keyPassword 'G9jduw$rf8Mj'
+		    // }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'

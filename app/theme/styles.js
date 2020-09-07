@@ -137,11 +137,24 @@ const CONTENT_LIGHT = {
 export const pageHeaderHeight = 50;
 export const pageHeaderBigHeight = SM ? 115 : 130;
 
+const PAGE_HEADER_WITH_BUTTON = {flexDirection: 'row', top: 10};
 const PAGE_HEADER = {
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'flex-start',
   backgroundColor: color.white,
+  zIndex: 2,
+  height: pageHeaderHeight,
+  paddingHorizontal: 20,
+  paddingTop: SM ? 10 : 16,
+  paddingBottom: 10,
+};
+
+const PAGE_HEADER_TRANSPARENT = {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  backgroundColor: color.transparent,
   zIndex: 2,
   height: pageHeaderHeight,
   paddingHorizontal: 20,
@@ -201,7 +214,7 @@ const PAGE_HEADER_TITLE = {
 };
 
 const PAGE_HEADER_TITLE_LINK = {
-  paddingVertical: SM ? 5 : 0,
+  paddingVertical: SM ? 5 : 9,
 };
 
 const PAGE_HEADER_PROGRESS = {
@@ -346,6 +359,7 @@ const TOP_RIGHT_CORNER_BUTTON = {
   justifyContent: 'center',
   borderRadius: 30,
   paddingVertical: 10,
+  paddingHorizontal:20,
   fontFamily: typography.bold,
   backgroundColor: color.white,
   // color:color.secondary
@@ -387,5 +401,7 @@ export const styles = StyleSheet.create({
   SEP,
   SIGN_IN_TEXT,
   TEXT_BOLD,
-  TEXT_HEADER
+  TEXT_HEADER,
+  PAGE_HEADER_TRANSPARENT,
+  PAGE_HEADER_WITH_BUTTON
 });

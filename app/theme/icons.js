@@ -1,5 +1,6 @@
 export const icons = {
   back: require('./images/back_icon.png'),
+  back_white: require('./images/back_icon_white.png'),
   next: require('./images/button_arrow.png'),
   user: require('./images/user_icon.png'),
   user_x: require('./images/user_icon_active.png'),

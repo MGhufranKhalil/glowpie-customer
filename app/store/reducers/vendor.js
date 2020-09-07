@@ -23,7 +23,7 @@ import {
 import {getActionError} from '../../utils/helpers';
 import {saveString, remove} from '../../utils/storage';
 
-const mapServices = services => {
+ const mapServices = services => {
   let out = {};
   if (services && services.length) {
     services.forEach(s => {
@@ -32,13 +32,15 @@ const mapServices = services => {
   }
 
   return out;
-};
+}; 
 
 const initialState = {
   account: {
     email: '',
     first_name: '',
     last_name: '',
+    date_of_birth: '',
+    gender: '',
     image: '',
   },
   business: {

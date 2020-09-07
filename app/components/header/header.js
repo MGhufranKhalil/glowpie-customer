@@ -33,6 +33,7 @@ export const Header = withNavigation(
         onBack,
         menu,
         headingSize,
+        background,
       } = this.props;
       const onGoBack = onBack ? onBack : this.props.navigation.goBack;
 
@@ -44,7 +45,7 @@ export const Header = withNavigation(
         return (
           <View
             style={
-              shadow ? styles.PAGE_HEADER_BIG_SHADOW : styles.PAGE_HEADER_BIG
+              shadow ? styles.PAGE_HEADER_BIG_SHADOW :  styles.PAGE_HEADER_BIG
             }>
             {!noBack && <Link onClick={onGoBack} icon="back" />}
             {noBack && <View style={PLACE_HOLDER} />}
@@ -60,11 +61,11 @@ export const Header = withNavigation(
         ? {...styles.PAGE_HEADER_TITLE, fontSize: headingSize}
         : {...styles.PAGE_HEADER_TITLE};
       return (
-        <View style={shadow ? styles.PAGE_HEADER_SHADOW : styles.PAGE_HEADER}>
+        <View style={shadow ? styles.PAGE_HEADER_SHADOW : background ? styles.PAGE_HEADER : styles.PAGE_HEADER_TRANSPARENT }>
           {!noBack && (
             <Link
               onClick={onGoBack}
-              icon="back"
+              icon="back_white"
               style={styles.PAGE_HEADER_TITLE_LINK}
             />
           )}

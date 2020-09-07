@@ -252,8 +252,24 @@ const FEMALE_INACTIVE = {
 const GENDER_TEXT = {
   fontFamily: typography.bold,
 };
-
+const WELCOME_IMAGE = {
+  position: 'absolute',
+  resizeMode: 'cover',
+  height: XL || SM ? '100%' : '65%',
+  top: 0,
+  left: 0,
+  // marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  width: '100%',
+};
+const GENERAL_INFORMATION = {
+  ...styles.CONTENT,
+  fontSize: font.h2 * 1.1,
+  fontFamily: typography.bold,
+  marginBottom: SM ? 5 : 8,
+};
 export const style = StyleSheet.create({
+  GENERAL_INFORMATION,
+  WELCOME_IMAGE,
   LOGO,
   VFLEX,
   PAGE_HEADER,

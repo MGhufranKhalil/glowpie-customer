@@ -42,7 +42,7 @@ export const VerificationScreen = connect(
         console.tron.log(
           'code verified, navigating to registration setup screen',
         );
-        this.props.navigation.navigate('loading');
+        this.props.navigation.navigate('register');
       } else {
         if (props.status.error && !this.state.error) {
           console.tron.log('code error');
@@ -75,7 +75,7 @@ export const VerificationScreen = connect(
     }
 
     componentWillUnmount(){
-    clearInterval(this.interval);
+      clearInterval(this.interval);
     }
 
     constructor(props) {
@@ -96,18 +96,21 @@ export const VerificationScreen = connect(
 
       this.sendCode = () => {
         this.setState({sending_code: true});
-        const {phone} = this.state;
-        const payload = {number: sanitizeNumber(phone)};
+        // const {phone} = this.state;
+        // const payload = {number: sanitizeNumber(phone)};
+        const payload = {};
         this.props.onSendCode(payload);
       };
 
       this.verifyCode = () => {
-        // this.setState({sending_code: false, verifying: true});
-        // const {code} = this.state;
-        // const payload = {code};
-        // this.props.onVerifyCode(payload);
-        this.props.navigation.navigate('registerPending');
+        this.setState({sending_code: false, verifying: true});
+        const {code} = this.state;
+        const payload = {code};
+        this.props.onVerifyCode(payload);
+        // this.props.navigation.navigate('registerPending');
       };
+      this.sendCode();
+
     }
 
     render() {
@@ -122,25 +125,27 @@ export const VerificationScreen = connect(
               style={style.WELCOME_IMAGE}
             />
 
+            <Header background={false} />
             <View style={style.VFLEX_PADDED}>
+             
               {/* <Header /> */}
               <View style={style.CONTAINER}>
                 <Image source={imgLogo} style={style.LOGO} />
                 <Text text="SIGN UP AND" style={styles.TEXT_HEADER} />
                 <Text>
-                  <Text text="Book" style={styles.TEXT_BOLD} />
+                  <Text text="Book" style={style.TEXT_BOLD} />
                   <Text text="  " style={styles.SEP} />
-                  <Text text="Your" style={styles.TEXT_BOLD} />
+                  <Text text="Your" style={style.TEXT_BOLD} />
                   <Text text="  " style={styles.SEP} />
-                  <Text text="Station" style={styles.TEXT_BOLD} />
+                  <Text text="Station" style={style.TEXT_BOLD} />
                 </Text>
               </View>
               <View style={styles.FOOTER_VIEW_FULL}>
                 <View style={style.OTP}>
-                  <Text style={styles.PAGE_HEADER_HEADING} text="Verify Pin" />
+                  <Text style={style.VERIFY_PIN} text="Verify Pin" />
                   <Text
                     style={styles.PAGE_HEADER_SUB}
-                    text="Please enter the code you received."
+                    text="Please enter the code you received in email."
                   />
                   <View style={style.OTP_CONTAINER}>
                     <OtpInputs

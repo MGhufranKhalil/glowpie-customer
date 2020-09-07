@@ -5,7 +5,8 @@ import {
   registrationValidator,
   businessValidator,
   addressValidator,
-  serviceValidator
+  serviceValidator,
+  generalValidator,
 } from '../validators/registration';
 import {diags} from '../../utils/debug';
 import {dataForm} from '../../utils/helpers';
@@ -14,6 +15,10 @@ import {isVendorInfoComplete} from '../../utils/app';
 export const REG_ACCOUNT_REQUEST = 'REG_ACCOUNT_REQUEST';
 export const REG_ACCOUNT_SUCCESS = 'REG_ACCOUNT_SUCCESS';
 export const REG_ACCOUNT_ERROR = 'REG_ACCOUNT_ERROR';
+
+export const REG_GENERAL_REQUEST = 'REG_GENERAL_REQUEST';
+export const REG_GENERAL_SUCCESS = 'REG_GENERAL_SUCCESS';
+export const REG_GENERAL_ERROR = 'REG_GENERAL_ERROR';
 
 export const REG_BUSINESS_REQUEST = 'REG_BUSINESS_REQUEST';
 export const REG_BUSINESS_SUCCESS = 'REG_BUSINESS_SUCCESS';
@@ -49,7 +54,7 @@ export const registerAccount = payload => dispatch => {
   console.tron.log('registerAccount', payload);
   return dispatch(
     dataForm(
-      'vendors/new',
+      'customers/new',
       payload,
       [REG_ACCOUNT_REQUEST, REG_ACCOUNT_SUCCESS, REG_ACCOUNT_ERROR],
       'PUT',
@@ -57,6 +62,24 @@ export const registerAccount = payload => dispatch => {
   );
 };
 
+export const registerGeneral = payload => dispatch => {
+  const errors = generalValidator(payload);
+  if (errors && errors.length) {
+    return dispatch({
+      type: REG_GENERAL_ERROR,
+      errors,
+    });
+  }
+
+  console.tron.log('registerGeneral', payload);
+  return dispatch(
+    dataForm('customers/info', payload, [
+      REG_GENERAL_REQUEST,
+      REG_GENERAL_SUCCESS,
+      REG_GENERAL_ERROR,
+    ]),
+  );
+};
 export const registerBusiness = payload => dispatch => {
   const errors = businessValidator(payload);
   if (errors && errors.length) {

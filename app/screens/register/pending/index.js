@@ -34,6 +34,8 @@ import {capitalizeFirstLetter, SW, imageUrl} from '../../../utils/helpers';
 import {isVendorInfoComplete} from '../../../utils/app';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {style} from './style';
+import {registerGeneral} from '../../../store/actions/registration';
+
 import LinearGradient from 'react-native-linear-gradient';
 /*
 --- image selection response object ---
@@ -89,13 +91,17 @@ const UploadButton = props => {
     </View>
   );
 };
-
 const stateProps = state => ({
-  login: state.login,
+  account: state.registration,
   vendor: state.vendor,
 });
+// const stateProps = state => ({
+//   login: state.login,
+//   vendor: state.vendor,
+// });
 
 const actionProps = (dispatch, ownProps) => ({
+  onRegisterGeneral: payload => dispatch(registerGeneral(payload)),
   uploadImage: payload => dispatch(uploadVendorImage(payload)),
 });
 
@@ -104,34 +110,85 @@ export const RegisterPendingScreen = connect(
   actionProps,
 )(
   class extends React.Component {
+    /* componentWillReceiveProps(props) {
+      if (props.account.registered_general && this.state.loading) {
+        this.setState({
+          loading: false,
+        });
+        console.log('test');
+        // setTimeout(() => this.props.navigation.pop(2), 500);
+        return;
+      } else if (props.account.error && !this.state.error) {
+        this.setState({
+          loading: false,
+        });
+        showMessage({
+          message: props.account.error,
+          backgroundColor: color.error_message,
+          color: color.white,
+        });
+      }
+    } */
     constructor(props) {
       super(props);
 
       this.state = {
         uploading: false,
-        isMale: true,
-        isFemale: false,
+        loading: false,
+        first_name: '',
+        last_name: '',
+        mm: '',
+        dd: '',
+        yyyy: '',
+        date_of_birth: '',
+        gender: 'male',
+        infoComplete:false,
       };
 
       this.pickImage = this.pickImage.bind(this);
 
       this.onGenderChange = (male,female) => {
         if(male == 1 ){
-          this.setState({isMale: true,isFemale:false});
+          this.setState({gender: 'male'});
         }else if(female ==1){
-          this.setState({isMale: false, isFemale: true});
+          this.setState({gender: 'female'});
         }
+      };
+      this.onChangeFirstName = value => this.setState({first_name: value, error: ''});
+      this.onChangeLastName = value => this.setState({last_name: value, error: ''});
+
+      this.onChangeDobDD = value => this.setState({dd: value, error: ''});
+      this.onChangeDobMM = value => this.setState({mm: value, error: ''});
+
+      this.onChangeDobYYYY = (value) => {
+
+        this.setState({yyyy: value, error: ''});
+
+        this.setState({
+          date_of_birth: value + '-' + this.state.mm + '-' + this.state.dd,
+        });
+      };
+
+      this.onRegister = () => {
+        this.setState({loading: true});
+        const {first_name, last_name, date_of_birth, gender} = this.state;
+        const payload = {first_name, last_name, date_of_birth, gender};
+        this.props.onRegisterGeneral(payload);
       };
     }
 
     componentWillReceiveProps(props) {
+      console.log(props);
       // image uplaoded successfully
       const {vendor} = this.props;
-      if (props.vendor.account.image) {
+      
+      /* if (props.vendor.account.image) {
+
         if (!vendor || vendor.account.image !== props.vendor.account.image) {
           console.tron.log('Vendor image uploaded/changed successfully');
           this.setState({
             uploading: false,
+            loading: false,
           });
           showMessage({
             message: 'Image updated successfully',
@@ -139,14 +196,31 @@ export const RegisterPendingScreen = connect(
             color: color.white,
           });
         }
+        
+      } */
+      if (!props.account.error) {
+        // if (!vendor || vendor.account.image !== props.vendor.account.image) {
+          console.tron.log('Customer general Information save successfully');
+          this.setState({
+            uploading: false,
+            loading: false,
+            infoComplete:true
+          });
+          showMessage({
+            message: 'General Information updated successfully',
+            backgroundColor: color.notice,
+            color: color.white,
+          });
+        // }
       }
       // don't use else, because the previous image may already be there when error happens
-      if (props.vendor.error) {
+      if (props.account.error) {
         this.setState({
           uploading: false,
+          loading: false,
         });
         showMessage({
-          message: props.vendor.error,
+          message: props.account.error,
           backgroundColor: color.error_message,
           color: color.white,
         });
@@ -239,85 +313,84 @@ export const RegisterPendingScreen = connect(
 
     
     renderGender(){
-      const {isMale, isFemale } = this.state;
+      const {gender} = this.state;
         return (
           <View style={style.ACCEPT_SWITCH}>
-
             <View style={{width: '30%'}}>
               <Text style={style.GENDER_TEXT}>Select Gender</Text>
             </View>
-  
-            <View style={{width: '30%'}}>
-            {!isMale &&
-              <Button
-                testID="signup-button"
-                preset="primary"
-                text="Male"
-                onPress={() => this.onGenderChange(1, 0)}
-                // icon="next"
-                // disabled={loading}
-                // loading={loading}
-                style={style.MALE_INACTIVE}
-                textStyle={style.MALE_INACTIVE_TEXT}
-              />
-            }
-            {isMale &&
-              <Button
-                testID="signup-button"
-                preset="primary"
-                text="Male"
-                onPress={() => this.onGenderChange(1, 0)}
-                // icon="next"
-                // disabled={loading}
-                // loading={loading}
-                style={style.MALE_ACTIVE}
-                textStyle={style.MALE_ACTIVE_TEXT}
-              />
-            }
 
+            <View style={{width: '30%'}}>
+              {gender !== 'male' && (
+                <Button
+                  testID="signup-button"
+                  preset="primary"
+                  text="Male"
+                  onPress={() => this.onGenderChange(1, 0)}
+                  // icon="next"
+                  // disabled={loading}
+                  // loading={loading}
+                  style={style.MALE_INACTIVE}
+                  textStyle={style.MALE_INACTIVE_TEXT}
+                />
+              )}
+              {gender == 'male' && (
+                <Button
+                  testID="signup-button"
+                  preset="primary"
+                  text="Male"
+                  onPress={() => this.onGenderChange(1, 0)}
+                  // icon="next"
+                  // disabled={loading}
+                  // loading={loading}
+                  style={style.MALE_ACTIVE}
+                  textStyle={style.MALE_ACTIVE_TEXT}
+                />
+              )}
             </View>
-  
+
             <View style={{width: '30%'}}>
-            {!isFemale &&
-              <Button
-                testID="signup-button"
-                preset="primary"
-                text="Female"
-                onPress={() => this.onGenderChange(0, 1)}
-                // icon="next"
-                // disabled={loading}
-                // loading={loading}
-  
-                style={style.FEMALE_INACTIVE}
-                textStyle={style.FEMALE_INACTIVE_TEXT}
-              />
-            }
+              {gender !== 'female' && (
+                <Button
+                  testID="signup-button"
+                  preset="primary"
+                  text="Female"
+                  onPress={() => this.onGenderChange(0, 1)}
+                  // icon="next"
+                  // disabled={loading}
+                  // loading={loading}
 
-            {isFemale && 
-              <Button
-                testID="signup-button"
-                preset="primary"
-                text="Female"
-                onPress={() => this.onGenderChange(0, 1)}
-                // icon="next"
-                // disabled={loading}
-                // loading={loading}
-  
-                style={style.FEMALE_ACTIVE}
-                textStyle={style.FEMALE_ACTIVE_TEXT}
-              />
-            }
+                  style={style.FEMALE_INACTIVE}
+                  textStyle={style.FEMALE_INACTIVE_TEXT}
+                />
+              )}
 
+              {gender == 'female' && (
+                <Button
+                  testID="signup-button"
+                  preset="primary"
+                  text="Female"
+                  onPress={() => this.onGenderChange(0, 1)}
+                  // icon="next"
+                  // disabled={loading}
+                  // loading={loading}
+
+                  style={style.FEMALE_ACTIVE}
+                  textStyle={style.FEMALE_ACTIVE_TEXT}
+                />
+              )}
             </View>
           </View>
         );
     }
 
     render() {
+      const {first_name, last_name, mm, dd, yyyy, gender, loading} = this.state;
       const {vendor} = this.props;
-      const infoComplete = isVendorInfoComplete(vendor);
-      const {first_name} = vendor.account || {};
-      const {business, address, hours, services} = vendor;
+      // const infoComplete = isVendorInfoComplete(vendor);
+      const infoComplete = this.state.infoComplete;
+      // const {first_name} = vendor.account || {};
+      // const {business, address, hours, services} = vendor;
       let {image} = vendor.account;
       
       const {uploading} = this.state;
@@ -328,23 +401,25 @@ export const RegisterPendingScreen = connect(
           ? style.UPLOADING_IMAGE
           : style.UPLOAD_IMAGE;
       image = image && !uploading ? imageUrl(image) : uploadImage;
-      let progressText = 20;
-      if (
-        business &&
-        business.business_name &&
-        address &&
-        address.address_line1
-      ) {
-        progressText += 20;
-      }
-      if (hours && hours.break_hours_start) {
-        progressText += 30;
-      }
-      if (services && Object.keys(services).length > 0) {
-        progressText += 30;
-      }
+      // let progressText = 20;
+      // if (
+      //   business &&
+      //   business.business_name &&
+      //   address &&
+      //   address.address_line1
+      // ) {
+      //   progressText += 20;
+      // }
+      // if (hours && hours.break_hours_start) {
+      //   progressText += 30;
+      // }
+      // if (services && Object.keys(services).length > 0) {
+      //   progressText += 30;
+      // }
       // progress bar width is 0-85 (there is text besides it)
-      const progress = ((SW - 70) / 100) * progressText;
+      // const progress = ((SW - 70) / 100) * progressText;
+      const progress = 100;
+
       const progressStyle = {
         ...style.PROGRESS,
         backgroundColor: color.primary,
@@ -397,21 +472,21 @@ export const RegisterPendingScreen = connect(
             style={styles.CONTAINER_PADDED}
             preset="fixed"
             backgroundColor={color.transparent}>
-
             <Image
               source={backgroundImages.SignIn}
               style={style.WELCOME_IMAGE}
             />
 
             <View style={style.VFLEX_PADDED}>
-
+              <View style={styles.PAGE_HEADER_WITH_BUTTON}>
+                <Header background={false} />
+              </View>
               {!infoComplete && (
-                 
                 <View style={styles.FOOTER_VIEW_FULL}>
                   <View style={{padding: 15}}>
                     {/* <Text text="General Information" style={style.PERSONAL} /> */}
                     <Text
-                      style={styles.PAGE_HEADER_HEADING}
+                      style={style.GENERAL_INFORMATION}
                       text="General Information"
                     />
                     <UploadButton
@@ -424,28 +499,22 @@ export const RegisterPendingScreen = connect(
                       <View style={{width: '49%'}}>
                         <TextFieldBottom
                           label="First Name"
-                          // onChangeText={this.onChangeId}
-                          maxLength={40}
+                          onChangeText={this.onChangeFirstName}
+                          maxLength={30}
                           autoCorrect={false}
-                          autoCapitalize="none"
-                          // value={loginid}
-                          // icon="email"
-                          keyboardType="password"
-                          secureTextEntry={true}
+                          value={first_name}
+                          // icon="user"
                         />
                       </View>
 
                       <View style={{width: '49%'}}>
                         <TextFieldBottom
                           label="Last Name"
-                          // onChangeText={this.onChangeId}
-                          maxLength={40}
+                          onChangeText={this.onChangeLastName}
+                          maxLength={30}
                           autoCorrect={false}
-                          autoCapitalize="none"
-                          // value={loginid}
-                          // icon="email"
-                          keyboardType="password"
-                          secureTextEntry={true}
+                          value={last_name}
+                          // icon="user"
                         />
                       </View>
                     </View>
@@ -454,29 +523,24 @@ export const RegisterPendingScreen = connect(
                       <View style={{width: '30%'}}>
                         <TextFieldBottom
                           label="Date of Birth"
-                          // onChangeText={this.onChangeId}
-                          maxLength={40}
+                          onChangeText={this.onChangeDobMM}
+                          maxLength={2}
                           autoCorrect={false}
                           autoCapitalize="none"
-                          // value={loginid}
-                          // icon="email"
+                          value={mm}
                           keyboardType="password"
-                          secureTextEntry={true}
                           inputPlaceholder="mm"
                         />
                       </View>
 
                       <View style={{width: '30%'}}>
                         <TextFieldBottom
-                          // label="Last Name"
-                          // onChangeText={this.onChangeId}
-                          maxLength={40}
+                          onChangeText={this.onChangeDobDD}
+                          maxLength={2}
                           autoCorrect={false}
                           autoCapitalize="none"
-                          // value={loginid}
-                          // icon="email"
+                          value={dd}
                           keyboardType="password"
-                          secureTextEntry={true}
                           inputPlaceholder="dd"
                         />
                       </View>
@@ -484,21 +548,18 @@ export const RegisterPendingScreen = connect(
                       <View style={{width: '30%'}}>
                         <TextFieldBottom
                           // label="Last Name"
-                          // onChangeText={this.onChangeId}
-                          maxLength={40}
+                          onChangeText={this.onChangeDobYYYY}
+                          maxLength={4}
                           autoCorrect={false}
                           autoCapitalize="none"
-                          // value={loginid}
+                          value={yyyy}
                           // icon="email"
                           keyboardType="password"
-                          secureTextEntry={true}
                           inputPlaceholder="yyyy"
                         />
                       </View>
                     </View>
                     {this.renderGender()}
-                    
-                    
                   </View>
                   <View>
                     <ButtonFullWidth
@@ -511,7 +572,7 @@ export const RegisterPendingScreen = connect(
                       // onPress={ () => console.log('test')}
                       // icon="next"
                       // disabled={loading}
-                      // loading={loading}
+                      loading={loading}
                     />
                   </View>
                 </View>

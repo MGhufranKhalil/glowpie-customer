@@ -5,7 +5,7 @@ export const welcomeImages = {
   step4: require('./images/welcome/step4.png'),
 };
 export const backgroundImages = {
-  SignIn: require('./images/background/welcome.png'),
+  SignIn: require('./images/background/bg-image.png'),
   Verification: require('./images/background/welcome.png'),
 }
 export const imgLogo = require('./images/logo.png');

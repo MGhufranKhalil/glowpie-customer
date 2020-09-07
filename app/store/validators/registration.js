@@ -26,10 +26,13 @@ export const registrationValidator = payload => {
         message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
       },
     },
-    confirm_password: {
-      length: {
-        minimum: MIN_PASSWORD_LENGTH,
-        message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+    confirmPassword: {
+      equality: {
+        attribute: 'password',
+        message: 'Confirm password is not equal to password',
+        comparator: function(v1, v2) {
+          return JSON.stringify(v1) === JSON.stringify(v2);
+        },
       },
     },
     agree: {
@@ -38,6 +41,49 @@ export const registrationValidator = payload => {
         message: 'Please confirm that you agree to the terms and conditions',
         comparator: function(v1, v2) {
           return v1 === true;
+        },
+      },
+    },
+  };
+  return validate(rules, payload);
+};
+
+export const generalValidator = payload => {
+  const rules = {
+    first_name: {
+      length: {
+        minimum: 1,
+        message: 'First Name required',
+      },
+    },
+    last_name: {
+      length: {
+        minimum: 1,
+        message: 'Last Name required',
+      },
+    },
+    date_of_birth: {
+      // date: {
+      //   dateOnly: true,
+      //   message: 'Please enter valid date',
+      // },
+      length: {
+        minimum: 2,
+        message: 'Please enter valid date of birth',
+      },
+    },
+    gender: {
+      equality: {
+        attribute: 'gender',
+        message: 'Please enter valid gender',
+        comparator: function(v1, v2) {
+          if (v1 === 'male') {
+            return true;
+          } else if (v1 === 'female') {
+            return true;
+          } else {
+            return false;
+          }
         },
       },
     },

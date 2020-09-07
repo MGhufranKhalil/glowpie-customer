@@ -34,7 +34,7 @@ const FORGOT_LINK = {
 
 const FORGOT_LINK_TEXT = {
   lineHeight: SM ? 14 : 22,
-  fontFamily: typography.regular,
+  fontFamily: typography.semibold,
   fontSize: font.text + 2,
   color: color.dark,
 };
@@ -114,10 +114,11 @@ const BUTTON_LOGIN = {
 const WELCOME_IMAGE = {
   position: 'absolute',
   resizeMode: 'cover',
-  height: XL || SM ? '70%' : '65%',
+  height: XL || SM ? '100%' : '65%',
+  width:'100%',
   top: 0,
   left: 0,
-  marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  // marginLeft: SW > 400 ? 0 : SM ? -230 : -180
 };
  
 const SIGNUP_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
@@ -136,6 +137,7 @@ const TEXT_HEADER = {
   fontSize: SM ? font.h1 * 1.8 : font.h1,
   fontFamily: typography.regular,
   color: color.white,
+  letterSpacing:3
 };
 const TEXT = {
   ...styles.CONTENT,
@@ -145,6 +147,7 @@ const TEXT = {
 const TEXT_BOLD = {
   ...TEXT,
   fontFamily: typography.bold,
+  lineHeight:80
 };
 const SIGN_IN_TEXT = {
   fontSize: SM ? font.h1 * 1.2 : font.h1 * 0.6,

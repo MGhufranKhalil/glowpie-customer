@@ -15,18 +15,18 @@ export const REG_VERIFYCODE_ERROR = 'REG_VERIFYCODE_ERROR';
 
 export const sendCode = payload => dispatch => {
   console.tron.log('send code', payload);
-  if (!isValidPhone(payload.number)) {
-    console.tron.log('not valid');
-    return dispatch({
-      type: REG_SENDCODE_ERROR,
-      errors: ['Enter correct phone number to contine.'],
-    });
-  }
+  // if (!isValidPhone(payload.number)) {
+  //   console.tron.log('not valid');
+  //   return dispatch({
+  //     type: REG_SENDCODE_ERROR,
+  //     errors: ['Enter correct phone number to contine.'],
+  //   });
+  // }
 
-  const {number} = payload;
+  // const {number} = payload;
   console.tron.log('send code dispatching');
   return dispatch(
-    dataForm('user/verify', {phone: number}, [
+    dataForm('user/verify', {}, [
       REG_SENDCODE_REQUEST,
       REG_SENDCODE_SUCCESS,
       REG_SENDCODE_ERROR,

@@ -34,7 +34,7 @@ export const doLogin = payload => dispatch => {
   const {loginid, password} = payload;
   return dispatch(
     dataForm(
-      'vendors/login',
+      'customers/login',
       {email: loginid, password, device_id: DeviceInfo.getUniqueId()},
       [USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGIN_ERROR],
     ),

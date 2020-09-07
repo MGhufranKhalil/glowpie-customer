@@ -53,10 +53,11 @@ const OTP_HIGHLIGHT = {
 const WELCOME_IMAGE = {
   position: 'absolute',
   resizeMode: 'cover',
-  height: XL || SM ? '70%' : '65%',
+  height: XL || SM ? '100%' : '65%',
   top: 0,
   left: 0,
-  marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  // marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  width: '100%',
 };
 const ACCEPT_SWITCH = {
   flexDirection: 'row',
@@ -98,6 +99,25 @@ const TERMS_LINK = {
   fontSize: font.text + 2,
   fontFamily: typography.semibold,
 };
+ 
+const TEXT = {
+  ...styles.CONTENT,
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 1.1,
+  color: color.white,
+};
+const TEXT_BOLD = {
+  ...TEXT,
+  fontFamily: typography.bold,
+  lineHeight: 70,
+};
+const VERIFY_PIN = {
+  ...styles.CONTENT,
+  fontSize: font.h2*1.2,
+  fontFamily: typography.bold,
+  marginBottom: SM ? 5 : 8,
+};
+
+
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -111,5 +131,8 @@ export const style = StyleSheet.create({
   SWITCH,
   ACCEPT_SWITCH,
   RESEND_BUTTON,
-  RESEND_BUTTON_TEXT
+  RESEND_BUTTON_TEXT,
+  TEXT,
+  TEXT_BOLD,
+  VERIFY_PIN
 });

@@ -56,18 +56,17 @@ export const RegisterAccountScreen = connect(
       this.state = {
         email: '',
         password: '',
-        confirm_password: '',
+        confirmPassword: '',
         agree: false,
         loading: false,
         error: '',
       };
 
-      // this.onChangeFirstName = value => this.setState({first_name: value, error: ''});
-      // this.onChangeLastName = value => this.setState({last_name: value, error: ''});
+       
       this.onChangeEmail = value => this.setState({email: value, error: ''});
       this.onChangePassword = value => this.setState({password: value, error: ''});
       this.onChangeConfirmPassword = value =>
-        this.setState({confirm_password: value, error: ''});
+        this.setState({confirmPassword: value, error: ''});
 
       this.onChangeAccept = value => {
         hideMessage();
@@ -75,11 +74,11 @@ export const RegisterAccountScreen = connect(
       };
 
       this.onRegister = () => {
-        // this.setState({loading: true});
-        // const {email, password, confirm_password, agree} = this.state;
-        // const payload = {email, password, confirm_password, agree};
-        // this.props.onRegister(payload);
-        this.props.navigation.navigate('verification');
+        this.setState({loading: true});
+        const {email, password, confirmPassword, agree} = this.state;
+        const payload = {email, password, confirmPassword, agree};
+        this.props.onRegister(payload);
+        // this.props.navigation.navigate('verification');
       };
       this.logIn = () => this.props.navigation.navigate('login');
 
@@ -89,7 +88,7 @@ export const RegisterAccountScreen = connect(
       const {
         email,
         password,
-        confirm_password,
+        confirmPassword,
         agree,
         loading,
       } = this.state;
@@ -102,64 +101,61 @@ export const RegisterAccountScreen = connect(
               style={style.WELCOME_IMAGE}
             />
             <View style={style.VFLEX_PADDED}>
-              {/*  */}
-              {/* <Header /> */}
-
-              <Button
-                style={styles.TOP_RIGHT_CORNER_BUTTON}
-                text="Sign in"
-                textStyle={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
-                onPress={this.logIn}
-              />
+              <View style={styles.PAGE_HEADER_WITH_BUTTON}>
+                <Header background={false} />
+                <Button
+                  style={styles.TOP_RIGHT_CORNER_BUTTON}
+                  text="Sign in"
+                  textStyle={styles.TOP_RIGHT_CORNER_BUTTON_TEXT}
+                  onPress={this.logIn}
+                />
+              </View>
 
               <View style={style.CONTAINER}>
                 <Image source={imgLogo} style={style.LOGO} />
-                <Text text="WELCOME." style={styles.TEXT_HEADER} />
+                <Text text="SIGN UP AND" style={styles.TEXT_HEADER} />
                 <Text>
-                  <Text text="To" style={styles.TEXT_BOLD} />
+                  <Text text="Book" style={style.TEXT_BOLD} />
                   <Text text="  " style={styles.SEP} />
-                  <Text text="Glow" style={styles.TEXT_BOLD} />
+                  <Text text="Your" style={style.TEXT_BOLD} />
                   <Text text="  " style={styles.SEP} />
-                  <Text text="Pie" style={styles.TEXT_BOLD} />
+                  <Text text="Station" style={style.TEXT_BOLD} />
                 </Text>
               </View>
 
               <View style={styles.FOOTER_VIEW_FULL}>
                 <View style={{padding: 15}}>
-                  <Text text="Personal" style={style.PERSONAL} />
+                  <Text text="Personal Information" style={style.PERSONAL} />
 
                   <TextFieldBottom
-                    label="EMAIL"
-                    // onChangeText={this.onChangeId}
-                    maxLength={40}
+                    label="Email"
+                    onChangeText={this.onChangeEmail}
+                    maxLength={100}
                     autoCorrect={false}
-                    autoCapitalize="none"
-                    // value={loginid}
+                    autoCapitalize={false}
+                    value={email}
                     // icon="email"
                     keyboardType="email-address"
                   />
                   <TextFieldBottom
-                    label="PASSWORD"
-                    // onChangeText={this.onChangeId}
-                    maxLength={40}
+                    label="Password"
+                    onChangeText={this.onChangePassword}
+                    maxLength={20}
                     autoCorrect={false}
-                    autoCapitalize="none"
-                    // value={loginid}
-                    // icon="email"
-                    keyboardType="password"
                     secureTextEntry={true}
+                    value={password}
+                    // icon="lock"
                   />
                   <TextFieldBottom
                     label="Confirm Password"
-                    // onChangeText={this.onChangeId}
-                    maxLength={40}
+                    onChangeText={this.onChangeConfirmPassword}
+                    maxLength={20}
                     autoCorrect={false}
-                    autoCapitalize="none"
-                    // value={loginid}
-                    // icon="email"
-                    keyboardType="password"
                     secureTextEntry={true}
+                    value={confirmPassword}
+                    // icon="lock"
                   />
+
                   <View style={style.ACCEPT_SWITCH}>
                     <View style={style.SWITCH}>
                       <Text style={style.SWITCH_TEXT}>I agree to the</Text>

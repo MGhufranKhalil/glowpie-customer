@@ -46,11 +46,13 @@ const TERMS_LINK = {
 const WELCOME_IMAGE = {
   position: 'absolute',
   resizeMode: 'cover',
-  height: XL || SM ? '70%' : '65%',
+  height: XL || SM ? '100%' : '65%',
   top: 0,
   left: 0,
-  marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  // marginLeft: SW > 400 ? 0 : SM ? -230 : -180,
+  width:'100%'
 };
+
 const SIGNUP_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
 
 const LOGO = {
@@ -59,12 +61,21 @@ const LOGO = {
   marginLeft: 16,
 };
 const PERSONAL = {
-  fontSize: SM ? font.h1 * 1.2 : font.h1 * 1,
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 0.9,
   fontFamily: typography.bold,
   paddingTop: 5,
   paddingBottom: 5,
 };
-
+const TEXT = {
+  ...styles.CONTENT,
+  fontSize: SM ? font.h1 * 1.2 : font.h1 * 1.1 ,
+  color: color.white,
+};
+const TEXT_BOLD = {
+  ...TEXT,
+  fontFamily: typography.bold,
+  lineHeight:70
+};
 
 export const style = StyleSheet.create({
   VFLEX_PADDED,
@@ -76,5 +87,7 @@ export const style = StyleSheet.create({
   WELCOME_IMAGE, 
   SIGNUP_BUTTON_TEXT,
   LOGO,
-  PERSONAL
+  PERSONAL,
+  TEXT,
+  TEXT_BOLD
 });

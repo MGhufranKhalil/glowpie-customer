@@ -10,12 +10,13 @@ export const UPLOAD_IMAGE_SUCCESS = 'UPLOAD_IMAGE_SUCCESS';
 export const UPLOAD_IMAGE_ERROR = 'UPLOAD_IMAGE_ERROR';
 
 export const uploadVendorImage = payload => (dispatch, getState) => {
-  console.tron.log('uploadVendorImage', payload);
+  console.tron.log('uploadCustomerImage', payload);
 
   const {image, filename, callback} = payload;
   const formData = new FormData();
   formData.append('image', {
     name: filename,
+    type: 'image/jpeg',
     uri: Platform.OS === 'android' ? image : image.replace('file://', ''),
   });
 
@@ -30,7 +31,7 @@ export const uploadVendorImage = payload => (dispatch, getState) => {
   });
 
   return axios
-    .post(`${Config.API_URL}vendors/image`, formData, {
+    .post(`${Config.API_URL}customers/image`, formData, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',

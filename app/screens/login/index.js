@@ -111,8 +111,10 @@ export const LoginScreen = connect(
               />
 
               <View style={style.CONTAINER}>
+
                 <Image source={imgLogo} style={style.LOGO} />
                 <Text text="WELCOME." style={style.TEXT_HEADER} />
+
                 <Text>
                   <Text text="To" style={style.TEXT_BOLD} />
                   <Text text="  " style={style.SEP} />
@@ -137,23 +139,23 @@ export const LoginScreen = connect(
                   </View>
                   <TextFieldBottom
                     label="EMAIL ADDRESS"
-                    // onChangeText={this.onChangeId}
+                    onChangeText={this.onChangeId}
                     maxLength={40}
                     autoCorrect={false}
                     autoCapitalize="none"
-                    // value={loginid}
+                    value={loginid}
                     // icon="email"
                     keyboardType="email-address"
                   />
                   <TextFieldBottom
                     label="PASSWORD"
-                    // onChangeText={this.onChangeId}
-                    maxLength={40}
+                    onChangeText={this.onChangePassword}
+                    secureTextEntry={true}
+                    minLength={MIN_PASSWORD_LENGTH}
+                    maxLength={20}
                     autoCorrect={false}
                     autoCapitalize="none"
-                    // value={loginid}
-                    // icon="email"
-                    keyboardType="email-address"
+                    value={password}
                   />
                   <Link
                     style={style.FORGOT_LINK}
@@ -168,89 +170,14 @@ export const LoginScreen = connect(
                     testID="start-button"
                     preset="primary"
                     text={'Sign In'}
-                    onPress={this.onStart}
+                    onPress={this.doLogin}
                     // icon="next"
                     disabled={loading}
                     loading={loading}
                   />
                 </View>
               </View>
-
-              {/* <View style={style.HEADING}>
-                <Text style={style.HEADING_TEXT} text="Welcome" />
-                <Text
-                  style={style.SUBHEADING_TEXT}
-                  text="Login to your account"
-                />
-              </View> */}
-
-              {/* <View>
-                <TextField
-                  label="EMAIL ADDRESS"
-                  onChangeText={this.onChangeId}
-                  maxLength={40}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={loginid}
-                  icon="email"
-                  keyboardType="email-address"
-                />
-                <TextField
-                  label="PASSWORD"
-                  onChangeText={this.onChangePassword}
-                  secureTextEntry={true}
-                  minLength={MIN_PASSWORD_LENGTH}
-                  maxLength={20}
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  value={password}
-                  icon="lock"
-                />
-                <Button
-                  testID="do-login-button"
-                  preset="primary"
-                  text="Sign In"
-                  onPress={this.doLogin}
-                  icon="next"
-                  disabled={loading}
-                  loading={loading}
-                  style={style.BUTTON_LOGIN}
-                />
-                <Link
-                  style={style.FORGOT_LINK}
-                  labelStyle={style.FORGOT_LINK_TEXT}
-                  text="FORGOT PASSWORD?"
-                  onClick={this.forgotPassword}
-                />
-              </View> */}
-
-              {/* <View style={style.OR_TEXT}>
-                <View style={style.OR_LINE} />
-                <Text style={style.OR}>OR</Text>
-                <View style={style.OR_LINE} />
-              </View>
-
-              <View style={style.OR_TEXT}>
-                <Text style={style.NO_ACCOUNT}>IF YOU DON'T HAVE ACCOUNT</Text>
-              </View> */}
-
-              {/* <View>
-                <Button
-                  text="Sign Up With Email"
-                  onPress={this.signUp}
-                  icon="next"
-                />
-                <View style={style.SOCIAL_BUTTONS}>
-                  <Button onPress={this.doFacebook} style={style.BUTTON_FB}>
-                    <Icon icon="facebook" style={style.SOCIAL_BUTTON_ICON} />
-                    <Text text="Facebook" style={style.SOCIAL_BUTTON_TEXT} />
-                  </Button>
-                  <Button onPress={this.doGoogle} style={style.BUTTON_GOOGLE}>
-                    <Icon icon="google" style={style.SOCIAL_BUTTON_ICON} />
-                    <Text text="Google" style={style.SOCIAL_BUTTON_TEXT} />
-                  </Button>
-                </View>
-              </View> */}
+ 
             </View>
           </Screen>
         </View>
