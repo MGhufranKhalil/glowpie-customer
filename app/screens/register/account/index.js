@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, ScrollView, Image, ActivityIndicator} from 'react-native';
+import { View,  Image, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {Button, ButtonFullWidth} from '../../../components/button';
 import {Checkbox} from '../../../components/checkbox';
@@ -7,8 +7,9 @@ import {Header} from '../../../components/header';
 import {Icon} from '../../../components/icon';
 import {Link} from '../../../components/link';
 import {Text} from '../../../components/text';
+ 
+import { TextField, TextFieldBottom, TextFieldPassword } from '../../../components/text-field';
 
-import {TextField, TextFieldBottom} from '../../../components/text-field';
 import {Switch} from '../../../components/switch';
 import {Screen} from '../../../components/screen';
 import {color, font, styles, backgroundImages, imgLogo} from '../../../theme';
@@ -81,7 +82,10 @@ export const RegisterAccountScreen = connect(
         // this.props.navigation.navigate('verification');
       };
       this.logIn = () => this.props.navigation.navigate('login');
-
+      this.onTermsAndCondition = () => {
+        this.props.navigation.navigate('registerTermsAndCondition');
+        return;
+      };
     }
 
     render() {
@@ -92,10 +96,10 @@ export const RegisterAccountScreen = connect(
         agree,
         loading,
       } = this.state;
-      const preset = 'fixed';
+      const preset = 'scroll';
       return (
         <View testID="RegisterAccountScreen" style={styles.FULL}>
-          <Screen style={styles.CONTAINER_PADDED} preset={preset}>
+          <Screen style={styles.SCREEN} preset={preset}>
             <Image
               source={backgroundImages.SignIn}
               style={style.WELCOME_IMAGE}
@@ -137,33 +141,28 @@ export const RegisterAccountScreen = connect(
                     // icon="email"
                     keyboardType="email-address"
                   />
-                  <TextFieldBottom
+                  
+                  <TextFieldPassword
                     label="Password"
                     onChangeText={this.onChangePassword}
-                    maxLength={20}
                     autoCorrect={false}
-                    secureTextEntry={true}
                     value={password}
-                    // icon="lock"
+                    icon="show"
                   />
-                  <TextFieldBottom
+                  <TextFieldPassword
                     label="Confirm Password"
                     onChangeText={this.onChangeConfirmPassword}
-                    maxLength={20}
                     autoCorrect={false}
-                    secureTextEntry={true}
                     value={confirmPassword}
-                    // icon="lock"
+                    icon="show"
                   />
 
                   <View style={style.ACCEPT_SWITCH}>
                     <View style={style.SWITCH}>
                       <Text style={style.SWITCH_TEXT}>I agree to the</Text>
-                      <Link
-                        url=""
-                        text="Terms & Conditions"
-                        labelStyle={style.TERMS_LINK}
-                      />
+                      <TouchableOpacity onPress={this.onTermsAndCondition}>
+                        <Text style={style.TERMS_LINK}>Terms & Conditions</Text>
+                      </TouchableOpacity>
                     </View>
                     <Switch onToggle={this.onChangeAccept} value={agree} />
                   </View>
@@ -178,70 +177,11 @@ export const RegisterAccountScreen = connect(
                     // onPress={ () => this.props.navigation.navigate('verification')}
                     // onPress={ () => console.log('test')}
                     // icon="next"
-                    // disabled={loading}
-                    // loading={loading}
+                    disabled={loading}
+                    loading={loading}
                   />
                 </View>
               </View>
-              {/* <View style={style.CONTAINER}>
-                <TextField
-                  label="First Name"
-                  onChangeText={this.onChangeFirstName}
-                  maxLength={30}
-                  autoCorrect={false}
-                  value={first_name}
-                  icon="user"
-                />
-                <TextField
-                  label="Last Name"
-                  onChangeText={this.onChangeLastName}
-                  maxLength={30}
-                  autoCorrect={false}
-                  value={last_name}
-                  icon="user"
-                />
-                <TextField
-                  label="Email"
-                  onChangeText={this.onChangeEmail}
-                  maxLength={100}
-                  autoCorrect={false}
-                  autoCapitalize={false}
-                  value={email}
-                  icon="email"
-                  keyboardType="email-address"
-                />
-                <TextField
-                  label="Password"
-                  onChangeText={this.onChangePassword}
-                  maxLength={20}
-                  autoCorrect={false}
-                  secureTextEntry={true}
-                  value={password}
-                  icon="lock"
-                />
-                <View style={style.ACCEPT_SWITCH}>
-                  <View style={style.SWITCH}>
-                    <Text style={style.SWITCH_TEXT}>I agree to the</Text>
-                    <Link
-                      url=""
-                      text="Terms & Conditions"
-                      labelStyle={style.TERMS_LINK}
-                    />
-                  </View>
-                  <Switch onToggle={this.onChangeAccept} value={agree} />
-                </View>
-              </View> */}
-              {/* <View style={styles.FOOTER_VIEW}>
-                <Button
-                  testID="signup-button"
-                  preset="primary"
-                  text="Continue"
-                  onPress={this.onRegister}
-                  icon="next"
-                  disabled={loading}
-                  loading={loading}
-                />
-              </View> */}
             </View>
           </Screen>
         </View>

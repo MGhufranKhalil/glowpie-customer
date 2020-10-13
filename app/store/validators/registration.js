@@ -21,9 +21,9 @@ export const registrationValidator = payload => {
       },
     },
     password: {
-      length: {
-        minimum: MIN_PASSWORD_LENGTH,
-        message: `Password must be at least ${MIN_PASSWORD_LENGTH} characters`,
+      format: {
+        pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$",
+        message: "Password must contain a capital, lowercase, and number with 8 characters"
       },
     },
     confirmPassword: {

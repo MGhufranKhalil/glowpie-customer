@@ -1,25 +1,19 @@
 import * as React from 'react';
-import {View, Image, ActivityIndicator} from 'react-native';
+import {View, Image} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, ButtonFullWidth} from '../../components/button';
-import {Checkbox} from '../../components/checkbox';
+import {Button, ButtonFullWidth} from '../../components/button'; 
 import {Icon} from '../../components/icon';
-import {Link} from '../../components/link';
-import {Header} from '../../components/header';
+import {Link} from '../../components/link'; 
 import {Text} from '../../components/text';
 
-import {TextField, TextFieldBottom} from '../../components/text-field';
+import { TextFieldBottom, TextFieldPassword} from '../../components/text-field';
 import {Screen} from '../../components/screen';
 import {color, styles, backgroundImages, imgLogo} from '../../theme';
 
-import {XSM } from '../../utils/helpers';
-import Config from 'react-native-config';
 import {style} from './style';
 import {doLogin} from '../../store/actions/login';
 import {decideInitialScreen} from '../../utils/app';
-import {MIN_PASSWORD_LENGTH} from '../../store/constants';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import {diags} from '../../utils/debug';
+import {showMessage} from 'react-native-flash-message'; 
 
 const stateProps = state => ({
   login: state.login,
@@ -42,7 +36,6 @@ export const LoginScreen = connect(
       }
       if (props.login.error && !this.state.loginError) {
         this.setState({
-          // loginError: props.login.error,
           loading: false,
         });
         showMessage({
@@ -79,8 +72,10 @@ export const LoginScreen = connect(
         this.props.onLogin(payload);
       };
 
-      this.forgotPassword = () =>
+      this.forgotPassword = () => {
+        console.log('test');
         this.props.navigation.navigate('forgotPassword');
+      }
 
       this.signUp = () => this.props.navigation.navigate('signup');
 
@@ -90,12 +85,11 @@ export const LoginScreen = connect(
 
     render() {
       const {loginid, password, loading} = this.state;
-      const preset = XSM ? 'scroll' : 'fixed';
       return (
         <View testID="LoginScreen" style={styles.FULL}>
           <Screen
-            style={styles.CONTAINER_PADDED}
-            preset="fixed"
+            style={styles.SCREEN}
+            preset='scroll'
             backgroundColor={color.transparent}>
             <Image
               source={backgroundImages.SignIn}
@@ -111,7 +105,6 @@ export const LoginScreen = connect(
               />
 
               <View style={style.CONTAINER}>
-
                 <Image source={imgLogo} style={style.LOGO} />
                 <Text text="WELCOME." style={style.TEXT_HEADER} />
 
@@ -147,22 +140,21 @@ export const LoginScreen = connect(
                     // icon="email"
                     keyboardType="email-address"
                   />
-                  <TextFieldBottom
-                    label="PASSWORD"
+                  <TextFieldPassword
+                    label="Password"
                     onChangeText={this.onChangePassword}
-                    secureTextEntry={true}
-                    minLength={MIN_PASSWORD_LENGTH}
-                    maxLength={20}
                     autoCorrect={false}
-                    autoCapitalize="none"
                     value={password}
+                    icon="show"
                   />
+
                   <Link
                     style={style.FORGOT_LINK}
                     labelStyle={style.FORGOT_LINK_TEXT}
                     text="Forgot Password?"
                     onClick={this.forgotPassword}
                   />
+
                 </View>
                 <View>
                   <ButtonFullWidth
@@ -171,13 +163,11 @@ export const LoginScreen = connect(
                     preset="primary"
                     text={'Sign In'}
                     onPress={this.doLogin}
-                    // icon="next"
                     disabled={loading}
                     loading={loading}
                   />
                 </View>
               </View>
- 
             </View>
           </Screen>
         </View>

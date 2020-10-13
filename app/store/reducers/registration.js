@@ -78,6 +78,9 @@ export default (state = initialState, action) => {
         return {
           ...state,
           registered_general: true,
+          general: {
+            ...action.meta.request,
+          },
           error: '',
         };
       }

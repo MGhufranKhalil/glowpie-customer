@@ -5,33 +5,33 @@ export const isVendorInfoComplete = (info, type = null) => {
   console.tron.log('isVendorInfoComplete', info);
   let hours = 0;
   // see if any one day is open for business, if yes we are good to go
-  if (info && info.hours && info.hours.break_hours_start) {
+  /* if (info && info.hours && info.hours.break_hours_start) {
     DAY_NAMES.forEach(d => {
       const key = `${d}_open_time`;
       if (info.hours[key]) {
         hours++;
       }
     });
-  }
+  } */
   const flags = {
-    account: info && info.account && info.account.first_name ? true : false,
-    business:
-      info && info.business && info.business.business_name ? true : false,
-    address: info && info.address && info.address.address_line1 ? true : false,
-    hours: hours > 0 ? true : false,
-    services:
+    account: info && info.account && info.account.email ? true : false,
+    general: info && info.general && info.general.first_name ? true : false,
+    /* business: info && info.business && info.business.business_name ? true : false, */
+    /* address: info && info.address && info.address.address_line ? true : false, */
+    /* hours: hours > 0 ? true : false, */
+    /*  services:
       info && info.services && Object.keys(info.services).length > 0
         ? true
-        : false,
+        : false, */
   };
   console.tron.log(flags);
   if (type === null) {
     return (
       flags.account &&
-      flags.business &&
-      flags.address &&
+      flags.general /*&&
+       flags.address &&
       flags.services &&
-      flags.hours
+      flags.hours */
     );
   }
 

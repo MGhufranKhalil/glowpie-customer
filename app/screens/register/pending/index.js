@@ -10,7 +10,7 @@ import {
 import {connect} from 'react-redux';
 import {Screen} from '../../../components/screen';
 import {Header} from '../../../components/header';
-import {Button, ButtonFullWidth} from '../../../components/button';
+import { Button, ButtonFullWidth, ButtonRadio} from '../../../components/button';
 import {TextFieldBottom} from '../../../components/text-field';
 
 import {Text} from '../../../components/text';
@@ -170,19 +170,21 @@ export const RegisterPendingScreen = connect(
       };
 
       this.onRegister = () => {
-        this.setState({loading: true});
         const {first_name, last_name, date_of_birth, gender} = this.state;
         const payload = {first_name, last_name, date_of_birth, gender};
+        this.state.loading = true;
         this.props.onRegisterGeneral(payload);
       };
     }
 
     componentWillReceiveProps(props) {
-      console.log(props);
+      console.log(this.state.loading);
       // image uplaoded successfully
       const {vendor} = this.props;
+      console.log(props);
+      console.log(vendor);
       
-      /* if (props.vendor.account.image) {
+      if (props.vendor.account.image) {
 
         if (!vendor || vendor.account.image !== props.vendor.account.image) {
           console.tron.log('Vendor image uploaded/changed successfully');
@@ -197,24 +199,35 @@ export const RegisterPendingScreen = connect(
           });
         }
         
-      } */
-      if (!props.account.error) {
-        // if (!vendor || vendor.account.image !== props.vendor.account.image) {
-          console.tron.log('Customer general Information save successfully');
-          this.setState({
-            uploading: false,
-            loading: false,
-            infoComplete:true
-          });
-          showMessage({
-            message: 'General Information updated successfully',
-            backgroundColor: color.notice,
-            color: color.white,
-          });
-        // }
       }
-      // don't use else, because the previous image may already be there when error happens
-      if (props.account.error) {
+
+      if (props.account.registered_general && !props.account.error) {
+        this.setState({
+          loading: false,
+          uploading: false,
+          infoComplete:true
+        });
+        showMessage({
+          message: 'General Information updated successfully',
+          backgroundColor: color.notice,
+          color: color.white,
+        });
+        // setTimeout(() => this.props.navigation.pop(), 100);
+      } 
+      
+      if (props.account.error && this.state.loading) {
+        this.setState({
+          loading: false,
+          uploading: false,
+        });
+        showMessage({
+          message: props.account.error,
+          backgroundColor: color.error_message,
+          color: color.white,
+        });
+      }
+
+      /* if (props.account.error) {
         this.setState({
           uploading: false,
           loading: false,
@@ -225,6 +238,24 @@ export const RegisterPendingScreen = connect(
           color: color.white,
         });
       }
+      
+      if (!props.account.error) {
+        // if (!vendor || vendor.account.image !== props.vendor.account.image) {
+          console.tron.log('Customer general Information save successfully');
+          this.setState({
+            uploading: false,
+            loading: false,
+            // infoComplete:true
+          });
+          showMessage({
+            message: 'General Information updated successfully',
+            backgroundColor: color.notice,
+            color: color.white,
+          });
+        // }
+      } */
+      // don't use else, because the previous image may already be there when error happens
+      
     }
 
     pickImage() {
@@ -274,7 +305,7 @@ export const RegisterPendingScreen = connect(
     }
 
     renderInfoComplete() {
-      const {first_name} = this.props.vendor.account || {};
+      const {first_name} = this.props.account.general || {};
       const progressStyle = {
         ...style.PROGRESS,
         backgroundColor: color.primary,
@@ -312,85 +343,19 @@ export const RegisterPendingScreen = connect(
     }
 
     
-    renderGender(){
-      const {gender} = this.state;
-        return (
-          <View style={style.ACCEPT_SWITCH}>
-            <View style={{width: '30%'}}>
-              <Text style={style.GENDER_TEXT}>Select Gender</Text>
-            </View>
-
-            <View style={{width: '30%'}}>
-              {gender !== 'male' && (
-                <Button
-                  testID="signup-button"
-                  preset="primary"
-                  text="Male"
-                  onPress={() => this.onGenderChange(1, 0)}
-                  // icon="next"
-                  // disabled={loading}
-                  // loading={loading}
-                  style={style.MALE_INACTIVE}
-                  textStyle={style.MALE_INACTIVE_TEXT}
-                />
-              )}
-              {gender == 'male' && (
-                <Button
-                  testID="signup-button"
-                  preset="primary"
-                  text="Male"
-                  onPress={() => this.onGenderChange(1, 0)}
-                  // icon="next"
-                  // disabled={loading}
-                  // loading={loading}
-                  style={style.MALE_ACTIVE}
-                  textStyle={style.MALE_ACTIVE_TEXT}
-                />
-              )}
-            </View>
-
-            <View style={{width: '30%'}}>
-              {gender !== 'female' && (
-                <Button
-                  testID="signup-button"
-                  preset="primary"
-                  text="Female"
-                  onPress={() => this.onGenderChange(0, 1)}
-                  // icon="next"
-                  // disabled={loading}
-                  // loading={loading}
-
-                  style={style.FEMALE_INACTIVE}
-                  textStyle={style.FEMALE_INACTIVE_TEXT}
-                />
-              )}
-
-              {gender == 'female' && (
-                <Button
-                  testID="signup-button"
-                  preset="primary"
-                  text="Female"
-                  onPress={() => this.onGenderChange(0, 1)}
-                  // icon="next"
-                  // disabled={loading}
-                  // loading={loading}
-
-                  style={style.FEMALE_ACTIVE}
-                  textStyle={style.FEMALE_ACTIVE_TEXT}
-                />
-              )}
-            </View>
-          </View>
-        );
+     
+    getResponse(result) {
+      if (result.option1 == 1) {
+        this.setState({ gender: 'male' });
+      } else if (result.option2 == 1) {
+        this.setState({ gender: 'female' });
+      }
     }
 
     render() {
       const {first_name, last_name, mm, dd, yyyy, gender, loading} = this.state;
-      const {vendor} = this.props;
-      // const infoComplete = isVendorInfoComplete(vendor);
-      const infoComplete = this.state.infoComplete;
-      // const {first_name} = vendor.account || {};
-      // const {business, address, hours, services} = vendor;
+      const {vendor} = this.props; 
+      const infoComplete = this.state.infoComplete; 
       let {image} = vendor.account;
       
       const {uploading} = this.state;
@@ -401,23 +366,7 @@ export const RegisterPendingScreen = connect(
           ? style.UPLOADING_IMAGE
           : style.UPLOAD_IMAGE;
       image = image && !uploading ? imageUrl(image) : uploadImage;
-      // let progressText = 20;
-      // if (
-      //   business &&
-      //   business.business_name &&
-      //   address &&
-      //   address.address_line1
-      // ) {
-      //   progressText += 20;
-      // }
-      // if (hours && hours.break_hours_start) {
-      //   progressText += 30;
-      // }
-      // if (services && Object.keys(services).length > 0) {
-      //   progressText += 30;
-      // }
-      // progress bar width is 0-85 (there is text besides it)
-      // const progress = ((SW - 70) / 100) * progressText;
+      
       const progress = 100;
 
       const progressStyle = {
@@ -460,7 +409,6 @@ export const RegisterPendingScreen = connect(
                     </View>
                   </View>
                 )}
-                {/* {!infoComplete && this.renderBoxes()} */}
               </View>
             </Screen>
           </View>
@@ -477,9 +425,9 @@ export const RegisterPendingScreen = connect(
               style={style.WELCOME_IMAGE}
             />
 
+                <Header background={false} />
             <View style={style.VFLEX_PADDED}>
               <View style={styles.PAGE_HEADER_WITH_BUTTON}>
-                <Header background={false} />
               </View>
               {!infoComplete && (
                 <View style={styles.FOOTER_VIEW_FULL}>
@@ -530,6 +478,8 @@ export const RegisterPendingScreen = connect(
                           value={mm}
                           keyboardType="password"
                           inputPlaceholder="mm"
+                          keyboardType="number-pad"
+
                         />
                       </View>
 
@@ -542,6 +492,8 @@ export const RegisterPendingScreen = connect(
                           value={dd}
                           keyboardType="password"
                           inputPlaceholder="dd"
+                          keyboardType="number-pad"
+
                         />
                       </View>
 
@@ -556,10 +508,27 @@ export const RegisterPendingScreen = connect(
                           // icon="email"
                           keyboardType="password"
                           inputPlaceholder="yyyy"
+                          keyboardType="number-pad"
+
                         />
                       </View>
                     </View>
-                    {this.renderGender()}
+
+                    <ButtonRadio
+                      lable="Select Gender"
+
+                      option1="Male"
+                      option1Value="male"
+                      option1BtnColor={color.primary}
+
+                      option2="Female"
+                      option2Value="female"
+                      option2BtnColor={color.secondary}
+
+                      defaultValue={gender}
+                      callback={this.getResponse.bind(this)}
+                    >
+                    </ButtonRadio>
                   </View>
                   <View>
                     <ButtonFullWidth
@@ -571,7 +540,7 @@ export const RegisterPendingScreen = connect(
                       // onPress={ () => this.props.navigation.navigate('verification')}
                       // onPress={ () => console.log('test')}
                       // icon="next"
-                      // disabled={loading}
+                      disabled={loading}
                       loading={loading}
                     />
                   </View>

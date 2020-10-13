@@ -8,16 +8,19 @@ import {
 import createAnimatedSwitchNavigator from 'react-navigation-animated-switch';
 import {Drawer} from '../components/drawer';
 import {LoadingScreen} from '../screens/loading';
-import {TestScreen} from '../screens/test';
 import {LoginScreen} from '../screens/login';
 import {RegisterAccountScreen} from '../screens/register/account';
+import { RegisterPendingScreen } from '../screens/register/pending';
+import { RegisterTermsAndConditionScreen } from '../screens/register/termsandcondition';
+import { ForgotPasswordScreen } from '../screens/forgotpassword';
+import {TestScreen} from '../screens/test';
+/* 
 import {RegisterBusinessScreen} from '../screens/register/business';
-import {RegisterPendingScreen} from '../screens/register/pending';
 import {RegisterAddressScreen} from '../screens/register/address';
 import {RegisterHoursScreen} from '../screens/register/hours';
 import {RegisterServicesScreen} from '../screens/register/services';
 import {EditServiceScreen} from '../screens/services/edit';
-import {EditHoursScreen} from '../screens/hours/edit';
+import {EditHoursScreen} from '../screens/hours/edit'; */
 import {VerificationScreen} from '../screens/verification';
 import {HomeScreen} from '../screens/home';
 import {color} from '../theme';
@@ -36,6 +39,9 @@ const AuthNavigator = createStackNavigator(
   {
     login: {screen: LoginScreen},
     signup: {screen: RegisterAccountScreen},
+    registerTermsAndCondition: { screen: RegisterTermsAndConditionScreen },
+    forgotPassword: { screen: ForgotPasswordScreen },
+
   },
   {
     headerMode: 'none',
@@ -50,30 +56,10 @@ const VerificationNavigator = createStackNavigator(
     headerMode: 'none',
   },
 );
-
-/* const RegistrationNavigator = createStackNavigator(
-  {
-    registerPending: {screen: RegisterPendingScreen},
-    registerBusiness: {screen: RegisterBusinessScreen},
-    registerAddress: {screen: RegisterAddressScreen},
-    registerHours: {screen: RegisterHoursScreen},
-    registerServices: {screen: RegisterServicesScreen},
-    editService: {screen: EditServiceScreen},
-    editHours: {screen: EditHoursScreen},
-  },
-  {
-    headerMode: 'none',
-  },
-); */
+ 
 const RegistrationNavigator = createStackNavigator(
   {
-    registerPending: {screen: RegisterPendingScreen},
-    // registerBusiness: {screen: RegisterBusinessScreen},
-    // registerAddress: {screen: RegisterAddressScreen},
-    // registerHours: {screen: RegisterHoursScreen},
-    // registerServices: {screen: RegisterServicesScreen},
-    // editService: {screen: EditServiceScreen},
-    // editHours: {screen: EditHoursScreen},
+    registerPending: { screen: RegisterPendingScreen },
   },
   {
     headerMode: 'none',

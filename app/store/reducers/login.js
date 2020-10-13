@@ -6,7 +6,7 @@ import {
 } from '../actions/login';
 import {REG_ACCOUNT_REQUEST} from '../actions/registration';
 import {getActionError} from '../../utils/helpers';
-import {saveString, remove} from '../../utils/storage';
+import {saveString, remove, clear} from '../../utils/storage';
 
 const initialState = {
   loginid: '',
@@ -69,7 +69,8 @@ export default (state = initialState, action) => {
       console.tron.log('Logout');
       remove('loginid');
       remove('password');
-      return initialState;
+      clear();
+      return {};
     case REG_ACCOUNT_REQUEST:
       // clear all login errors when registration is successful
       return {

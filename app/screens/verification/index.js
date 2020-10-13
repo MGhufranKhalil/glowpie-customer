@@ -1,26 +1,18 @@
 import * as React from 'react';
 import {View, Image, ActivityIndicator} from 'react-native';
 import {connect} from 'react-redux';
-import {Button, ButtonFullWidth} from '../../components/button';
-import {Checkbox} from '../../components/checkbox';
-import {Header} from '../../components/header';
-import {Icon} from '../../components/icon';
-import {Link} from '../../components/link';
-import {Text} from '../../components/text';
-import {PhoneField} from '../../components/phone-field';
+import {Button, ButtonFullWidth} from '../../components/button'; 
+import {Header} from '../../components/header'; 
+import {Text} from '../../components/text'; 
 //import {CodeField} from '../../components/code-field';
 import {Screen} from '../../components/screen';
 import {color, styles, font, imgLogo, backgroundImages, typography} from '../../theme';
-
-import {SM, XSM, sanitizeNumber} from '../../utils/helpers';
-import Config from 'react-native-config';
+  
 import OtpInputs from 'react-native-otp-inputs';
 import {style} from './style';
 import {sendCode, verifyCode} from '../../store/actions/verification';
-import {MIN_PASSWORD_LENGTH} from '../../store/constants';
-import {showMessage, hideMessage} from 'react-native-flash-message';
-import {diags} from '../../utils/debug';
-import {Switch} from '../../components/switch';
+import { TIMER, twoDigits} from '../../store/constants';
+import {showMessage, hideMessage} from 'react-native-flash-message'; 
 
 const stateProps = state => ({
   status: state.verification,
@@ -42,7 +34,7 @@ export const VerificationScreen = connect(
         console.tron.log(
           'code verified, navigating to registration setup screen',
         );
-        this.props.navigation.navigate('register');
+        this.props.navigation.navigate('loading');
       } else {
         if (props.status.error && !this.state.error) {
           console.tron.log('code error');
@@ -61,18 +53,24 @@ export const VerificationScreen = connect(
           });
         }
       }
+      
+      
     }
     componentDidMount(){
-      this.interval = setInterval(
-        () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
-        1000
-      );
+      this.restartTimer();
+      this.sendCode();
     }
     componentDidUpdate(){
       if(this.state.timer === 0){ 
         clearInterval(this.interval);
         this.sendCode;
       }
+    }
+    restartTimer() {
+      this.interval = setInterval(
+        () => this.setState((prevState) => ({ timer: prevState.timer - 1 })),
+        1000
+      );
     }
 
     componentWillUnmount(){
@@ -87,8 +85,8 @@ export const VerificationScreen = connect(
         code: '',
         sending_code: false,
         verifying: false,
-        error: '',
-        timer:50,
+        error: '', 
+        timer: TIMER,
       };
 
       this.onChangePhone = value => this.setState({phone: value, error: ''});
@@ -96,12 +94,18 @@ export const VerificationScreen = connect(
       this.onChangeCode = value => this.setState({code: value, error: ''});
 
       this.sendCode = () => {
-        this.setState({sending_code: true});
-        // const {phone} = this.state;
-        // const payload = {number: sanitizeNumber(phone)};
+        this.setState({ sending_code: true, timer: TIMER }); 
         const payload = {};
         this.props.onSendCode(payload);
       };
+      this.resendButton = () => {
+        if(this.state.timer == 0){
+          this.sendCode();
+          this.restartTimer();
+        }
+         
+        
+      }
 
       this.verifyCode = () => {
         this.setState({sending_code: false, verifying: true});
@@ -110,17 +114,47 @@ export const VerificationScreen = connect(
         this.props.onVerifyCode(payload);
         // this.props.navigation.navigate('registerPending');
       };
-      this.sendCode();
+      this.resendBtnUI = () => {
+        const {  timer } = this.state;
+        
+        return (
+          <View>
+            {
+              timer > 0 &&
+              <Button
+                style={[style.RESEND_BUTTON_COLOR, { backgroundColor: color.gray }]}
+                text="Resend Pin"
+                textStyle={style.RESEND_BUTTON_TEXT}
+                onPress={this.resendButton}
+                disabled={timer == 0 ? false : true}
+              />
+            }
 
+            {
+              timer == 0 &&
+              <Button
+                style={[style.RESEND_BUTTON_COLOR, { backgroundColor: '#ffbadc' }]}
+                text="Resend Pin"
+                textStyle={style.RESEND_BUTTON_TEXT}
+                onPress={this.resendButton}
+                disabled={timer == 0 ? false : true}
+              />
+            }
+          </View>
+        )
+         
+      }
+ 
     }
 
     render() {
-      const {phone, sending_code, verifying} = this.state;
+      const { phone, sending_code, verifying, timer } = this.state;
       const {last_code_sent} = this.props.status;
-      const preset = 'fixed';
+      const preset = 'scroll';
+
       return (
         <View testID="VerificationScreen" style={styles.FULL}>
-          <Screen style={styles.CONTAINER_PADDED} preset={preset}>
+          <Screen style={styles.SCREEN} preset={preset}>
             <Image
               source={backgroundImages.SignIn}
               style={style.WELCOME_IMAGE}
@@ -160,15 +194,10 @@ export const VerificationScreen = connect(
                      
 
                     <View style={style.ACCEPT_SWITCH}>
-                      <Button
-                        style={style.RESEND_BUTTON}
-                        text="Resend Pin"
-                        textStyle={style.RESEND_BUTTON_TEXT}
-                        onPress={this.sendCode}
-                      />
+                      {this.resendBtnUI()}
                       <View style={style.SWITCH}>
                         <Text style={style.SWITCH_TEXT}>
-                          00:{this.state.timer} Remain
+                          00:{twoDigits(timer)} Remain
                         </Text>
                       </View>
                     </View>

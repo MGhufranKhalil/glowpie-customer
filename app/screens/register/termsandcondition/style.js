@@ -12,27 +12,43 @@ import {SM, XL} from '../../../utils/helpers';
 const VFLEX_PADDED = {
   ...styles.VFLEX_PADDED,
   justifyContent: 'flex-start',
+  paddingBottom: 0,
+  backgroundColor: color.screen_bg,
 };
 
 const CONTAINER = {
   paddingTop: 20,
   paddingHorizontal: 15,
+  flex: 1 
 };
 
-const NUM_STATIONS = {
+const ACCEPT_SWITCH = {
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
+  width: '100%',
 };
 
-const NUM_STATIONS_TEXT = {
-  ...styles.CONTENT,
-  marginRight: 12,
+const SWITCH = {
+  flexDirection: 'row',
+  alignItems: 'center',
+};
+
+const SWITCH_TEXT = {
+  fontSize: font.text + 2,
+};
+
+const TERMS_LINK = {
+  paddingLeft: 5,
+  fontSize: font.text + 2,
+  fontFamily: typography.semibold,
 };
 
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
-  NUM_STATIONS,
-  NUM_STATIONS_TEXT,
+  ACCEPT_SWITCH,
+  SWITCH,
+  SWITCH_TEXT,
+  TERMS_LINK,
 });

@@ -19,6 +19,8 @@ export const icons = {
   zipcode_x: require('./images/zip_code_icon_active.png'),
   select: require('./images/right_arrow.png'),
   select2: require('./images/select_arrow.png'),
+  hide: require('./images/hide_icon.png'),
+  show: require('./images/show_icon.png'),
   map_pin: require('./images/address_icon.png'),
   map_pin_x: require('./images/address_icon_active.png'),
   tick: require('./images/date_tick.png'),
@@ -29,4 +31,6 @@ export const icons = {
   edit_service: require('./images/edit_icon.png'),
   datetime: require('./images/date_time_icon.png'),
   currency: require('./images/money_icon.png'),
+  hide: require('./images/hide_icon2x.png'),
+  hide_x: require('./images/hide_icon2x_active.png'),
 };

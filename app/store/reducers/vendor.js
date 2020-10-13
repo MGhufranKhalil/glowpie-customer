@@ -43,24 +43,34 @@ const initialState = {
     gender: '',
     image: '',
   },
+  general: {
+    first_name: '',
+    last_name: '',
+    date_of_birth: '',
+    mm: '',
+    dd: '',
+    yyyy: '',
+    gender: '',
+    image: '',
+  },
   business: {
-    business_name: '',
+    /* business_name: '',
     business_number: '',
     company_number: '',
     australian_business_number: '',
-    no_of_seats: '',
+    no_of_seats: '', */
   },
   address: {
-    address_line1: '',
+    /* address_line1: '',
     address_line2: '',
     city: '',
     postal_code: '',
     latitude: 0,
-    longitude: 0,
+    longitude: 0, */
   },
   services: {},
   hours: {
-    time_zone: '',
+    /* time_zone: '',
     monday_open_time: '',
     monday_close_time: '',
     tuesday_open_time: '',
@@ -76,7 +86,7 @@ const initialState = {
     sunday_open_time: '',
     sunday_close_time: '',
     break_hours_start: '',
-    break_hours_close: '',
+    break_hours_close: '', */
   },
   error: '',
   lastUpdatedServiceId: null,
@@ -114,6 +124,7 @@ export default (state = initialState, action) => {
       if (success && code && Number(code) === 200 && data.token) {
         const {email, first_name, last_name, image} = data;
         const services = mapServices(data.vendor_services);
+       
         return {
           ...state,
           account: {
@@ -121,6 +132,10 @@ export default (state = initialState, action) => {
             first_name,
             last_name,
             image: image || '',
+          },
+          general: {
+            ...state.general,
+            ...data.general,
           },
           business: {
             ...state.business,

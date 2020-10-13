@@ -40,8 +40,8 @@ const TERMS_LINK = {
   paddingLeft: 5,
   fontSize: font.text + 2,
   fontFamily: typography.semibold,
+  color: color.primary
 };
-
  
 const WELCOME_IMAGE = {
   position: 'absolute',

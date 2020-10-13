@@ -1,4 +1,6 @@
 export const MIN_PASSWORD_LENGTH = 8;
+export const TIMER = 60;
+
 
 export const genderOptions = ['Male', 'Female'];
 
@@ -79,3 +81,15 @@ export const DAY_NAMES_SHORT = [
   'SAT',
   'SUN',
 ];
+export const twoDigits = n => {
+  /*  n = setInterval(
+      (n) => { n - 1},
+     1000
+   );
+   console.log(n); */
+  return n > 9 ? "" + n : "0" + n;
+}
+
+export const capitalizeFirstLetter = string => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
