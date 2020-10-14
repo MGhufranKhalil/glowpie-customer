@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {TouchableOpacity, View, Image} from 'react-native';
-import {icons} from '../../theme';
+import {icons, styles} from '../../theme';
 
 const ROOT = {
   width: 28,

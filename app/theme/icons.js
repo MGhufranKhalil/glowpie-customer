@@ -1,4 +1,5 @@
 export const icons = {
+  app: require('./images/icon.png'),
   back: require('./images/back_icon.png'),
   back_white: require('./images/back_icon_white.png'),
   next: require('./images/button_arrow.png'),
@@ -37,4 +38,8 @@ export const icons = {
   hide_x: require('./images/hide_icon2x_active.png'),
 
   reset_pw: require('./images/reset_password_popup_icon.png'),
+  round_booking: require('./images/booking_history_icon.png'),
+  round_message: require('./images/message_button.png'),
+  round_payment: require('./images/payment_icon.png'),
+  round_logout: require('./images/logout_icon.png'),
 };

@@ -2,7 +2,9 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {View, Image} from 'react-native';
 // import {DrawerItems} from 'react-navigation';
-import {Link} from '../../components/link';
+import Config from 'react-native-config';
+
+import { Link} from '../../components/link';
 import {Icon} from '../../components/icon';
 import {Text} from '../../components/text';
 import {Screen} from '../../components/screen';
@@ -20,6 +22,7 @@ const NavLink = props => (
     onClick={props.onClick}
     style={style.NAV_LINK}
     labelStyle={style.NAV_TEXT}
+    iconStyle={style.NAV_LINK_ICON}
     icon={props.icon}
   />
 );
@@ -52,48 +55,50 @@ export const Drawer = connect(
             preset="fixed"
             backgroundColor={color.transparent}>
             <View style={style.DRAWER} key="app-drawer">
+
               <View style={style.HEADER}>
                 <Icon
-                  icon="cross"
+                  icon="app"
                   onClick={this.closeDrawer}
-                  style={style.CLOSE_BUTTON}
+                  style={style.APP_ICON} 
                 />
+                <Text text={Config.APP_NAME} style={style.TEXT_HEADER} />
               </View>
+
+              
               <View style={style.NAV_LINKS}>
                 <NavLink
-                  text="My Mood"
+                  text="Profile"
                   onClick={this.goMyMood}
-                  icon="mymood"
+                  icon="user"
                   key="navlink-mymood"
                 />
                 <NavLink
-                  text="My Cluster"
+                  text="My Booking"
                   onClick={this.goCluster}
-                  icon="mycluster"
+                  icon="round_booking"
                   key="navlink-mycluster"
                 />
                 <NavLink
-                  text="Mood Map"
+                  text="Messages"
                   onClick={this.goHome}
-                  icon="moodmap"
+                  icon="round_message"
                   key="navlink-moodmap"
                 />
                 <NavLink
-                  text="Notifications"
+                  text="Payment"
                   onClick={this.goNotifications}
-                  icon="notifications"
+                  icon="round_payment"
                   key="navlink-notifications"
                 />
                 <NavLink
-                  text="Settings"
-                  onClick={this.goSettings}
-                  icon="settings"
-                  key="navlink-settings"
+                  text=" "
+                  icon=" "
                 />
                 <NavLink
-                  text="Logout"
+                  text="Sign Out"
                   onClick={this.goLogout}
-                  icon="logout"
+                  icon="round_logout"
                   key="navlink-logout"
                 />
               </View>
