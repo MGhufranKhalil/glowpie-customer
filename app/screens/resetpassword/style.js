@@ -11,7 +11,7 @@ import {SM, XL, SW} from '../../utils/helpers';
 
 const VFLEX_PADDED = {
   ...styles.VFLEX_PADDED,
-  justifyContent: 'flex-end',
+  justifyContent: 'flex-start',
   paddingBottom: 0,
 };
 

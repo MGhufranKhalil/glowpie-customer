@@ -7,19 +7,21 @@ import {Text} from '../../components/text';
 import { Screen } from '../../components/screen';
 import { CustomModal } from '../../components/modal';
 import {color, styles, font, imgLogo, backgroundImages, typography} from '../../theme';
-import { TextFieldBottom } from '../../components/text-field';
+import { TextField, TextFieldPasswordOne } from '../../components/text-field';
+import {decideInitialScreen} from '../../utils/app';
 
 import {style} from './style';
-import { sendPassword } from '../../store/actions/forgotpassword';
+import { sendNewPassword } from '../../store/actions/forgotpassword';
 import {showMessage} from 'react-native-flash-message'; 
 
 const stateProps = state => ({
   status: state,
+  vendor: state.vendor,
+
 });
 
 const actionProps = (dispatch, ownProps) => ({
-  onSendPassword: payload => dispatch(sendPassword(payload)),
-  onVerifyCode: payload => dispatch(verifyCode(payload)),
+  onSendNewPassword: payload => dispatch(sendNewPassword(payload)),
 });
 
 export const ResetPasswordScreen = connect(
@@ -29,21 +31,22 @@ export const ResetPasswordScreen = connect(
   class extends React.Component {
     
     componentWillReceiveProps(props) {
+
       if (props.status.forgotpassword.password_sent) {
         console.tron.log(
-          'password sent, navigating to sucess screen screen',
+          'password sent, navigating to sucess screen screen', props
         );
         this.setState({
           inputDisabled: false,
           loading: false,
         });
-        /* showMessage({
-          message: 'Password has been sent on your email',
+        showMessage({
+          message: 'Password has been Changed',
           backgroundColor: color.notice,
           color: color.white,
         });
-        this.props.navigation.navigate('forgotPasswordSucess'); */
-        this.setModalVisible(true);
+        this.props.navigation.navigate(decideInitialScreen(props.vendor));
+        return;
       } else {
 
 
@@ -67,107 +70,75 @@ export const ResetPasswordScreen = connect(
       super(props);
 
       this.state = {
-        email: '',
+        password: '',
+        new_password: '',
         password_sent: false,
         loading: false,
         inputDisabled: false,
-        modalVisible: false,
         error: '', 
       };
 
-      this.onChangeEmail = value => this.setState({ email: value, error: ''});
+      this.onChangePassword = value => this.setState({ password: value, error: '' });
+      this.onChangeNewPassword = value => this.setState({ new_password: value, error: ''});
 
-      this.sendPassword = () => {
+      this.sendNewPassword = () => {
         this.setState({ loading: true, inputDisabled: true });
-        const { email } = this.state;
-        const payload = { email };
-        this.props.onSendPassword(payload);
-      };
-
-      this.verifyCode = () => {
-        this.setState({sending_code: false, verifying: true});
-        const {code} = this.state;
-        const payload = {code};
-        this.props.onVerifyCode(payload);
+        const { password, new_password  } = this.state;
+        const payload = { password, new_password };
+        this.props.onSendNewPassword(payload);
       };
        
     }
-    setModalVisible = (visible) => {
-      this.setState({ modalVisible: visible });
-    }
-    getResponse = (result) => {
-      if(result.button1){
-        this.props.navigation.navigate('login');
-      }
-      this.setState({ modalVisible: result.modal });
-
-    }
+     
      
     render() {
-      const { modalVisible, loading, inputDisabled } = this.state;
+      const { password, new_password, loading, inputDisabled } = this.state;
       const preset = 'scroll';
 
       return (
-        <View testID="VerificationScreen" style={styles.FULL}>
+        <View testID="RegisterAddressScreen" style={styles.FULL}>
           <Screen style={styles.SCREEN} preset={preset}>
-            <Image
-              source={backgroundImages.SignIn}
-              style={style.WELCOME_IMAGE}
-            />
-
-            <Header background={false} />
             <View style={style.VFLEX_PADDED}>
-             
-              {/* <Header /> */}
+              <Header
+                mode="big"
+                heading="Reset Password"
+                shadow={true}
+              />
               <View style={style.CONTAINER}>
-                <Image source={imgLogo} style={style.LOGO} />
-                <Text text="IF YOUR" style={styles.TEXT_HEADER} />
-                <Text>
-                  <Text text="Forgot" style={style.TEXT_BOLD} />
-                  <Text text="  " style={styles.SEP} />
-                  <Text text="Password" style={style.TEXT_BOLD} /> 
+                <Text preset="h3" style={{ fontWeight: 'bold' }}>Reset Password </Text>
+                <Text preset="message">
+                  Please reset your password by adding new password.
                 </Text>
-              </View>
-              <View style={styles.FOOTER_VIEW_FULL}>
-                <View style={style.OTP}>
-                  <Text style={style.VERIFY_PIN} text="Enter Email" />
+                <TextFieldPasswordOne
+                  label="Old Password"
+                  onChangeText={this.onChangePassword}
+                  value={password}
+
+                  maxLength={20}
+                  autoCorrect={false}
+
+                />
+                <TextFieldPasswordOne
+                  label="New Password"
+                  onChangeText={this.onChangeNewPassword}
+                  maxLength={20}
+                  autoCorrect={false}
+                  value={new_password}
+
+
+                />
                  
-                  <TextFieldBottom
-                    label="EMAIL"
-                    onChangeText={this.onChangeEmail}
-                    maxLength={40}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    // icon="email"
-                    keyboardType="email-address"
-                  />
-                   
-                </View>
-
-                <View>
-
-                  
-
-                    <CustomModal 
-                      modalVisible={modalVisible} 
-                      callback={this.getResponse.bind(this)}
-                      icon="reset_pw"
-                      title="Password Reset Successful"
-                      message="You have successfully reset your password. new password has been sent on your Email Address. Please use your new password when logging in."
-                      button1Label="Let's Sign in"
-                    /> 
-                  <ButtonFullWidth
-                    style={styles.NO_RADIUS}
-                    preset="primary"
-                    text="Submit"
-                    onPress={this.sendPassword}
-                    disabled={inputDisabled}
-                    loading={loading}
-                  />
-                 
-                </View>
               </View>
-               
+              <View style={styles.FOOTER_VIEW}>
+                <ButtonFullWidth
+                  style={styles.NO_RADIUS}
+                  preset="primary"
+                  text="Change Password"
+                  onPress={this.sendNewPassword}
+                  disabled={inputDisabled}
+                  loading={loading}
+                />
+              </View>
             </View>
           </Screen>
         </View>

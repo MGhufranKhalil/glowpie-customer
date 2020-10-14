@@ -19,3 +19,21 @@ export const isValidEmail = payload => {
   };
   return validate(rules, payload);
 };
+
+export const isValidPassword = payload => {
+  const rules = { 
+    password: {
+      format: {
+        pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$",
+        message: "Password must contain a capital, lowercase, and number with 8 characters"
+      },
+    },
+    new_password: {
+      format: {
+        pattern: "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$",
+        message: "Password must contain a capital, lowercase, and number with 8 characters"
+      },
+    },
+  };
+  return validate(rules, payload);
+};

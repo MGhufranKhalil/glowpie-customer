@@ -31,8 +31,13 @@ export const LoginScreen = connect(
   class extends React.Component {
     componentWillReceiveProps(props) {
       if (props.login.success) {
-        this.props.navigation.navigate(decideInitialScreen(props.vendor));
-        return;
+        if (props.login.reset_password == 0){
+          this.props.navigation.navigate(decideInitialScreen(props.vendor));
+          return;
+        }else{
+          this.props.navigation.navigate('resetPassword');
+          return;
+        }
       }
       if (props.login.error && !this.state.loginError) {
         this.setState({

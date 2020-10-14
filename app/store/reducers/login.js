@@ -31,8 +31,7 @@ export default (state = initialState, action) => {
     case USER_LOGIN_SUCCESS:
       // loginid is saved as email in the request object before api call
       if (success && code && Number(code) === 200 && data.token) {
-        console.tron.log(`Saving user login info`);
-				console.tron.log(data);
+        console.tron.log(`Saving user login info`, data);
         // @@TODO: save securely, and think of encryption when releasing ios build
         saveString('loginid', action.meta.request.email);
         saveString('password', action.meta.request.password);
@@ -40,6 +39,7 @@ export default (state = initialState, action) => {
           ...state,
           loginid: data.email,
           token: data.token,
+          reset_password: data.reset_password,
           error: '',
           success: true,
           loading: false,

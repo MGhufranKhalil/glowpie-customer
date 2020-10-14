@@ -38,7 +38,7 @@ const LoadingNavigator = createStackNavigator(
 
 const AuthNavigator = createStackNavigator(
   {
-    login: { screen: ResetPasswordScreen},
+    login: {screen: LoginScreen},
     signup: {screen: RegisterAccountScreen},
     registerTermsAndCondition: { screen: RegisterTermsAndConditionScreen },
     forgotPassword: { screen: ForgotPasswordScreen },

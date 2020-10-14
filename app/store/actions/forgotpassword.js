@@ -1,13 +1,13 @@
 import {dataForm} from '../../utils/helpers';
-import { isValidEmail, isValidCode} from '../validators/common';
+import { isValidEmail, isValidPassword} from '../validators/common';
 
 export const FORGOT_PW_REQUEST = 'FORGOT_PW_REQUEST';
 export const FORGOT_PW_SUCCESS = 'FORGOT_PW_SUCCESS';
 export const FORGOT_PW_ERROR = 'FORGOT_PW_ERROR';
 
-export const REG_VERIFYCODE_REQUEST = 'REG_VERIFYCODE_REQUEST';
-export const REG_VERIFYCODE_SUCCESS = 'REG_VERIFYCODE_SUCCESS';
-export const REG_VERIFYCODE_ERROR = 'REG_VERIFYCODE_ERROR';
+export const NEW_PASSWORD_REQUEST = 'NEW_PASSWORD_REQUEST';
+export const NEW_PASSWORD_SUCCESS = 'NEW_PASSWORD_SUCCESS';
+export const NEW_PASSWORD_ERROR = 'NEW_PASSWORD_ERROR';
 
 export const sendPassword = payload => dispatch => {
   const errors = isValidEmail(payload);
@@ -29,20 +29,20 @@ export const sendPassword = payload => dispatch => {
   );
 };
 
-export const verifyCode = payload => dispatch => {
-  if (!isValidCode(payload.code)) {
+export const sendNewPassword = payload => dispatch => {
+  const errors = isValidPassword(payload);
+  if (errors && errors.length) {
     return dispatch({
-      type: REG_VERIFYCODE_ERROR,
-      errors: ['Enter the verification code you received on your device.'],
+      type: FORGOT_PW_ERROR,
+      errors,
     });
   }
 
-  const {code} = payload;
   return dispatch(
-    dataForm('user/verify/code', {code}, [
-      REG_VERIFYCODE_REQUEST,
-      REG_VERIFYCODE_SUCCESS,
-      REG_VERIFYCODE_ERROR,
+    dataForm('change-password/customer',  payload , [
+      NEW_PASSWORD_REQUEST,
+      NEW_PASSWORD_SUCCESS,
+      NEW_PASSWORD_ERROR,
     ]),
   );
 };

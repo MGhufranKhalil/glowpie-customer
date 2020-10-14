@@ -50,7 +50,10 @@ export const Header = withNavigation(
             {!noBack && <Link onClick={onGoBack} icon="back" />}
             {noBack && <View style={PLACE_HOLDER} />}
             <Text style={headingStyle} text={heading} />
+            {sub && 
+            
             <Text style={styles.PAGE_HEADER_SUB} text={sub} />
+            }
             {progress && <View style={styles.PAGE_HEADER_PROGRESS} />}
             {progress && <View style={this.progressStyle} />}
           </View>
