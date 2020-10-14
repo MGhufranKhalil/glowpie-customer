@@ -22,7 +22,7 @@ const actionProps = (dispatch, ownProps) => ({
   onVerifyCode: payload => dispatch(verifyCode(payload)),
 });
 
-export const ForgotPasswordScreen = connect(
+export const ResetPasswordScreen = connect(
   stateProps,
   actionProps,
 )(

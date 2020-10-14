@@ -6,8 +6,10 @@ export const icons = {
   user_x: require('./images/user_icon_active.png'),
   email: require('./images/email_icon.png'),
   email_x: require('./images/email_icon_active.png'),
+
   lock: require('./images/password-icon.png'),
   lock_x: require('./images/password-icon_active.png'),
+
   // flagAu: require('./images/flags/au.png'),
   facebook: require('./images/facebook_icon.png'),
   google: require('./images/google_icon.png'),
@@ -33,4 +35,6 @@ export const icons = {
   currency: require('./images/money_icon.png'),
   hide: require('./images/hide_icon2x.png'),
   hide_x: require('./images/hide_icon2x_active.png'),
+
+  reset_pw: require('./images/reset_password_popup_icon.png'),
 };

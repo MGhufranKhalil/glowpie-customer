@@ -58,7 +58,7 @@ export default (state = initialState, action) => {
         success: false,
       };
     case USER_LOGIN_ERROR:
-      console.tron.log(action);
+      console.tron.log('action ', action);
       return {
         ...state,
         error: getActionError(action, 'Login Failed'),

@@ -1,25 +1,21 @@
 import React, { Component } from "react";
-import {
-  Alert,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View
-} from "react-native";
+import { Alert, Modal, StyleSheet, TouchableHighlight, View, Image} from "react-native";
+import { styles, color, font, typography, icons} from '../../theme';
+import {Text} from '../text';
+import { Icon } from '../icon';
+
+
 
 export class CustomModal extends Component {
   
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password_sent: false,
-      loading: false,
-      inputDisabled: false,
-      modalVisible: false,
-      error: '',
+      button1: false,
+      button2: false,
+      modal: false,
     };
+     
     this.setup(props);
   }
 
@@ -38,7 +34,7 @@ export class CustomModal extends Component {
     } = props;
     
     
-     
+
     
     /* this.viewStyle = mergeAll(flatten([styles.BUTTON, styleOverride]));
     this.textStyle = mergeAll(flatten([styles.BUTTON_TEXT, textStyleOverride]));
@@ -47,13 +43,20 @@ export class CustomModal extends Component {
   }
 
   setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
+    
+
+    this.state.button1 = true;
+    this.state.button2 = false;
+    this.state.modal = visible;
+    
+    this.props.callback(this.state);
   }
 
   render() {
-    const { modalVisible } = this.state;
+    const { modalVisible, icon, title, message, button1Label, button1Link, button1Icon, button2Label, button2Link, button2Icon  } = this.props;
+
     return (
-      <View style={styles.centeredView}>
+      <View style={MODAL_CENTER_VIEW}>
         <Modal
           animationType="slide"
           transparent={true}
@@ -62,70 +65,102 @@ export class CustomModal extends Component {
             Alert.alert("Modal has been closed.");
           }}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
+          <View style={MODAL_CENTER_VIEW}>
+            <View style={MODAL_VIEW}>
 
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  this.setModalVisible(false);
-                }}
+              {icon !="" && 
+                <View style={MODAL_ICON_CONTAINER}>
+                  <View>
+                    <Image source={icons[icon]} />
+                  </View>
+                </View>
+              }
+              <View style={MODAL_TEXT_CONTAINER}>
+                <Text text={title} style={MODAL_TITLE} />
+                <Text text={message} style={MODAL_TEXT} />
+              </View>
+
+
+              <View style={MODAL_BUTTON_CONTAINER}>
+                <TouchableHighlight
+                  style={MODAL_BUTTON }
+                  onPress={() =>{ this.setModalVisible(false)}}
               >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </TouchableHighlight>
+                  <Text text={button1Label} style={MODAL_BUTTON_TEXT} /> 
+                </TouchableHighlight>
+              </View>
+
+              
             </View>
           </View>
         </Modal>
-
-        {/* <TouchableHighlight
-          style={styles.openButton}
-          onPress={() => {
-            this.setModalVisible(true);
-          }}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </TouchableHighlight> */}
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22
+const MODAL_TEXT_BASE =  {
+  marginBottom: 15,
+  textAlign: "center"
+}
+const MODAL_CENTER_VIEW =   {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: color.overlay
+}
+const MODAL_VIEW = {
+  margin: 40,
+  backgroundColor: "white",
+  borderRadius: 20,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
-  },
-  openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center"
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center"
-  }
-});
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5
+};
+
+const MODAL_ICON_CONTAINER= {
+  marginTop: 25,
+};
+
+const MODAL_TEXT_CONTAINER = {
+  paddingTop: 20,
+  paddingLeft: 13,
+  paddingRight: 13,
+};
+
+const MODAL_BUTTON_CONTAINER = {
+  borderColor: color.input_border,
+  borderTopWidth: 1,
+  alignSelf: 'stretch', 
+  paddingTop: 8,
+  paddingBottom: 10,
+};
+
+const MODAL_TITLE = {
+  ...MODAL_TEXT_BASE,
+  fontSize: font.h4,
+  fontWeight:'bold',
+};
+const MODAL_TEXT = {
+  ...MODAL_TEXT_BASE,
+  fontSize: font.text,
+  fontFamily: typography.regular,
+  lineHeight:25,
+};
+  
+const MODAL_BUTTON ={
+  padding: 10,
+};
+
+const MODAL_BUTTON_TEXT= {
+  textAlign: "center",
+  color:color.secondary,
+  fontSize: font.h3,
+  fontFamily: typography.regular,
+};

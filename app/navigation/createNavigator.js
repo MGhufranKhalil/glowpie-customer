@@ -13,6 +13,7 @@ import {RegisterAccountScreen} from '../screens/register/account';
 import { RegisterPendingScreen } from '../screens/register/pending';
 import { RegisterTermsAndConditionScreen } from '../screens/register/termsandcondition';
 import { ForgotPasswordScreen } from '../screens/forgotpassword';
+import { ResetPasswordScreen } from '../screens/resetpassword';
 import {TestScreen} from '../screens/test';
 /* 
 import {RegisterBusinessScreen} from '../screens/register/business';
@@ -37,10 +38,11 @@ const LoadingNavigator = createStackNavigator(
 
 const AuthNavigator = createStackNavigator(
   {
-    login: {screen: LoginScreen},
+    login: { screen: ResetPasswordScreen},
     signup: {screen: RegisterAccountScreen},
     registerTermsAndCondition: { screen: RegisterTermsAndConditionScreen },
     forgotPassword: { screen: ForgotPasswordScreen },
+    resetPassword: { screen: ResetPasswordScreen },
 
   },
   {
