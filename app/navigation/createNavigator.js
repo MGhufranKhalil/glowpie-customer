@@ -14,16 +14,12 @@ import { RegisterPendingScreen } from '../screens/register/pending';
 import { RegisterTermsAndConditionScreen } from '../screens/register/termsandcondition';
 import { ForgotPasswordScreen } from '../screens/forgotpassword';
 import { ResetPasswordScreen } from '../screens/resetpassword';
-import {TestScreen} from '../screens/test';
-/* 
-import {RegisterBusinessScreen} from '../screens/register/business';
-import {RegisterAddressScreen} from '../screens/register/address';
-import {RegisterHoursScreen} from '../screens/register/hours';
-import {RegisterServicesScreen} from '../screens/register/services';
-import {EditServiceScreen} from '../screens/services/edit';
-import {EditHoursScreen} from '../screens/hours/edit'; */
+import {TestScreen} from '../screens/test'; 
 import {VerificationScreen} from '../screens/verification';
-import {HomeScreen} from '../screens/home';
+// import { HomeScreen } from '../screens/home_old';
+import { ChooseServiceScreen } from '../screens/home/service';
+import { ChooseSaloonScreen } from '../screens/home/saloon';
+
 import {color} from '../theme';
 
 const LoadingNavigator = createStackNavigator(
@@ -70,7 +66,8 @@ const RegistrationNavigator = createStackNavigator(
 
 const MainNavigator = createDrawerNavigator(
   {
-    home: {screen: HomeScreen},
+    home: { screen: ChooseServiceScreen },
+    chooseSaloon: { screen: ChooseSaloonScreen },
   },
   {
     hideStatusBar: false,

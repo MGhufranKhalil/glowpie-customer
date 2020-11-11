@@ -6,7 +6,8 @@ import {styles, color} from '../../theme';
 import {withNavigation} from 'react-navigation';
 
 const RIGHT = {width: 32};
-const PLACE_HOLDER = {width: 20, height: 40};
+const PLACE_HOLDER = { width: 20, height: 20 }; //i changed it 40
+const TOP_HEADER = { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' };
 
 export const Header = withNavigation(
   class extends React.Component {
@@ -34,6 +35,8 @@ export const Header = withNavigation(
         menu,
         headingSize,
         background,
+        rightIcon,
+        rightIconStyle,
       } = this.props;
       const onGoBack = onBack ? onBack : this.props.navigation.goBack;
 
@@ -42,20 +45,50 @@ export const Header = withNavigation(
         : styles.PAGE_HEADER_HEADING;
 
       if (mode === 'big') {
+        
         return (
           <View
             style={
               shadow ? styles.PAGE_HEADER_BIG_SHADOW :  styles.PAGE_HEADER_BIG
             }>
-            {!noBack && <Link onClick={onGoBack} icon="back" />}
-            {noBack && <View style={PLACE_HOLDER} />}
-            <Text style={headingStyle} text={heading} />
-            {sub && 
-            
-            <Text style={styles.PAGE_HEADER_SUB} text={sub} />
-            }
-            {progress && <View style={styles.PAGE_HEADER_PROGRESS} />}
-            {progress && <View style={this.progressStyle} />}
+
+            <View style={TOP_HEADER} >
+
+              <View>
+                {menu && (
+                  <Link
+                    onClick={this.props.navigation.openDrawer}
+                    icon="menu"
+                    style={styles.PAGE_HEADER_TITLE_LINK}
+                  />
+                )}
+      
+                {!noBack && <Link onClick={onGoBack} icon="back" />}
+                {noBack && <View style={PLACE_HOLDER} />}
+              </View>
+              
+              <View >
+                {rightIcon && (
+                  <Link
+                    icon={rightIcon}
+                    iconStyle={rightIconStyle}
+                    style={styles.PAGE_HEADER_TITLE_LINK}
+                  />
+                )}
+                {rightIcon && <View style={PLACE_HOLDER} />}
+              </View>
+            </View>
+
+            <View>
+              <Text style={headingStyle} text={heading} />
+              {sub && 
+              
+              <Text style={styles.PAGE_HEADER_SUB} text={sub} />
+              }
+              {progress && <View style={styles.PAGE_HEADER_PROGRESS} />}
+              {progress && <View style={this.progressStyle} />}
+            </View>
+
           </View>
         );
       }

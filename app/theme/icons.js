@@ -42,4 +42,31 @@ export const icons = {
   round_message: require('./images/message_button.png'),
   round_payment: require('./images/payment_icon.png'),
   round_logout: require('./images/logout_icon.png'),
+
+  hair_cutting: require('./images/hair_cutting.png'),
+  hair_cutting_x: require('./images/hair_cutting_selected.png'),
+
+  makeup: require('./images/makeup.png'),
+  makeup_x: require('./images/makeup_icon_selected.png'),
+
+  nail_art: require('./images/nail_art.png'),
+  nail_art_x: require('./images/nail_art_selected.png'),
+
+  spa: require('./images/spa.png'),
+  spa_x: require('./images/spa_icon_selected.png'),
+
+  bridal: require('./images/bridal.png'),
+  bridal_x: require('./images/bridal_icon_selected.png'),
+
+  groom: require('./images/groom.png'),
+  groom_x: require('./images/groom_icon_selected.png'),
+  
+  menu: require('./images/menu_icon.png'),
+  notification: require('./images/notification_icon.png'),
+
+  list: require('./images/list_icon.png'),
+  list_x: require('./images/list_icon_selected.png'),
+  
+  map: require('./images/map_icon.png'),
+  map_x: require('./images/map_icon_selected.png'),
 };
