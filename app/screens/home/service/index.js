@@ -8,17 +8,19 @@ import { Icon } from '../../../components/icon';
 
 import {color, spacing, styles, imgLogo} from '../../../theme';
 import { Header } from '../../../components/header';
-
-import {doLogout} from '../../../store/actions/login';
+import { industry } from '../../../models/industry';
+// import {doLogout} from '../../../store/actions/login';
 import {style} from './style';
+import { fetchIndustry } from '../../../store/actions/industry';
 
 const stateProps = state => ({
   login: state.login,
   vendor: state.vendor,
+  service: state.industry.services,
 });
 
 const actionProps = (dispatch, ownProps) => ({
-  onLogout: () => dispatch(doLogout()),
+  onfetchIndustry: (payload) => dispatch(fetchIndustry(payload)),
 });
 
 export const ChooseServiceScreen = connect(
@@ -28,16 +30,28 @@ export const ChooseServiceScreen = connect(
   class extends React.Component {
     constructor(props) {
       super(props);
-
-      this.logout = () => {
+      this.state = {
+        id: '', 
+        offset: 0, 
+        error: '',
+      };
+      /* this.logout = () => {
         this.props.onLogout();
         setTimeout(() => this.props.navigation.navigate('auth'), 500);
-      };
+      }; */
     }
 
-    componentWillReceiveProps() {
-      // this.props.navigation.navigate('auth');
+    componentWillReceiveProps(props) {
+      if (props.service) {
+        this.props.navigation.navigate('chooseSaloon', { services:props.service});
+        return;
+      }
     }
+    getIndustry(industrySelected){
+      const { offset } = this.state;
+      const payload = { id: industrySelected,  offset };
+      this.props.onfetchIndustry(payload);
+    } 
 
     render() {
       console.tron.log('render home screen', this.props, this.state);
@@ -60,34 +74,40 @@ export const ChooseServiceScreen = connect(
                   <CategoryButton 
                     icon='hair_cutting'
                     text='Hair'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['hair'] })}
+                    onPress={() => this.getIndustry(industry['hair'])}
                   />
                   <CategoryButton
                     icon='makeup'
                     text='Makeup'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    onPress={() => this.getIndustry(industry['makeup'])}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['makeup'] })}
                   />
                   <CategoryButton
                     icon='nail_art'
                     text='Nails'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    onPress={() => this.getIndustry(industry['nails'])}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['nails'] })}
                   />
                   <CategoryButton
                     icon='spa'
                     text='Spa'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['spa'] })}
+                    onPress={() => this.getIndustry(industry['spa'])}
 
                   />
                   <CategoryButton
                     icon='bridal'
                     text='Bridal'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['bridal'] })}
+                    onPress={() => this.getIndustry(industry['bridal'])}
 
                   />
                   <CategoryButton
                     icon='groom'
                     text='Groom'
-                    onPress={() => this.props.navigation.navigate('chooseSaloon')}
+                    onPress={() => this.getIndustry(industry['groom'])}
+                    // onPress={() => this.props.navigation.navigate('chooseSaloon', { industry: industry['groom'] })}
 
                   />
                 </View>

@@ -69,4 +69,15 @@ export const icons = {
   
   map: require('./images/map_icon.png'),
   map_x: require('./images/map_icon_selected.png'),
+
+  star: require('./images/star_icon.png'),
+  star_x: require('./images/star_icon_unselected.png'),
+
+  cross: require('./images/cross_icon.png'),
+  search: require('./images/search_bar_icon3x.png'),
+
+  female: require('./images/female_icon.png'),
+  male: require('./images/male_icon.png'),
+  
+  sort_btn: require('./images/sort_icon.png'),
 };

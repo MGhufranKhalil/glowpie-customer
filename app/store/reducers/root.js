@@ -5,6 +5,7 @@ import registration from './registration';
 import verification from './verification';
 import vendor from './vendor';
 import forgotpassword from './forgotpassword';
+import industry from './industry';
 
 export default combineReducers({
   login,
@@ -12,4 +13,5 @@ export default combineReducers({
   verification,
   vendor,
   forgotpassword,
+  industry,
 });

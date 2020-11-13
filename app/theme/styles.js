@@ -177,7 +177,8 @@ const PAGE_HEADER_SHADOW = {
 const PAGE_HEADER_BIG = {
   zIndex: 2,
   paddingHorizontal: 10,
-  paddingBottom: 15,
+  paddingTop: 10,
+  paddingBottom: 10,
   backgroundColor: color.white,
 };
 
