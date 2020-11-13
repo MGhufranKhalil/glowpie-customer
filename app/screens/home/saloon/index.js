@@ -6,21 +6,22 @@ import { Text } from '../../../components/text';
 import { Button } from '../../../components/button';
 import { Icon } from '../../../components/icon';
 import {imageUrl} from '../../../utils/helpers';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 import { color, spacing, styles, servicePlaceholder, icons } from '../../../theme';
 import { Header } from '../../../components/header';
-import { fetchService } from '../../../store/actions/services';
+import { fetchIndustryWithFilter } from '../../../store/actions/industry';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
 
 const stateProps = state => ({
   login: state.login,
   vendor: state.vendor,
+  service: state.industry.services,
 });
 
 const actionProps = (dispatch, ownProps) => ({
-  onLogout: () => dispatch(doLogout()),
-  onfetchService: () => dispatch(fetchService()),
+  onfetchIndustry: (payload) => dispatch(fetchIndustryWithFilter(payload)),
 });
 
 
@@ -32,18 +33,28 @@ export const ChooseSaloonScreen = connect(
     
     constructor(props) {
       super(props);
-      this.state = { services: {}, filteredData: {} } 
+      this.state = {industry_id:0, order_by: '', order:'',offset:0, services: {}, filteredData: {} } 
     }
       
     
     componentWillReceiveProps(props) {
-      console.tron.log('render saloon screen prop', props.navigation.state.params.services);
+      /* console.tron.log('new props', props.navigation.state.params); */
+      console.tron.log('render saloon With Filter', props.navigation.state.params);
+      
+      // return false;
       if (props.navigation.state.params.services){
         this.setState({
           services: props.navigation.state.params.services,
-          filteredData: props.navigation.state.params.services
+          filteredData: props.navigation.state.params.services,
+          industry_id: props.navigation.state.params.services[Object.keys(props.navigation.state.params.services)[0]].industry_id
         });
-      }else{
+      
+        /* if (props.navigation.state.params.industry) {
+          this.setState({
+            industry_id: props.navigation.state.params.industry
+          });
+        } */
+      } else{
         showMessage({
           message: 'Data Not Found',
           backgroundColor: color.error_message,
@@ -56,6 +67,13 @@ export const ChooseSaloonScreen = connect(
         filteredData: result.filteredData
       });
     }
+    sortFilter(orderBy, sort) {
+      const { offset, industry_id } = this.state;
+      const payload = { id: industry_id, order_by: orderBy, order: sort, offset };
+      this.props.onfetchIndustry(payload);
+      this.RBSheet.close();
+
+    };
     renderList(service){
         const imageStyle = service.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
         const image = service.image ? imageUrl(service.image) : servicePlaceholder;
@@ -158,9 +176,7 @@ export const ChooseSaloonScreen = connect(
 
                 <View key={'1'} tabLabel={'List'} tabIcon={icons['list']} tabActiveIcon={icons['list_x']}  style={{ flex: 1}}>
                   <ScrollView style={style.SERVICES_LIST}>
-                    {/* {console.log(services)} */}
                     {Object.keys(filteredData).map(k =>
-                      // this.renderService(),
                       this.renderList(filteredData[k]) 
 
                     )}
@@ -170,7 +186,7 @@ export const ChooseSaloonScreen = connect(
                       <View></View>
                       <TouchableOpacity
                         style={{right:0}}
-                        // onPress={this.addService}
+                        onPress={() => this.RBSheet.open()}
                         >
                         <Image
                           source={icons.sort_btn}
@@ -178,8 +194,52 @@ export const ChooseSaloonScreen = connect(
                         />
                       </TouchableOpacity>
                     </View>
+                    <RBSheet
+                      ref={ref => {
+                        this.RBSheet = ref;
+                      }}
+                      height={288}
+                      duration={250}
+                      onClose={this.onCancel}
+
+                    >
+                    <View style={style.RBSHEET_CONTAINER}>
+                      <View style={style.RBSHEET_MENU}>
+                        <Text text="Sort your properties search" style={style.RBSHEET_MENU_TEXT_HEADER} />
+                      </View>
+
+                      <TouchableOpacity style={style.RBSHEET_MENU} 
+                        onPress={() => this.sortFilter('Best Match','desc')}
+                        >
+                        <Text text="Best Match" style={style.RBSHEET_MENU_TEXT} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity style={style.RBSHEET_MENU}
+                        onPress={() => this.sortFilter('price','desc')}
+                      >
+                        <Text text="Highest Price" style={style.RBSHEET_MENU_TEXT} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity style={style.RBSHEET_MENU} 
+                        onPress={() => this.sortFilter('price', 'asc')}
+                      >
+                        <Text text="Lowest Price" style={style.RBSHEET_MENU_TEXT} />
+                      </TouchableOpacity>
+
+                      <TouchableOpacity style={style.RBSHEET_MENU}
+                        onPress={() =>this.sortFilter('rating', 'desc')}
+                      >
+                        <Text text="Top Rated" style={style.RBSHEET_MENU_TEXT} />
+                      </TouchableOpacity>
+                    
+                      <TouchableOpacity style={style.RBSHEET_MENU}>
+                        <Text text="Nearest to the location" style={style.RBSHEET_MENU_TEXT} />
+                      </TouchableOpacity>
+                 
+                    </View>
+                  </RBSheet>
                 </View>
-                <View key={'2'} tabLabel={'Map'} tabIcon={icons['map']} tabActiveIcon={icons['map_x']}  style={{ flex: 1, backgroundColor: 'blue' }}>
+                <View key={'2'} tabLabel={'Map'} tabIcon={icons['map']} tabActiveIcon={icons['map_x']}  style={{ flex: 1, backgroundColor: color.gray }}>
                 </View>
               </ScrollableTabView>
             </View>

@@ -32,7 +32,9 @@ export const ChooseServiceScreen = connect(
       super(props);
       this.state = {
         id: '', 
-        offset: 0, 
+        offset: 0,
+        order: 'desc',
+        order_by: 'rating',
         error: '',
       };
       /* this.logout = () => {
@@ -43,13 +45,18 @@ export const ChooseServiceScreen = connect(
 
     componentWillReceiveProps(props) {
       if (props.service) {
-        this.props.navigation.navigate('chooseSaloon', { services:props.service});
-        return;
+        if (props.service.length > 0){
+          this.props.navigation.navigate('chooseSaloon', { industry: props.service[1].industry_id, services: props.service });
+          return;
+        }else{
+          this.props.navigation.navigate('chooseSaloon', { services:props.service});
+          return;
+        }
       }
     }
     getIndustry(industrySelected){
-      const { offset } = this.state;
-      const payload = { id: industrySelected,  offset };
+      const { offset, order, order_by } = this.state;
+      const payload = { id: industrySelected, offset, order, order_by };
       this.props.onfetchIndustry(payload);
     } 
 

@@ -151,7 +151,14 @@ const SERVICES_LIST = {
 const SERVICE_PADDING = {
   height: 20,
 };
-
+const RBSHEET_CONTAINER = {
+  width: '100%',
+  flexDirection:'column',
+  alignItems: 'center',
+};
+const RBSHEET_MENU = { width: '100%', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: color.gray };
+const RBSHEET_MENU_TEXT = { fontSize: 20, color: color.primary, textAlign: 'center' }
+const RBSHEET_MENU_TEXT_HEADER = { ...RBSHEET_MENU_TEXT, color: color.darkgray, fontWeight: 'bold'}
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -177,5 +184,9 @@ export const style = StyleSheet.create({
   REAL_IMAGE,
   SERVICES_LIST,
   SERVICE_PADDING,
-  CATEGORY_SMALL
+  CATEGORY_SMALL,
+  RBSHEET_CONTAINER,
+  RBSHEET_MENU,
+  RBSHEET_MENU_TEXT,
+  RBSHEET_MENU_TEXT_HEADER
 });
