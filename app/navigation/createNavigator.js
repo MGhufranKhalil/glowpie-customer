@@ -18,7 +18,8 @@ import {TestScreen} from '../screens/test';
 import {VerificationScreen} from '../screens/verification';
 // import { HomeScreen } from '../screens/home_old';
 import { ChooseServiceScreen } from '../screens/home/service';
-import { ChooseSaloonScreen } from '../screens/home/saloon';
+import { ChooseSalonScreen } from '../screens/home/choosesalon';
+import { SalonScreen } from '../screens/home/salon';
 
 import {color} from '../theme';
 
@@ -67,7 +68,8 @@ const RegistrationNavigator = createStackNavigator(
 const MainNavigator = createDrawerNavigator(
   {
     home: { screen: ChooseServiceScreen },
-    chooseSaloon: { screen: ChooseSaloonScreen },
+    chooseSalon: { screen: ChooseSalonScreen },
+    saloon: { screen: SalonScreen },
   },
   {
     hideStatusBar: false,

@@ -26,7 +26,7 @@ const actionProps = (dispatch, ownProps) => ({
 });
 
 
-export const ChooseSaloonScreen = connect(
+export const ChooseSalonScreen = connect(
   stateProps,
   actionProps,
 )(
@@ -63,6 +63,8 @@ export const ChooseSaloonScreen = connect(
           filteredData: data,
           industry_id: data[Object.keys(data)[0]].industry_id
         });
+      this.setState({ refreshing: false});
+
       } else{
         showMessage({
           message: 'Data Not Found',
@@ -99,6 +101,7 @@ export const ChooseSaloonScreen = connect(
       this.RBSheet.close();
     };
     paginationIncrease(){
+      this.setState({ refreshing: true});
       const { industry_id, order_by, order, offset } = this.state;
       const payload = { id: industry_id, order_by, order, offset: offsetIncrease(offset) };
       this.props.onfetchIndustry(payload);
@@ -108,13 +111,18 @@ export const ChooseSaloonScreen = connect(
       const payload = { id: industry_id, order_by, order, offset: 0 };
       this.props.onfetchIndustry(payload);
     }
+    /* onSalon(){
+      console.log('salon');
+      this.props.navigation.navigate('saloon', { vendor_id: 1 });
+    } */
     renderList(service){
         service = service.item;
+      
         const imageStyle = service.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
         const image = service.image ? imageUrl(service.image) : servicePlaceholder;
         return (
           <View style={style.SERVICE_SMALL}>
-
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('saloon', { vendor_id: service.vendor_id })}>
             <View style={style.SERVICE_HEADER}> 
               <View style={style.SERVICE_HEADER_HEADING}>
                 <Text text={service.business_name} style={{fontWeight:'bold'}} preset="h3" />
@@ -165,14 +173,14 @@ export const ChooseSaloonScreen = connect(
                     text="BOOK"
                     style={{ paddingTop: 10, paddingBottom: 10, paddingLeft: 0, paddingRight: 0, justifyContent : 'center'}}
                     textStyle={{fontSize:10}}
-                    // onPress={this.updateService}
+                    onPress={() => { console.log('Book pressed') }}
                     // icon="next"
                     /* disabled={loading || uploading}
                     loading={loading || uploading} */
                   />
-               
               </View>
             </View>
+            </TouchableOpacity>
           </View>
         )
     }
@@ -224,11 +232,13 @@ export const ChooseSaloonScreen = connect(
                     data={filteredData} 
                     keyExtractor={(service) => service.vs_id}
                     style={style.SERVICES_LIST} 
-                    renderItem={this.renderList}
+                    renderItem={(service) => this.renderList(service) }
                     onEndReached={() => this.paginationIncrease()}
-                    onEndReachedThreshold={0.7}
-                    onRefresh={() => this.onRefresh()}
-                    refreshing={refreshing}
+                    onEndReachedThreshold={0.1}
+                    refreshControl={<RefreshControl
+                      colors={[color.primary, color.secondary]}
+                      refreshing={refreshing}
+                      onRefresh={() => this.onRefresh()} />}
                     
                     
                     >

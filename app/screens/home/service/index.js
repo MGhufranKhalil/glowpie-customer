@@ -51,7 +51,7 @@ export const ChooseServiceScreen = connect(
           this.props.navigation.navigate('chooseSaloon', { industry: props.service[1].industry_id, services: props.service });
           return;
         }else{ */
-        this.props.navigation.navigate('chooseSaloon', { key: Math.random() * 10000, services: props.service } /* { services:props.service} */);
+        this.props.navigation.navigate('chooseSalon', { key: Math.random() * 10000, services: props.service } /* { services:props.service} */);
           return;
         // }
       }else{
