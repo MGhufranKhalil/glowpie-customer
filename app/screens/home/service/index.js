@@ -5,6 +5,7 @@ import {Screen} from '../../../components/screen';
 import { Text } from '../../../components/text';
 import { CategoryButton } from '../../../components/button';
 import { Icon } from '../../../components/icon';
+import {showMessage, hideMessage} from 'react-native-flash-message';
 
 import {color, spacing, styles, imgLogo} from '../../../theme';
 import { Header } from '../../../components/header';
@@ -35,6 +36,7 @@ export const ChooseServiceScreen = connect(
         offset: 0,
         order: 'desc',
         order_by: 'rating',
+        services:{},
         error: '',
       };
       /* this.logout = () => {
@@ -44,14 +46,20 @@ export const ChooseServiceScreen = connect(
     }
 
     componentWillReceiveProps(props) {
-      if (props.service) {
-        if (props.service.length > 0){
+      if (Object.keys(props.service).length > 0 ) {
+        /* if (props.service.length > 0){
           this.props.navigation.navigate('chooseSaloon', { industry: props.service[1].industry_id, services: props.service });
           return;
-        }else{
-          this.props.navigation.navigate('chooseSaloon', { services:props.service});
+        }else{ */
+        this.props.navigation.navigate('chooseSaloon', { key: Math.random() * 10000, services: props.service } /* { services:props.service} */);
           return;
-        }
+        // }
+      }else{
+        showMessage({
+          message: 'Data Not Found',
+          backgroundColor: color.error_message,
+          color: color.white,
+        });
       }
     }
     getIndustry(industrySelected){

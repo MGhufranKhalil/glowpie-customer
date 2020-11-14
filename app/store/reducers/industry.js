@@ -13,11 +13,12 @@ import {saveString, remove, clear} from '../../utils/storage';
 const initialState = {
   /* loginid: '',
   password: '',
-  error: '',
   success: false,
   loading: false,
   token: '', // after auto login, this will be loaded from storage */
   services: {},
+  error: '',
+
 };
 /* const mapServices = services => {
   let out = {};
@@ -33,6 +34,7 @@ const generalError = (state, action) => {
   console.tron.log('general error', action);
   return {
     ...state,
+    services: {},
     error: getActionError(
       action,
       'An error occured. Please check your network connection.',
@@ -59,10 +61,12 @@ export default (state = initialState, action) => {
           error: '',
         };
       }
+      // console.tron.log('innitial state', initialState);
+      // console.tron.log('check error', generalError(state, action));
       return generalError(state, action);
     case GET_INDUSTRY_FILTER_SUCCESS:
       if (success && code && [200, 201].indexOf(Number(code)) >= 0) {
-        console.tron.log('get industories', action.payload);
+        console.tron.log('get industories with filter', action.payload);
         const services =  action.payload.data ;
         return {
           ...state,

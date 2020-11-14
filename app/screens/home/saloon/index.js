@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Animated, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, TouchableOpacity, Animated, Image, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { Screen } from '../../../components/screen';
 import { Text } from '../../../components/text';
@@ -7,12 +7,13 @@ import { Button } from '../../../components/button';
 import { Icon } from '../../../components/icon';
 import {imageUrl} from '../../../utils/helpers';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons } from '../../../theme';
 import { Header } from '../../../components/header';
 import { fetchIndustryWithFilter } from '../../../store/actions/industry';
 import { style } from './style';
-import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked'
+import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
+import { offsetIncrease, offsetDecrease} from '../../../store/constants';
 
 const stateProps = state => ({
   login: state.login,
@@ -33,27 +34,35 @@ export const ChooseSaloonScreen = connect(
     
     constructor(props) {
       super(props);
-      this.state = {industry_id:0, order_by: '', order:'',offset:0, services: {}, filteredData: {} } 
+      this.state = {
+        industry_id:0, 
+        order: 'desc',
+        order_by: 'rating',
+        offset:0, 
+        services: {}, 
+        filteredData: {},
+        refreshing:false,
+       } 
+    }
+    onRefresh() {
+      console.tron.log('refresh',this.state.refreshing);
+      this.setState({ refreshing: true, offset:0});
+      this.paginationDecrease();
+      setTimeout( () => { this.setState({ refreshing: false }) }, 1000)
     }
       
     
     componentWillReceiveProps(props) {
-      /* console.tron.log('new props', props.navigation.state.params); */
-      console.tron.log('render saloon With Filter', props.navigation.state.params);
-      
+      data = props.navigation.state.params.services;
+      console.tron.log('new props', props);
+      console.tron.log('render saloon With Filter', data);
       // return false;
-      if (props.navigation.state.params.services){
+      if (Object.keys(data).length > 0){
         this.setState({
-          services: props.navigation.state.params.services,
-          filteredData: props.navigation.state.params.services,
-          industry_id: props.navigation.state.params.services[Object.keys(props.navigation.state.params.services)[0]].industry_id
+          services: data,
+          filteredData: data,
+          industry_id: data[Object.keys(data)[0]].industry_id
         });
-      
-        /* if (props.navigation.state.params.industry) {
-          this.setState({
-            industry_id: props.navigation.state.params.industry
-          });
-        } */
       } else{
         showMessage({
           message: 'Data Not Found',
@@ -62,19 +71,45 @@ export const ChooseSaloonScreen = connect(
         });
       }
     }
+    componentDidMount(){
+      data = this.props.navigation.state.params.services;
+      console.tron.log('did mount', data);
+      if (Object.keys(data).length > 0){
+        this.setState({
+          services: data,
+          filteredData: data,
+          industry_id: data[Object.keys(data)[0]].industry_id
+        });
+      }
+
+    }
     filteredDataFn(result) {
+      console.tron.log('callback',result);
       this.setState({
         filteredData: result.filteredData
       });
     }
     sortFilter(orderBy, sort) {
-      const { offset, industry_id } = this.state;
-      const payload = { id: industry_id, order_by: orderBy, order: sort, offset };
+      const { industry_id, offset } = this.state;
+      this.setState({
+        order_by: orderBy, order: sort, industry_id: industry_id
+      });
+      const payload = { id: industry_id, order_by: orderBy, order: sort, offset: offset };
       this.props.onfetchIndustry(payload);
       this.RBSheet.close();
-
     };
+    paginationIncrease(){
+      const { industry_id, order_by, order, offset } = this.state;
+      const payload = { id: industry_id, order_by, order, offset: offsetIncrease(offset) };
+      this.props.onfetchIndustry(payload);
+    } 
+    paginationDecrease() {
+      const { industry_id, order_by, order, offset } = this.state;
+      const payload = { id: industry_id, order_by, order, offset: 0 };
+      this.props.onfetchIndustry(payload);
+    }
     renderList(service){
+        service = service.item;
         const imageStyle = service.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
         const image = service.image ? imageUrl(service.image) : servicePlaceholder;
         return (
@@ -141,10 +176,13 @@ export const ChooseSaloonScreen = connect(
           </View>
         )
     }
+     
     
     render() {
-      const { services, filteredData } = this.state;
-      console.tron.log('render saloon screen ', this.props, this.state);
+      const { services, filteredData, refreshing } = this.state;
+      console.tron.log('FilteredData', filteredData);
+      console.tron.log('services', services);
+ 
       return (
         <View testID="RegisterAddressScreen" style={styles.FULL}>
           <Screen style={styles.SCREEN} preset='scroll'>
@@ -173,15 +211,33 @@ export const ChooseSaloonScreen = connect(
                 initialPage={0}
                 
               >
-
                 <View key={'1'} tabLabel={'List'} tabIcon={icons['list']} tabActiveIcon={icons['list_x']}  style={{ flex: 1}}>
-                  <ScrollView style={style.SERVICES_LIST}>
+                  {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
                     {Object.keys(filteredData).map(k =>
                       this.renderList(filteredData[k]) 
 
                     )}
                     <View style={style.SERVICE_PADDING} />
-                  </ScrollView>
+                  </ScrollView> */}
+                  
+                  <FlatList 
+                    data={filteredData} 
+                    keyExtractor={(service) => service.vs_id}
+                    style={style.SERVICES_LIST} 
+                    renderItem={this.renderList}
+                    onEndReached={() => this.paginationIncrease()}
+                    onEndReachedThreshold={0.7}
+                    onRefresh={() => this.onRefresh()}
+                    refreshing={refreshing}
+                    
+                    
+                    >
+                    {/* {Object.keys(filteredData).map(k =>
+                      this.renderList(filteredData[k])
+
+                    )} */}
+                    <View style={style.SERVICE_PADDING} />
+                  </FlatList>
                   <View style={[styles.FOOTER_VIEW,{flexDirection:'row',justifyContent:'space-between'}]}>
                       <View></View>
                       <TouchableOpacity

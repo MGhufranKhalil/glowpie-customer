@@ -1,5 +1,6 @@
 export const MIN_PASSWORD_LENGTH = 8;
 export const TIMER = 60;
+export const OFFSET_LIMIT = 5;
 
 
 export const genderOptions = ['Male', 'Female'];
@@ -93,3 +94,11 @@ export const twoDigits = n => {
 export const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+export const offsetIncrease = offset => {
+  return  Number.parseInt(OFFSET_LIMIT + offset);
+}
+export const offsetDecrease = offset => {
+  return Number.parseInt(OFFSET_LIMIT - offset);
+}
+
