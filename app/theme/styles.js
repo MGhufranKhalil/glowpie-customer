@@ -366,6 +366,10 @@ const TOP_RIGHT_CORNER_BUTTON = {
   // color:color.secondary
 }
 const TOP_RIGHT_CORNER_BUTTON_TEXT = {color: '#FF62B0', fontWeight: '900'};
+const FLEX_ROW = { flexDirection: 'row', justifyContent: 'space-between' };
+const FLEX_COL = { flexDirection: 'column', justifyContent: 'space-between' };
+  
+
 export const styles = StyleSheet.create({
   FULL,
   SCREEN,
@@ -404,5 +408,7 @@ export const styles = StyleSheet.create({
   TEXT_BOLD,
   TEXT_HEADER,
   PAGE_HEADER_TRANSPARENT,
-  PAGE_HEADER_WITH_BUTTON
+  PAGE_HEADER_WITH_BUTTON,
+  FLEX_ROW,
+  FLEX_COL
 });

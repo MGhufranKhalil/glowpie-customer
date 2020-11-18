@@ -13,7 +13,7 @@ import { Header } from '../../../components/header';
 import { fetchIndustryWithFilter } from '../../../store/actions/industry';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
-import { offsetIncrease, offsetDecrease} from '../../../store/constants';
+import { offsetLimitIncrease, offsetDecrease, OFFSET_LIMIT} from '../../../store/constants';
 
 const stateProps = state => ({
   login: state.login,
@@ -38,18 +38,14 @@ export const ChooseSalonScreen = connect(
         industry_id:0, 
         order: 'desc',
         order_by: 'rating',
+        limit: OFFSET_LIMIT,
         offset:0, 
         services: {}, 
         filteredData: {},
         refreshing:false,
        } 
     }
-    onRefresh() {
-      console.tron.log('refresh',this.state.refreshing);
-      this.setState({ refreshing: true, offset:0});
-      this.paginationDecrease();
-      setTimeout( () => { this.setState({ refreshing: false }) }, 1000)
-    }
+    
       
     
     componentWillReceiveProps(props) {
@@ -92,29 +88,33 @@ export const ChooseSalonScreen = connect(
       });
     }
     sortFilter(orderBy, sort) {
-      const { industry_id, offset } = this.state;
+      const { industry_id, offset, limit } = this.state;
       this.setState({
         order_by: orderBy, order: sort, industry_id: industry_id
       });
-      const payload = { id: industry_id, order_by: orderBy, order: sort, offset: offset };
+      const payload = { id: industry_id, order_by: orderBy, order: sort, offset, limit};
       this.props.onfetchIndustry(payload);
       this.RBSheet.close();
     };
     paginationIncrease(){
+      
       this.setState({ refreshing: true});
-      const { industry_id, order_by, order, offset } = this.state;
-      const payload = { id: industry_id, order_by, order, offset: offsetIncrease(offset) };
+      const { industry_id, order_by, order, offset, limit } = this.state;
+      const payload = { id: industry_id, order_by, order, offset: offset, limit: offsetLimitIncrease(limit)  };
+      console.tron.log('inc pagitaion', payload);
       this.props.onfetchIndustry(payload);
     } 
     paginationDecrease() {
-      const { industry_id, order_by, order, offset } = this.state;
-      const payload = { id: industry_id, order_by, order, offset: 0 };
+      const { industry_id, order_by, order, offset,limit } = this.state;
+      const payload = { id: industry_id, order_by, order, offset: 0, limit };
       this.props.onfetchIndustry(payload);
     }
-    /* onSalon(){
-      console.log('salon');
-      this.props.navigation.navigate('saloon', { vendor_id: 1 });
-    } */
+    onRefresh() {
+      console.tron.log('refresh', this.state.refreshing);
+      this.setState({ refreshing: true, offset: 0, limit: OFFSET_LIMIT });
+      this.paginationDecrease();
+      setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
+    }
     renderList(service){
         service = service.item;
       
@@ -203,6 +203,7 @@ export const ChooseSalonScreen = connect(
                 headingSize={25}
                 search={true}
                 searchData={services}
+                searchKeys={['business_name', 'service_details','service_name']}
                 callback={this.filteredDataFn.bind(this)}
               />
               <ScrollableTabView

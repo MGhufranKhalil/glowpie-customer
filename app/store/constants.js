@@ -95,10 +95,10 @@ export const capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export const offsetIncrease = offset => {
-  return  Number.parseInt(OFFSET_LIMIT + offset);
+export const offsetLimitIncrease = limit => {
+  return Number.parseInt(OFFSET_LIMIT + limit);
 }
 export const offsetDecrease = offset => {
-  return Number.parseInt(OFFSET_LIMIT - offset);
+  return Number.parseInt(OFFSET_LIMIT - limit);
 }
 

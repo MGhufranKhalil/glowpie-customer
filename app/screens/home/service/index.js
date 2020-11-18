@@ -13,6 +13,8 @@ import { industry } from '../../../models/industry';
 // import {doLogout} from '../../../store/actions/login';
 import {style} from './style';
 import { fetchIndustry } from '../../../store/actions/industry';
+import { OFFSET_LIMIT } from '../../../store/constants';
+
 
 const stateProps = state => ({
   login: state.login,
@@ -37,6 +39,7 @@ export const ChooseServiceScreen = connect(
         order: 'desc',
         order_by: 'rating',
         services:{},
+        limit: OFFSET_LIMIT,
         error: '',
       };
       /* this.logout = () => {
@@ -63,8 +66,8 @@ export const ChooseServiceScreen = connect(
       }
     }
     getIndustry(industrySelected){
-      const { offset, order, order_by } = this.state;
-      const payload = { id: industrySelected, offset, order, order_by };
+      const { offset, order, order_by,limit } = this.state;
+      const payload = { id: industrySelected, offset, order, order_by, limit };
       this.props.onfetchIndustry(payload);
     } 
 

@@ -17,7 +17,7 @@ export const fetchIndustry = payload => dispatch => {
   console.tron.log('fetchIndustry', payload);
   return dispatch(
     dataForm(
-      `saloon/${payload.id}/?offset=${payload.offset}`,
+      `saloon/${payload.id}/?offset=${payload.offset}&limit=${payload.limit}`,
       {payload},
       [GET_INDUSTRY_REQUEST, GET_INDUSTRY_SUCCESS, GET_INDUSTRY_ERROR],
       'GET',
@@ -29,7 +29,7 @@ export const fetchIndustryWithFilter = payload => dispatch => {
   console.tron.log('fetchIndustryWithFilter', payload);
   return dispatch(
     dataForm(
-      `saloon/${payload.id}/?order=${payload.order}&order_by=${payload.order_by}&offset=${payload.offset}`,
+      `saloon/${payload.id}/?order=${payload.order}&order_by=${payload.order_by}&offset=${payload.offset}&limit=${payload.limit}`,
       { payload },
       [GET_INDUSTRY_FILTER_REQUEST, GET_INDUSTRY_FILTER_SUCCESS, GET_INDUSTRY_FILTER_ERROR],
       'GET',

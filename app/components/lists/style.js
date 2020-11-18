@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { color, styles, font, spacing, typography } from '../../../theme';
+import { color, styles, font, spacing, typography } from '../../theme';
 
 const VFLEX_PADDED = {
   ...styles.VFLEX_PADDED,
@@ -70,7 +70,7 @@ const SERVICE_SMALL = {
   flexDirection: 'column',
   justifyContent: 'space-between',
   marginTop: 10,
-  marginHorizontal: 15,
+  marginHorizontal: 2,
 
   paddingTop: 10,
   paddingLeft: 10,
@@ -151,8 +151,53 @@ const SERVICES_LIST = {
 const SERVICE_PADDING = {
   height: 20,
 };
- 
+const REVIEW_CONTAINER = { borderBottomColor: color.gray, borderBottomWidth: 1, paddingVertical: 20 };
+const REVIEW_NAME = { color: color.dark, paddingVertical: 0, fontSize: 20, fontFamily: typography.bold };
+const REVIEW_DATE = { color: color.gray, fontSize: 12, fontFamily: typography.regular };
+const REVIEW_TEXT = { fontFamily: typography.regular };
 
+const SMALL_LIST_IMAGE = { backgroundColor: color.gray, paddingTop: 10 };
+const SMALL_LIST_DURATION = { 
+  color: color.gray, 
+  fontSize: 12, 
+  paddingHorizontal: 10, 
+  paddingVertical: 7, 
+  fontFamily: 
+  typography.regular 
+};
+const DEAL_NAME = { paddingHorizontal: 15, fontFamily: typography.regular };
+const DEAL_SERVICES = { paddingHorizontal: 15, fontSize: 16, fontFamily: typography.bold };
+const DEAL_COST = { paddingHorizontal: 15, fontFamily: typography.regular };
+const DEAL_COST_PRICE = { paddingHorizontal: 15, fontSize: 16, fontFamily: typography.bold };
+const DEAL_DISCOUNT = { 
+  flex: 2, 
+  justifyContent: 'center', 
+  alignItems: 'center' 
+};
+const DEAL_DISCOUNT_STICKER = { 
+  flexDirection: 'row', 
+  justifyContent: 'flex-start', 
+  backgroundColor: color.primary, 
+  borderRadius: 5, 
+  paddingHorizontal: 7, 
+  paddingVertical: 5 
+};
+const DEAL_DISCOUNT_PERCENT = { 
+  fontSize: 9,
+  color: color.white, 
+  fontFamily: 
+  typography.regular 
+};
+const DEAL_DISCOUNT_OFF = { fontSize: 6, marginTop: 2, color: color.white, fontFamily: typography.regular };
+const DEAL_DISCOUNT_AMOUNT = { flex: 3, backgroundColor: color.secondary, borderRadius: 5 };
+const DEAL_DISCOUNT_AMOUNT_PRICE = { 
+  paddingVertical: 7, 
+  textAlign: 'center', 
+  fontSize: 14, 
+  alignItems: 'center', 
+  color: color.white, 
+  fontFamily: typography.bold 
+};
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -178,5 +223,21 @@ export const style = StyleSheet.create({
   REAL_IMAGE,
   SERVICES_LIST,
   SERVICE_PADDING,
-  CATEGORY_SMALL 
+  CATEGORY_SMALL,
+  REVIEW_NAME,
+  REVIEW_DATE,
+  REVIEW_TEXT,
+  REVIEW_CONTAINER,
+  SMALL_LIST_IMAGE,
+  SMALL_LIST_DURATION,
+  DEAL_NAME,
+  DEAL_SERVICES,
+  DEAL_COST,
+  DEAL_COST_PRICE,
+  DEAL_DISCOUNT,
+  DEAL_DISCOUNT_STICKER,
+  DEAL_DISCOUNT_PERCENT,
+  DEAL_DISCOUNT_OFF,
+  DEAL_DISCOUNT_AMOUNT, 
+  DEAL_DISCOUNT_AMOUNT_PRICE
 });

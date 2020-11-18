@@ -14,7 +14,7 @@ const SEARCH_CONTAINER = {borderWidth: 1, borderColor: color.gray, borderRadius:
 const SEARCH_ICON = { width: 20, height: 20, paddingLeft: 5, justifyContent: 'center', flex: 1 };
 const SEARCH_CLEAR = { width: 15, height: 15 };
 
-const KEYS_TO_FILTERS = ['business_name', 'service_details','service_name'];
+// const KEYS_TO_FILTERS = ['business_name', 'service_details','service_name'];
  
 export const Header = withNavigation(
   class extends React.Component {
@@ -32,11 +32,11 @@ export const Header = withNavigation(
       this.searchUpdated = this.searchUpdated.bind(this);
     }
     searchUpdated(term){
-      const { searchData } = this.props;
+      const { searchData, searchKeys } = this.props;
       if (searchData) {
         // const filteredData = Object.values(searchData).filter(createFilter(term, KEYS_TO_FILTERS));
         // console.log(this.props.callback = { 'test': 'test1' });
-        filteredData = Object.values(searchData).filter(createFilter(term, KEYS_TO_FILTERS)) ;
+        filteredData = Object.values(searchData).filter(createFilter(term, searchKeys)) ;
         this.props.callback({ 'filteredData': filteredData});
       }
     };
@@ -55,6 +55,7 @@ export const Header = withNavigation(
         onBack,
         search, 
         searchData,
+        searchKeys,
         menu,
         headingSize,
         background,
