@@ -45,7 +45,8 @@ const scrollStyle = {
 } 
 const tabBarTextStyle = {
   fontSize: 17,
-  fontWeight: 'normal',
+  // fontWeight: 'normal',
+  fontFamily:typography.regular
 } 
 const underlineStyle =  {
   height: 3,
@@ -156,9 +157,24 @@ const RBSHEET_CONTAINER = {
   flexDirection:'column',
   alignItems: 'center',
 };
-const RBSHEET_MENU = { width: '100%', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: color.gray };
-const RBSHEET_MENU_TEXT = { fontSize: 20, color: color.primary, textAlign: 'center' }
-const RBSHEET_MENU_TEXT_HEADER = { ...RBSHEET_MENU_TEXT, color: color.darkgray, fontWeight: 'bold'}
+const RBSHEET_MENU = { 
+  width: '100%', 
+  paddingVertical: 10, 
+  borderBottomWidth: 1, 
+  borderBottomColor: color.gray 
+};
+const RBSHEET_MENU_TEXT = { 
+  fontSize: 20, 
+  color: color.primary, 
+  textAlign: 'center',
+  fontFamily:typography.regular
+};
+const RBSHEET_MENU_TEXT_HEADER = { 
+  ...RBSHEET_MENU_TEXT,
+  color: color.darkgray, 
+  // fontWeight: 'bold',
+  fontFamily:typography.bold
+}
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,

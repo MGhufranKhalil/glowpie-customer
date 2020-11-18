@@ -2,7 +2,7 @@ import {DAY_NAMES} from '../store/constants';
 
 /* decides where user will be sent to home screen after login, or pending registration */
 export const isVendorInfoComplete = (info, type = null) => {
-  console.tron.log('isVendorInfoComplete', info);
+  console.tron.log('isCustomerInfoComplete', info);
   let hours = 0;
   // see if any one day is open for business, if yes we are good to go
   /* if (info && info.hours && info.hours.break_hours_start) {
@@ -39,7 +39,7 @@ export const isVendorInfoComplete = (info, type = null) => {
 };
 
 export const decideInitialScreen = info => {
-  return isVendorInfoComplete(info) ? 'main' : 'register';
+  return isVendorInfoComplete(info) ? 'saloon' : 'register';
 };
 
 export const minutesToHours = minutes => {

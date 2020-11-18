@@ -64,12 +64,20 @@ const RegistrationNavigator = createStackNavigator(
     headerMode: 'none',
   },
 );
-
-const MainNavigator = createDrawerNavigator(
+const SaloonNavigator = createStackNavigator(
   {
     home: { screen: ChooseServiceScreen },
     chooseSalon: { screen: ChooseSalonScreen },
     saloon: { screen: SalonScreen },
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
+const MainNavigator = createDrawerNavigator(
+  {
+    home: { screen: ChooseServiceScreen } 
   },
   {
     hideStatusBar: false,
@@ -89,6 +97,7 @@ const rootStack = createAnimatedSwitchNavigator(
     auth: AuthNavigator,
     verification: VerificationNavigator,
     register: RegistrationNavigator,
+    saloon: SaloonNavigator,
     main: MainNavigator,
   },
   {

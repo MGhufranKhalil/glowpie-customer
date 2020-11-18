@@ -16,12 +16,13 @@ export const LargeList = withNavigation(
     }
 
     render() {
-      const { item } = this.props;
+      const { item,onPress } = this.props;
+      console.log(item.item);
       const imageStyle = item.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
       const image = item.image ? imageUrl(item.image) : servicePlaceholder;
       return (
         <View style={style.SERVICE_SMALL}>
-          <TouchableOpacity /* onPress={() => this.props.navigation.navigate('saloon', { vendor_id: item.vendor_id })} */>
+          <TouchableOpacity onPress={onPress}>
             <View style={style.SERVICE_HEADER}>
               <View style={style.SERVICE_HEADER_HEADING}>
                 <Text text={item.business_name} style={{ fontWeight: 'bold' }} preset="h3" />

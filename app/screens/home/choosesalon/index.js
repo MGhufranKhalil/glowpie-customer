@@ -5,7 +5,8 @@ import { Screen } from '../../../components/screen';
 import { Text } from '../../../components/text';
 import { Button } from '../../../components/button';
 import { Icon } from '../../../components/icon';
-import {imageUrl} from '../../../utils/helpers';
+import { LargeList } from '../../../components/lists';
+import { imageUrl, SH} from '../../../utils/helpers';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons } from '../../../theme';
@@ -115,7 +116,7 @@ export const ChooseSalonScreen = connect(
       this.paginationDecrease();
       setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
     }
-    renderList(service){
+    /* renderList(service){
         service = service.item;
       
         const imageStyle = service.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
@@ -175,15 +176,15 @@ export const ChooseSalonScreen = connect(
                     textStyle={{fontSize:10}}
                     onPress={() => { console.log('Book pressed') }}
                     // icon="next"
-                    /* disabled={loading || uploading}
-                    loading={loading || uploading} */
+                    disabled={loading || uploading}
+                    loading={loading || uploading}
                   />
               </View>
             </View>
             </TouchableOpacity>
           </View>
         )
-    }
+    } */
      
     
     render() {
@@ -233,7 +234,7 @@ export const ChooseSalonScreen = connect(
                     data={filteredData} 
                     keyExtractor={(service) => service.vs_id}
                     style={style.SERVICES_LIST} 
-                    renderItem={(service) => this.renderList(service) }
+                    renderItem={(service) => /* this.renderList(service) */(<LargeList item={service.item} onPress={() => this.props.navigation.navigate('saloon', { vendor_id: service.vendor_id }) } />) }
                     onEndReached={() => this.paginationIncrease()}
                     onEndReachedThreshold={0.1}
                     refreshControl={<RefreshControl
@@ -249,7 +250,7 @@ export const ChooseSalonScreen = connect(
                     )} */}
                     <View style={style.SERVICE_PADDING} />
                   </FlatList>
-                  <View style={[styles.FOOTER_VIEW,{flexDirection:'row',justifyContent:'space-between'}]}>
+                  <View style={[styles.FOOTER_VIEW,styles.FLEX_ROW]}>
                       <View></View>
                       <TouchableOpacity
                         style={{right:0}}
@@ -265,7 +266,7 @@ export const ChooseSalonScreen = connect(
                       ref={ref => {
                         this.RBSheet = ref;
                       }}
-                      height={288}
+                      height={240}
                       duration={250}
                       onClose={this.onCancel}
 
@@ -275,11 +276,11 @@ export const ChooseSalonScreen = connect(
                         <Text text="Sort your properties search" style={style.RBSHEET_MENU_TEXT_HEADER} />
                       </View>
 
-                      <TouchableOpacity style={style.RBSHEET_MENU} 
+                      {/* <TouchableOpacity style={style.RBSHEET_MENU} 
                         onPress={() => this.sortFilter('Best Match','desc')}
                         >
                         <Text text="Best Match" style={style.RBSHEET_MENU_TEXT} />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
 
                       <TouchableOpacity style={style.RBSHEET_MENU}
                         onPress={() => this.sortFilter('price','desc')}
