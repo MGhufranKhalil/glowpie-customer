@@ -17,7 +17,6 @@ export const LargeList = withNavigation(
 
     render() {
       const { item,onPress } = this.props;
-      console.log(item.item);
       const imageStyle = item.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
       const image = item.image ? imageUrl(item.image) : servicePlaceholder;
       return (

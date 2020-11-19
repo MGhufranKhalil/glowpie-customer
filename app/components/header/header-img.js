@@ -7,6 +7,7 @@ import { Icon } from '../icon';
 import {withNavigation} from 'react-navigation';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import {SM, XL,SW} from '../../utils/helpers';
+import { twoDigits } from '../../store/constants';
 
 const RIGHT = {width: 32};
 const PLACE_HOLDER = { width: 20, height: 20 }; //i changed it 40
@@ -81,13 +82,13 @@ export const HeaderWithImage = withNavigation(
         background,
         rightIcon,
         rightIconStyle,
-        rating
+        item,
       } = this.props;
       const onGoBack = onBack ? onBack : this.props.navigation.goBack;
       const headingStyle = headingSize ? {...styles.PAGE_HEADER_HEADING, fontSize: headingSize} : styles.PAGE_HEADER_HEADING;
       const ratingUI = [];
       for (let i = 0; i < 5; i++){
-        if (i < Math.floor(4.5) ){
+        if (i < Math.floor(item !== undefined ? item.rating : 4) ){
           ratingUI.push(
             <Icon icon="star_x" style={ICON_SIZE} />
           )
@@ -109,8 +110,8 @@ export const HeaderWithImage = withNavigation(
           {/* TOP_HEADER */}
           <View style={TOP_HEADER} >
             <View>
-              {!noBack && <Link onClick={onGoBack} icon="back_white" />}
-              {noBack && <View style={PLACE_HOLDER} />}
+              {!noBack && <Link onClick={onGoBack} icon="back_white" style={{position:'absolute',left:0,bottom:0 }} />}
+               <View style={PLACE_HOLDER} /> 
             </View>
 
             <View >
@@ -127,23 +128,23 @@ export const HeaderWithImage = withNavigation(
           {/* header bottom */}
           <View style={BOTTOM_HEADER}>
               
-            <View style={styles.FLEX_COL}>
+            <View style={styles.FLEX_COL,{flex:1}}>
+
               <View>
-                <Text preset="h3" style={{color:color.white,fontFamily:typography.bold}}>Style Station</Text>
+                <Text preset="h3" style={{ color: color.white, fontFamily: typography.bold }} text={item !== undefined ? ' ' +item.business_name:'Business Name' } />
               </View>
 
               <View style={styles.FLEX_ROW}>
                 <Icon icon="map_pin" style={ICON_SIZE} />
-                <Text preset="h5" style={{ color: color.white, fontFamily: typography.regular}}>591 Geor Street, Paris, 75150, France</Text>
+                <Text preset="h5" style={{color: color.white, fontFamily: typography.regular }} text={item !== undefined ? ' ' + item.address : 'Address'} />
               </View>
-
             </View>
 
             <View style={styles.FLEX_COL}>
 
               <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                 {ratingUI}
-                <Text preset="h6" style={{color:color.white }}>4.5</Text>
+                <Text preset="h6" style={{ color: color.white }} text={item !== undefined ? Number(item.rating).toFixed(1)  : 'Rating'} />
               </View>
 
               <View style={{position:'absolute',bottom:0,right:0}}>

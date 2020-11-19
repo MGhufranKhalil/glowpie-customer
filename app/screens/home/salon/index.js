@@ -9,12 +9,14 @@ import { SmallList, LargeList, DealList, ReviewList } from '../../../components/
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons, typography } from '../../../theme';
 import { HeaderWithImage } from '../../../components/header';
-import { fetchIndustryWithFilter } from '../../../store/actions/industry';
+import { fetchDeals } from '../../../store/actions/salon';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import { SH } from '../../../utils/helpers';
+import { industry } from '../../../models'
+
 const SERVICE = {
   'business_name':'test',
   'service_name':'test',
@@ -24,14 +26,13 @@ const SERVICE = {
   'rating':'4.5',
   'description':'lorem ipsem lorem ipsem lorem ipsem lorem ipsem'
 }
+
 const stateProps = state => ({
-  login: state.login,
-  vendor: state.vendor,
-  service: state.industry.services,
+  salonServices: state.salon.salonServices,
 });
 
 const actionProps = (dispatch, ownProps) => ({
-  onfetchIndustry: (payload) => dispatch(fetchIndustryWithFilter(payload)),
+  onfetchDeals: (payload) => dispatch(fetchDeals(payload)),
 });
 
 
@@ -40,21 +41,46 @@ export const SalonScreen = connect(
   actionProps,
 )(
   class extends React.Component {
-    
     constructor(props) {
       super(props);
       this.state = {
         selectedIndex: 0,
+        refreshing: true,
+
+        allServices: {},
+        hairServices: [],
+        makeUpServices: [],
+        nailsServices: [],
+        spaServices: [],
+        bridalServices: [],
+        groomServices:[],
+
+        filteredAllData: [],
+        filteredHairData: [],
+        filteredMakeUpData:[],
+        filteredNailsData:[],
+        filteredSpaData :[],
+        filteredBridalData:[],
+        filteredGroomData:[],
+
+        salon:{},
+        searchKeys: ['business_name', 'service_details', 'service_name'],
         error:''
        } 
     }
-     
-      
     
     componentWillReceiveProps(props) {
-      if (true){
-         
+      this.setState({ refreshing: true });
 
+      console.tron.log('new props salon', props.salonServices);
+      data = props.salonServices;
+
+      if (Object.keys(data).length > 0){
+
+        this.setState({
+          allServices: data
+        });
+        this.setState({ refreshing: false });
       } else{
         showMessage({
           message: 'Data Not Found',
@@ -63,6 +89,54 @@ export const SalonScreen = connect(
         });
       }
     }
+    componentDidMount(){
+      data = this.props.navigation.state.params;
+      salonSer = this.props.salonServices;
+
+      if (Object.keys(salonSer).length > 0){
+        for (let service of salonSer) {
+  
+          if (industry.hair == service.industry_id) {
+            
+            this.state.hairServices.push(service);
+            this.state.filteredHairData.push(service);
+  
+          } else if (industry.makeup == service.industry_id) {
+  
+            this.state.makeUpServices.push(service);
+            this.state.filteredMakeUpData.push(service);
+  
+          } else if (industry.nails == service.industry_id) {
+  
+            this.state.nailsServices.push(service);
+            this.state.filteredNailsData.push(service);
+  
+          } else if (industry.spa == service.industry_id) {
+  
+            this.state.spaServices.push(service);
+            this.state.filteredSpaData.push(service);
+  
+          } else if (industry.bridal == service.industry_id) {
+  
+            this.state.bridalServices.push(service);
+            this.state.filteredBridalData.push(service);
+  
+          } else if (industry.groom == service.industry_id) {
+  
+            this.state.groomServices.push(service);
+            this.state.filteredGroomData.push(service);
+          }
+  
+        }
+      }
+       
+      this.setState({
+        allServices: salonSer,
+        filteredAllData: salonSer,
+        salon: data.salon
+      });
+       
+    }
     handleIndexChange = (index) => {
       this.setState({
         // ...this.state,
@@ -70,34 +144,49 @@ export const SalonScreen = connect(
       });
     }
     searchUpdated(term) {
-      console.log(term);
-      /* const { searchData, searchKeys } = this.props;
-      if (searchData) {
-        filteredData = Object.values(searchData).filter(createFilter(term, searchKeys));
-        this.props.callback({ 'filteredData': filteredData });
-      } */
+      const { allServices, hairServices, makeUpServices, nailsServices, spaServices, bridalServices, groomServices, searchKeys } = this.state;
+      
+      this.setState({
+        filteredAllData : Object.values(allServices).filter(createFilter(term, searchKeys)),
+        filteredHairData : Object.values(hairServices).filter(createFilter(term, searchKeys)),
+        filteredMakeUpData : Object.values(makeUpServices).filter(createFilter(term, searchKeys)),
+        filteredNailsData : Object.values(nailsServices).filter(createFilter(term, searchKeys)),
+        filteredSpaData : Object.values(spaServices).filter(createFilter(term, searchKeys)),
+        filteredBridalData : Object.values(bridalServices).filter(createFilter(term, searchKeys)),
+        filteredGroomData : Object.values(groomServices).filter(createFilter(term, searchKeys)),
+      });
     };
+    onRefresh() {
+      this.setState({ refreshing: true, offset: 0, limit: OFFSET_LIMIT });
+      setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
+    }
+    onDealPress = (id) => {
+      this.setState({ refreshing: true });
+      const payload = { id: id, offset: 0 };
+      this.props.onfetchDeals(payload);
+    }
     renderTabOne(){
+      const { 
+        filteredAllData, filteredHairData, filteredMakeUpData, 
+        filteredNailsData, filteredSpaData, filteredBridalData, filteredGroomData ,  refreshing} = this.state
+
       return (
         <View style={{ position: 'absolute', top: 70, left: 10, zIndex: 0, height: SH - 190 }}>
           <View style={{paddingVertical:10}}>
             <SearchInput
-              style={{ zIndex: 1, paddingLeft: 15,fontFamily:typography.regular }}
-              inputViewStyles={{ borderWidth: 1, borderColor: color.gray, borderRadius: 5, flexDirection: 'row', paddingLeft: 5 }}
-              searchIcon={<Icon icon={'search'} style={{ width: 20, height: 20, paddingLeft: 5, justifyContent: 'center', flex: 1 }} />}
-              clearIcon={<Icon icon={'cross'} style={{ width: 15, height: 15 }} />}
+              style={style.SEARCH_CONTAINER}
+              inputViewStyles={style.SEARCH_INPUT_CONTAINER}
+              searchIcon={<Icon icon={'search'} style={style.SEARCH_ICON} />}
+              clearIcon={<Icon icon={'cross'} style={style.SEARCH_CLOSE_ICON} />}
               onChangeText={(term) => { this.searchUpdated(term) }}
               placeholder="Search for services ..."
             />
           </View>
             <ScrollableTabView
-
               renderTabBar={() => (
                 <ScrollableTabBar
-                // style={{ width: "100%", backgroundColor: 'white' }}
                   tabStyle={{
                     flexDirection: 'row',
-                    // borderWidth: 0.5,
                     borderColor: color.gray,
                   }}
                 />
@@ -110,42 +199,145 @@ export const SalonScreen = connect(
                 backgroundColor: color.primary,
                 borderRadius: 1,
                 alignSelf: 'stretch',
-                // textAlign: 'center',
               }}
               initialPage={0}
-              // style={{ width: '100%'}}
-        >
-          
-            
+            >
+              {/* All Services */}
               <View key={'1'} tabLabel={'All'} style={{ flex:1 }}>
-                <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
-                  <SmallList item={SERVICE} ></SmallList>
-                  <SmallList item={SERVICE} ></SmallList>
-                  <SmallList item={SERVICE} ></SmallList>
-                  <SmallList item={SERVICE} ></SmallList>
-                  <SmallList item={SERVICE} ></SmallList>
-                </ScrollView>
+                <FlatList
+                data={filteredAllData}
+                keyExtractor={(allServices) => allServices.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(allServices) => (<SmallList item={allServices.item} onPress={() => {} } />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
               </View>
-              <View key={'2'} tabLabel={'Hair'} style={{ flex: 1,  backgroundColor: 'black' }}></View>
-              <View key={'3'} tabLabel={'Make Up'} style={{   flex: 1, backgroundColor: 'blue' }}></View>
-              <View key={'4'} tabLabel={'Nails Art'} style={{  flex: 1, backgroundColor: 'blue' }}></View>
-              <View key={'5'} tabLabel={'spa'} style={{  flex: 1, backgroundColor: 'blue' }}></View>
-              <View key={'6'} tabLabel={'Bridal'} style={{  flex: 1, backgroundColor: 'blue' }}></View>
-              <View key={'7'} tabLabel={'Groom'} style={{  flex: 1, backgroundColor: 'blue' }}></View>
+              {/* Hair Services */}
+              <View key={'2'} tabLabel={'Hair'} style={{ flex: 1}}>
+                <FlatList
+                data={filteredHairData}
+                keyExtractor={(hs) => hs.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(hs) => (<SmallList item={hs.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
+              {/* Make Up Services */}
+              <View key={'3'} tabLabel={'Make Up'} style={{flex: 1}}>
+                <FlatList
+                data={filteredMakeUpData}
+                  keyExtractor={(makeUpServices) => makeUpServices.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(makeUpServices) => (<SmallList item={makeUpServices.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
+              {/* Nails Services */}
+
+              <View key={'4'} tabLabel={'Nails Art'} style={{flex: 1}}>
+                <FlatList
+                data={filteredNailsData}
+                  keyExtractor={(nailsServices) => nailsServices.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(nailsServices) => (<SmallList item={nailsServices.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
+              {/* Spa Services */}
+
+              <View key={'5'} tabLabel={'spa'} style={{flex: 1}}>
+                <FlatList
+                data={filteredSpaData}
+                  keyExtractor={(spaServices) => spaServices.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(spaServices) => (<SmallList item={spaServices.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
+              {/* Bridal Services */}
+
+              <View key={'6'} tabLabel={'Bridal'} style={{flex: 1}}>
+                <FlatList
+                data={filteredBridalData}
+                  keyExtractor={(bridalServices) => bridalServices.vs_id}
+                  style={style.SERVICES_LIST}
+                  renderItem={(bridalServices) => (<SmallList item={bridalServices.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
+              {/* Groom Services */}
+              <View key={'7'} tabLabel={'Groom'} style={{flex: 1}}>
+                <FlatList
+                data={filteredGroomData}
+                keyExtractor={(groomServices) => groomServices.vs_id}
+                  style={style.SERVICES_LIST}
+                renderItem={(groomServices) => (<SmallList item={groomServices.item} onPress={() => { }} />)}
+                  refreshControl={<RefreshControl
+                    colors={[color.primary, color.secondary]}
+                    refreshing={refreshing}
+                    onRefresh={() => this.onRefresh()} />}
+                >
+                  <View style={style.SERVICE_PADDING} />
+                </FlatList>
+              </View>
             </ScrollableTabView>
         </View>
       );
     }
     renderTabTwo() {
+      const {salon, deals} = this.state;
+      // this.onDealPress(salon.vendor_id);
       return (
         <View style={{ height: SH - 190 }}>
-          <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
+          {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
             <DealList item={SERVICE} /> 
             <DealList item={SERVICE} /> 
             <DealList item={SERVICE} /> 
             <DealList item={SERVICE} /> 
             <DealList item={SERVICE} /> 
-          </ScrollView>
+          </ScrollView> */}
+          {/* <FlatList
+            data={filteredGroomData}
+            keyExtractor={(groomServices) => groomServices.vs_id}
+            style={style.SERVICES_LIST}
+            renderItem={(groomServices) => (<DealList item={groomServices.item} onPress={() => { }} />)}
+            refreshControl={<RefreshControl
+              colors={[color.primary, color.secondary]}
+              refreshing={refreshing}
+              onRefresh={() => this.onRefresh()} />}
+          >
+            <View style={style.SERVICE_PADDING} />
+          </FlatList> */}
         </View> 
       );
     }
@@ -163,17 +355,17 @@ export const SalonScreen = connect(
       );
     }
     render() {
-      const { selectedIndex } = this.state;
+      const { selectedIndex, salon } = this.state;
       return (
         <View testID="RegisterAddressScreen" style={styles.FULL}>
           <Screen style={styles.SCREEN} preset='scroll'>
             <View style={style.VFLEX_PADDED}>
               <HeaderWithImage
                 mode="big"
-                // centerHeading="Choose Salon"
                 noBack={false}
                 shadow={false}
                 menu={false}
+                item={salon}
                 headingSize={25}
               />
                 <View style={{ paddingHorizontal: 10, paddingVertical: 10}}>

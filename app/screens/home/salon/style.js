@@ -149,10 +149,25 @@ const SERVICES_LIST = {
 };
 /* just to create empty space after last service */
 const SERVICE_PADDING = {
-  height: 20,
+  height:30,
 };
- 
 
+const SEARCH_CONTAINER = { zIndex: 1, paddingLeft: 15 };
+const SEARCH_INPUT_CONTAINER = { 
+  borderWidth: 1, 
+  borderColor: color.gray, 
+  borderRadius: 5, 
+  flexDirection: 'row', 
+  paddingLeft: 5 
+}; 
+const SEARCH_ICON = { 
+  width: 20, 
+  height: 20, 
+  paddingLeft: 5, 
+  justifyContent: 'center', 
+  flex: 1 
+};
+const SEARCH_CLOSE_ICON = { width: 15, height: 15 }
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -178,5 +193,9 @@ export const style = StyleSheet.create({
   REAL_IMAGE,
   SERVICES_LIST,
   SERVICE_PADDING,
-  CATEGORY_SMALL 
+  CATEGORY_SMALL, 
+  SEARCH_CONTAINER,
+  SEARCH_INPUT_CONTAINER,
+  SEARCH_ICON,
+  SEARCH_CLOSE_ICON
 });

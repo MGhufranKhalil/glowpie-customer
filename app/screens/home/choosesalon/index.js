@@ -12,6 +12,7 @@ import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons } from '../../../theme';
 import { Header } from '../../../components/header';
 import { fetchIndustryWithFilter } from '../../../store/actions/industry';
+import { fetchSalonServices } from '../../../store/actions/salon';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
 import { offsetLimitIncrease, offsetDecrease, OFFSET_LIMIT} from '../../../store/constants';
@@ -20,10 +21,12 @@ const stateProps = state => ({
   login: state.login,
   vendor: state.vendor,
   service: state.industry.services,
+  salonServices: state.salon.salonServices,
 });
 
 const actionProps = (dispatch, ownProps) => ({
   onfetchIndustry: (payload) => dispatch(fetchIndustryWithFilter(payload)),
+  onfetchSalonServices: (payload) => dispatch(fetchSalonServices(payload)),
 });
 
 
@@ -41,8 +44,9 @@ export const ChooseSalonScreen = connect(
         order_by: 'rating',
         limit: OFFSET_LIMIT,
         offset:0, 
-        services: {}, 
+        services: {},
         filteredData: {},
+        salonServices: {}, 
         refreshing:false,
        } 
     }
@@ -116,76 +120,21 @@ export const ChooseSalonScreen = connect(
       this.paginationDecrease();
       setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
     }
-    /* renderList(service){
-        service = service.item;
-      
-        const imageStyle = service.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
-        const image = service.image ? imageUrl(service.image) : servicePlaceholder;
-        return (
-          <View style={style.SERVICE_SMALL}>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('saloon', { vendor_id: service.vendor_id })}>
-            <View style={style.SERVICE_HEADER}> 
-              <View style={style.SERVICE_HEADER_HEADING}>
-                <Text text={service.business_name} style={{fontWeight:'bold'}} preset="h3" />
-              </View>
 
-              <View style={style.SERVICE_HEADER_RATING}>
-                <Text text={' (' + service.rating+')'} style={{fontSize:10,color:color.gray}} preset="message"/>
-                <Icon icon={'star_x'} style={{ width: 15, height: 15}} /> 
-              </View>
-            </View>
+    onServicePress = (item) => {
+      const payload = { id: item.vendor_id, offset:0};
+      this.props.onfetchSalonServices(payload);
 
-            <View style={{flexDirection:'row'}}>
-                <View style={style.SERVICE_SMALL_IMAGE_CONTENT}>
-                  <View style={{ width: '40%' }}>
-                    {service.image &&
-                      <Image source={image} style={[imageStyle]} />
-                    }
-                    {!service.image &&
-                      <View style={{ backgroundColor: color.gray, paddingTop: 10 }}>
-                        <Image source={image} style={[imageStyle]} />
-                      </View>
-                    }
-                  </View>
-                  <View>
-                    <Text text={service.service_name} style={style.SERVICE_NAME} />
-                    <View style={style.ROW_SMALL}>
-                      <Image source={icons.datetime} style={style.ICON} />
-                      <Text
-                        text={service.duration}
-                        style={style.ICON_TEXT}
-                      />
-                    </View>
-                    <View style={style.ROW_SMALL}>
-                      <Image source={icons.currency} style={style.ICON} />
-                      <Text text={service.price} style={style.ICON_TEXT} />
-                    </View>
-                    <View style={style.ROW_SMALL}>
-                      <Image source={service.gender == 'female' ? icons.female : icons.male} style={style.ICON} />
-                      <Text text={service.gender} style={style.ICON_TEXT} />
-                    </View>
-                  </View>
-                </View>
-              <View style={style.SERVICE_SMALL_ICON}>
-                <View style={[style.ROW_SMALL,{height:50}]}></View>
-                  <Button
-                    testID="book-button"
-                    preset="primary"
-                    text="BOOK"
-                    style={{ paddingTop: 10, paddingBottom: 10, paddingLeft: 0, paddingRight: 0, justifyContent : 'center'}}
-                    textStyle={{fontSize:10}}
-                    onPress={() => { console.log('Book pressed') }}
-                    // icon="next"
-                    disabled={loading || uploading}
-                    loading={loading || uploading}
-                  />
-              </View>
-            </View>
-            </TouchableOpacity>
-          </View>
-        )
-    } */
-     
+      this.props.navigation.navigate('saloon', { 
+        vendor_id: item.vendor_id, 
+        salon: { 
+          'vendor_id': item.vendor_id, 
+          'business_name': item.business_name, 
+          'address': item.address, 
+          'rating': item.rating 
+        } 
+      })
+    }
     
     render() {
       const { services, filteredData, refreshing } = this.state;
@@ -222,32 +171,21 @@ export const ChooseSalonScreen = connect(
                 
               >
                 <View key={'1'} tabLabel={'List'} tabIcon={icons['list']} tabActiveIcon={icons['list_x']}  style={{ flex: 1}}>
-                  {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
-                    {Object.keys(filteredData).map(k =>
-                      this.renderList(filteredData[k]) 
-
-                    )}
-                    <View style={style.SERVICE_PADDING} />
-                  </ScrollView> */}
+                   
                   
                   <FlatList 
                     data={filteredData} 
                     keyExtractor={(service) => service.vs_id}
                     style={style.SERVICES_LIST} 
-                    renderItem={(service) => /* this.renderList(service) */(<LargeList item={service.item} onPress={() => this.props.navigation.navigate('saloon', { vendor_id: service.vendor_id }) } />) }
+                    renderItem={(service) => (<LargeList item={service.item} onPress={() => this.onServicePress(service.item) } />) }
                     onEndReached={() => this.paginationIncrease()}
                     onEndReachedThreshold={0.1}
                     refreshControl={<RefreshControl
                       colors={[color.primary, color.secondary]}
                       refreshing={refreshing}
                       onRefresh={() => this.onRefresh()} />}
-                    
-                    
                     >
-                    {/* {Object.keys(filteredData).map(k =>
-                      this.renderList(filteredData[k])
-
-                    )} */}
+                     
                     <View style={style.SERVICE_PADDING} />
                   </FlatList>
                   <View style={[styles.FOOTER_VIEW,styles.FLEX_ROW]}>

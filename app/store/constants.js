@@ -83,11 +83,6 @@ export const DAY_NAMES_SHORT = [
   'SUN',
 ];
 export const twoDigits = n => {
-  /*  n = setInterval(
-      (n) => { n - 1},
-     1000
-   );
-   console.log(n); */
   return n > 9 ? "" + n : "0" + n;
 }
 
