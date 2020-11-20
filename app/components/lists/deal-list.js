@@ -8,6 +8,7 @@ import { styles, color, servicePlaceholder, icons, typography} from '../../theme
 
 import { style } from './style'
 import { withNavigation } from 'react-navigation';
+import { imageUrl } from '../../utils/helpers';
 
 export const DealList = withNavigation(
   class extends React.Component {
@@ -24,7 +25,7 @@ export const DealList = withNavigation(
           <TouchableOpacity /* onPress={() => this.props.navigation.navigate('saloon', { vendor_id: item.vendor_id })} */ >
             <View style={style.SERVICE_HEADER}>
               <View style={style.SERVICE_HEADER_HEADING}>
-                <Text text={item.business_name} style={{ fontFamily: typography.bold }} preset="h3" />
+                <Text text={item.title} style={{ fontFamily: typography.bold }} preset="h3" />
               </View>
             </View>
 
@@ -42,10 +43,10 @@ export const DealList = withNavigation(
                 </View>
                 <View>
                   <Text text={'Total Services'} style={style.DEAL_NAME} />
-                  <Text text={'14 Services'} preset={'message'} style={style.DEAL_SERVICES} />
+                  <Text text={item.total_services +' Services'} preset={'message'} style={style.DEAL_SERVICES} />
 
                   <Text text={'Total Cost'} style={style.DEAL_COST} />
-                  <Text text={'$1000'} preset={'message'} style={style.DEAL_COST_PRICE} />
+                  <Text text={'$' + item.total_cost} preset={'message'} style={style.DEAL_COST_PRICE} />
                 </View>
               </View>
               <View style={{flexDirection:'column',justifyContent:'space-evenly'}}>
@@ -53,13 +54,13 @@ export const DealList = withNavigation(
                 <View style={styles.FLEX_ROW}>
                   <View style={style.DEAL_DISCOUNT}>
                     <View style={style.DEAL_DISCOUNT_STICKER}>
-                      <Text text="15%" style={style.DEAL_DISCOUNT_PERCENT} />
+                      <Text text={item.discount_rate+"%"} style={style.DEAL_DISCOUNT_PERCENT} />
                       <Text text=" OFF" style={style.DEAL_DISCOUNT_OFF}/>
                     </View>
                   </View>
 
                   <View style={style.DEAL_DISCOUNT_AMOUNT}>
-                    <Text text="$700" style={style.DEAL_DISCOUNT_AMOUNT_PRICE} />
+                    <Text text={"$" + item.discount_price} style={style.DEAL_DISCOUNT_AMOUNT_PRICE} />
                   </View>
                 </View>
 

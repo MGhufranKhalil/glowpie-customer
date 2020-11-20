@@ -5,6 +5,7 @@ import { Text } from '../text';
 import { Button } from '../button';
 import { Icon } from '../icon';
 import { styles, color, servicePlaceholder, icons} from '../../theme';
+import { imageUrl } from '../../utils/helpers';
 
 import { style } from './style'
 import { withNavigation } from 'react-navigation';

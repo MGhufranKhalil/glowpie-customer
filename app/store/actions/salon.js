@@ -8,6 +8,11 @@ export const GET_SALON_DEALS_REQUEST = 'GET_SALON_DEALS_REQUEST';
 export const GET_SALON_DEALS_SUCCESS = 'GET_SALON_DEALS_SUCCESS';
 export const GET_SALON_DEALS_ERROR = 'GET_SALON_DEALS_ERROR';
 
+
+export const GET_SALON_REVIEWS_REQUEST = 'GET_SALON_REVIEWS_REQUEST';
+export const GET_SALON_REVIEWS_SUCCESS = 'GET_SALON_REVIEWS_SUCCESS';
+export const GET_SALON_REVIEWS_ERROR = 'GET_SALON_REVIEWS_ERROR';
+
 export const fetchSalonServices = payload => dispatch => {
   console.tron.log('fetchSalonServices', payload);
   return dispatch(
@@ -27,6 +32,18 @@ export const fetchDeals = payload => dispatch => {
       `saloon-deals/${payload.id}/?offset=${payload.offset}`,
       { payload },
       [GET_SALON_DEALS_REQUEST, GET_SALON_DEALS_SUCCESS, GET_SALON_DEALS_ERROR],
+      'GET',
+    ),
+  );
+};
+
+export const fetchReview = payload => dispatch => {
+  console.tron.log('fetchReview', payload);
+  return dispatch(
+    dataForm(
+      `saloon-reviews/${payload.id}/?offset=${payload.offset}`,
+      { payload },
+      [GET_SALON_REVIEWS_REQUEST, GET_SALON_REVIEWS_SUCCESS, GET_SALON_REVIEWS_ERROR],
       'GET',
     ),
   );

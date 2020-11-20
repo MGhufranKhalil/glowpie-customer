@@ -9,7 +9,7 @@ import { SmallList, LargeList, DealList, ReviewList } from '../../../components/
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons, typography } from '../../../theme';
 import { HeaderWithImage } from '../../../components/header';
-import { fetchDeals } from '../../../store/actions/salon';
+import { fetchDeals, fetchReview } from '../../../store/actions/salon';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
 import SegmentedControlTab from 'react-native-segmented-control-tab'
@@ -29,10 +29,13 @@ const SERVICE = {
 
 const stateProps = state => ({
   salonServices: state.salon.salonServices,
+  salonDeals: state.salon.salonDeals,
+  salonReviews: state.salon.salonReviews,
 });
 
 const actionProps = (dispatch, ownProps) => ({
   onfetchDeals: (payload) => dispatch(fetchDeals(payload)),
+  onfetchReview: (payload) => dispatch(fetchReview(payload)),
 });
 
 
@@ -63,6 +66,8 @@ export const SalonScreen = connect(
         filteredBridalData:[],
         filteredGroomData:[],
 
+        deals:{},
+        reviews:{},
         salon:{},
         searchKeys: ['business_name', 'service_details', 'service_name'],
         error:''
@@ -72,16 +77,67 @@ export const SalonScreen = connect(
     componentWillReceiveProps(props) {
       this.setState({ refreshing: true });
 
-      console.tron.log('new props salon', props.salonServices);
-      data = props.salonServices;
+      console.tron.log('new props salon', props);
 
-      if (Object.keys(data).length > 0){
+      if (Object.keys(props.salonServices).length > 0){
+        this.state.allServices = props.salonServices;
+        this.state.filteredAllData = props.salonServices;
+        for (let service of props.salonServices) {
+            if (industry.hair == service.industry_id) {
 
-        this.setState({
-          allServices: data
-        });
+              this.state.hairServices.push(service);
+              this.state.filteredHairData.push(service);
+
+            } else if (industry.makeup == service.industry_id) {
+
+              this.state.makeUpServices.push(service);
+              this.state.filteredMakeUpData.push(service);
+
+            } else if (industry.nails == service.industry_id) {
+
+              this.state.nailsServices.push(service);
+              this.state.filteredNailsData.push(service);
+
+            } else if (industry.spa == service.industry_id) {
+
+              this.state.spaServices.push(service);
+              this.state.filteredSpaData.push(service);
+
+            } else if (industry.bridal == service.industry_id) {
+
+              this.state.bridalServices.push(service);
+              this.state.filteredBridalData.push(service);
+
+            } else if (industry.groom == service.industry_id) {
+
+              this.state.groomServices.push(service);
+              this.state.filteredGroomData.push(service);
+            }
+
+          }
         this.setState({ refreshing: false });
-      } else{
+      } else {
+        showMessage({
+          message: 'Data Not Found',
+          backgroundColor: color.error_message,
+          color: color.white,
+        });
+      }
+      if (Object.keys(props.salonDeals).length > 0) {
+
+        this.setState({ deals: props.salonDeals, refreshing: false });
+        console.tron.log('salon deals', this.state);
+      } else {
+        showMessage({
+          message: 'Data Not Found',
+          backgroundColor: color.error_message,
+          color: color.white,
+        });
+      } 
+      if (Object.keys(props.salonReviews).length > 0) {
+
+        this.setState({ reviews: props.salonReviews,refreshing: false });
+      } else {
         showMessage({
           message: 'Data Not Found',
           backgroundColor: color.error_message,
@@ -91,61 +147,25 @@ export const SalonScreen = connect(
     }
     componentDidMount(){
       data = this.props.navigation.state.params;
-      salonSer = this.props.salonServices;
-
-      if (Object.keys(salonSer).length > 0){
-        for (let service of salonSer) {
-  
-          if (industry.hair == service.industry_id) {
-            
-            this.state.hairServices.push(service);
-            this.state.filteredHairData.push(service);
-  
-          } else if (industry.makeup == service.industry_id) {
-  
-            this.state.makeUpServices.push(service);
-            this.state.filteredMakeUpData.push(service);
-  
-          } else if (industry.nails == service.industry_id) {
-  
-            this.state.nailsServices.push(service);
-            this.state.filteredNailsData.push(service);
-  
-          } else if (industry.spa == service.industry_id) {
-  
-            this.state.spaServices.push(service);
-            this.state.filteredSpaData.push(service);
-  
-          } else if (industry.bridal == service.industry_id) {
-  
-            this.state.bridalServices.push(service);
-            this.state.filteredBridalData.push(service);
-  
-          } else if (industry.groom == service.industry_id) {
-  
-            this.state.groomServices.push(service);
-            this.state.filteredGroomData.push(service);
-          }
-  
-        }
-      }
-       
       this.setState({
-        allServices: salonSer,
-        filteredAllData: salonSer,
         salon: data.salon
       });
-       
     }
     handleIndexChange = (index) => {
+      const { salon } = this.state;
       this.setState({
-        // ...this.state,
         selectedIndex: index,
       });
+      if(index == 1){
+        this.setState({ refreshing: true });
+        this.onDealPress(salon.vendor_id);
+      }
+      if (index == 2) {
+        this.onReviewPress(salon.vendor_id);
+      }
     }
     searchUpdated(term) {
       const { allServices, hairServices, makeUpServices, nailsServices, spaServices, bridalServices, groomServices, searchKeys } = this.state;
-      
       this.setState({
         filteredAllData : Object.values(allServices).filter(createFilter(term, searchKeys)),
         filteredHairData : Object.values(hairServices).filter(createFilter(term, searchKeys)),
@@ -155,9 +175,9 @@ export const SalonScreen = connect(
         filteredBridalData : Object.values(bridalServices).filter(createFilter(term, searchKeys)),
         filteredGroomData : Object.values(groomServices).filter(createFilter(term, searchKeys)),
       });
-    };
+    }
     onRefresh() {
-      this.setState({ refreshing: true, offset: 0, limit: OFFSET_LIMIT });
+      this.setState({ refreshing: true, offset: 0  });
       setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
     }
     onDealPress = (id) => {
@@ -165,11 +185,15 @@ export const SalonScreen = connect(
       const payload = { id: id, offset: 0 };
       this.props.onfetchDeals(payload);
     }
+    onReviewPress = (id) => {
+      this.setState({ refreshing: true });
+      const payload = { id: id, offset: 0 };
+      this.props.onfetchReview(payload);
+    }
     renderTabOne(){
       const { 
         filteredAllData, filteredHairData, filteredMakeUpData, 
         filteredNailsData, filteredSpaData, filteredBridalData, filteredGroomData ,  refreshing} = this.state
-
       return (
         <View style={{ position: 'absolute', top: 70, left: 10, zIndex: 0, height: SH - 190 }}>
           <View style={{paddingVertical:10}}>
@@ -315,42 +339,49 @@ export const SalonScreen = connect(
       );
     }
     renderTabTwo() {
-      const {salon, deals} = this.state;
+      const { refreshing, deals} = this.state;
       // this.onDealPress(salon.vendor_id);
       return (
         <View style={{ height: SH - 190 }}>
-          {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
-            <DealList item={SERVICE} /> 
-            <DealList item={SERVICE} /> 
-            <DealList item={SERVICE} /> 
-            <DealList item={SERVICE} /> 
-            <DealList item={SERVICE} /> 
-          </ScrollView> */}
-          {/* <FlatList
-            data={filteredGroomData}
-            keyExtractor={(groomServices) => groomServices.vs_id}
+          {console.tron.log('deals tab', this.state)}
+          <FlatList
+            data={deals}
+            keyExtractor={(d) => d.deal_id}
             style={style.SERVICES_LIST}
-            renderItem={(groomServices) => (<DealList item={groomServices.item} onPress={() => { }} />)}
+            renderItem={(d) => (<DealList item={d.item} onPress={() => { }} />)}
             refreshControl={<RefreshControl
               colors={[color.primary, color.secondary]}
               refreshing={refreshing}
               onRefresh={() => this.onRefresh()} />}
           >
             <View style={style.SERVICE_PADDING} />
-          </FlatList> */}
+          </FlatList>
         </View> 
       );
     }
     renderTabThree() {
+      const { refreshing, reviews} = this.state;
       return (
         <View style={{ height: SH - 190 }}>
-          <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
+          {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
             <ReviewList item={SERVICE} />
             <ReviewList item={SERVICE} />
             <ReviewList item={SERVICE} />
             <ReviewList item={SERVICE} />
             <ReviewList item={SERVICE} />
-          </ScrollView>
+          </ScrollView> */}
+          <FlatList
+            data={reviews}
+            keyExtractor={(r) => r.customer_id}
+            style={style.SERVICES_LIST}
+            renderItem={(r) => (<ReviewList item={r.item} onPress={() => { }} />)}
+            refreshControl={<RefreshControl
+              colors={[color.primary, color.secondary]}
+              refreshing={refreshing}
+              onRefresh={() => this.onRefresh()} />}
+          >
+            <View style={style.SERVICE_PADDING} />
+          </FlatList>
         </View> 
       );
     }

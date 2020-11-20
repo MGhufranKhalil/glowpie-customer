@@ -5,7 +5,12 @@ import {
 
   GET_SALON_DEALS_REQUEST,
   GET_SALON_DEALS_SUCCESS,
-  GET_SALON_DEALS_ERROR, 
+  GET_SALON_DEALS_ERROR,
+
+  GET_SALON_REVIEWS_REQUEST,
+  GET_SALON_REVIEWS_SUCCESS,
+  GET_SALON_REVIEWS_ERROR, 
+
 } from '../actions/salon';
 import {getActionError} from '../../utils/helpers'; 
 const initialState = {
@@ -31,7 +36,8 @@ export default (state = initialState, action) => {
   const {success, code, message, data} = action.payload || {};
   switch (action.type) {
     case GET_SALON_SERVICES_REQUEST:
-    case GET_SALON_DEALS_REQUEST: 
+    case GET_SALON_DEALS_REQUEST:
+    case GET_SALON_REVIEWS_REQUEST: 
       return {
         ...state,
         error: '',
@@ -49,17 +55,29 @@ export default (state = initialState, action) => {
       return generalError(state, action);
     case GET_SALON_DEALS_SUCCESS:
       if (success && code && [200, 201].indexOf(Number(code)) >= 0) {
-        const salonServices = action.payload.data;
-        console.tron.log('salonServices', salonServices);
+        const salonDeals = action.payload.data;
+        console.tron.log('salon deals', salonDeals);
         return {
           ...state,
-          salonServices,
+          salonDeals,
+          error: '',
+        };
+      }
+      return generalError(state, action);
+    case GET_SALON_REVIEWS_SUCCESS:
+      if (success && code && [200, 201].indexOf(Number(code)) >= 0) {
+        const salonReviews = action.payload.data;
+        console.tron.log('salon deals', salonReviews);
+        return {
+          ...state,
+          salonReviews,
           error: '',
         };
       }
       return generalError(state, action);
     case GET_SALON_SERVICES_ERROR:
-    case GET_SALON_DEALS_ERROR: 
+    case GET_SALON_DEALS_ERROR:
+    case GET_SALON_REVIEWS_ERROR: 
       return generalError(state, action);
     default:
       return state;

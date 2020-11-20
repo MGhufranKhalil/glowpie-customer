@@ -7,6 +7,8 @@ import { Button } from '../button';
 import { styles, color, placeHolderImage, icons, typography } from '../../theme';
 import { style } from './style'
 import { withNavigation } from 'react-navigation';
+import { imageUrl } from '../../utils/helpers';
+
 const ICON_SIZE = { height: 10, width: 12 };
 
 export const ReviewList = withNavigation(
@@ -17,12 +19,14 @@ export const ReviewList = withNavigation(
 
     render() {
       const { item } = this.props;
+      console.tron.log('review',item);
+
       const imageStyle = item.image ? style.REAL_IMAGE : {};
       const image = item.image ? imageUrl(item.image) : placeHolderImage;
       const ratingUI = [];
 
       for (let i = 0; i < 5; i++) {
-        if (i < Math.floor(4.5)) {
+        if (i < Math.floor(item.rating)) {
           ratingUI.push(
             <Icon icon="star_x" style={ICON_SIZE} />
           )
@@ -52,15 +56,15 @@ export const ReviewList = withNavigation(
 
                 <View style={{flex:1}}>
                   <View style={styles.FLEX_ROW}>
-                    <Text text={item.service_name} style={style.REVIEW_NAME} />
-                    <Text text={'11/12/2020'} style={style.REVIEW_DATE} />
+                    <Text text={item.customer_name} style={style.REVIEW_NAME} />
+                    <Text text={item.formatted_dob} style={style.REVIEW_DATE} />
                   </View>
 
                   <View style={[styles.FLEX_ROW,{justifyContent:'flex-start'}]}>
                     {ratingUI}
                   </View>
                   <View>
-                    <Text style={style.REVIEW_TEXT} text={'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys.'} />
+                    <Text style={style.REVIEW_TEXT} text={item.review_message} />
                   </View>
                 </View>
 
