@@ -77,7 +77,7 @@ const SaloonNavigator = createStackNavigator(
 
 const MainNavigator = createDrawerNavigator(
   {
-    home: { screen: ChooseServiceScreen } 
+    home: SaloonNavigator
   },
   {
     hideStatusBar: false,

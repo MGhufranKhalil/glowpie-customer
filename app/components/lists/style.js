@@ -198,6 +198,7 @@ const DEAL_DISCOUNT_AMOUNT_PRICE = {
   color: color.white, 
   fontFamily: typography.bold 
 };
+
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,

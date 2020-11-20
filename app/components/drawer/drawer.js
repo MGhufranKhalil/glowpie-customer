@@ -13,7 +13,7 @@ import {style} from './style';
 import {doLogout} from '../../store/actions/login';
 
 const actionProps = (dispatch, ownProps) => ({
-  onLogout: payload => dispatch(doLogout()),
+  onLogout: () => dispatch(doLogout()),
 });
 
 const NavLink = props => (
@@ -45,7 +45,10 @@ export const Drawer = connect(
       this.goSettings = () => this.props.navigation.navigate('settings');
       this.goNotifications = () =>
         this.props.navigation.navigate('notifications');
-      this.goLogout = () => this.props.navigation.navigate('logout');
+      this.goLogout = () => {
+        this.props.onLogout();
+        setTimeout(() => this.props.navigation.navigate('auth'), 500);
+      };
     }
     render() {
       return (

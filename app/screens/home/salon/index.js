@@ -123,26 +123,30 @@ export const SalonScreen = connect(
           color: color.white,
         });
       }
-      if (Object.keys(props.salonDeals).length > 0) {
-
-        this.setState({ deals: props.salonDeals, refreshing: false });
-        console.tron.log('salon deals', this.state);
-      } else {
-        showMessage({
-          message: 'Data Not Found',
-          backgroundColor: color.error_message,
-          color: color.white,
-        });
-      } 
-      if (Object.keys(props.salonReviews).length > 0) {
-
-        this.setState({ reviews: props.salonReviews,refreshing: false });
-      } else {
-        showMessage({
-          message: 'Data Not Found',
-          backgroundColor: color.error_message,
-          color: color.white,
-        });
+      if (props.salonDeals){
+        if (Object.keys(props.salonDeals).length > 0) {
+  
+          this.setState({ deals: props.salonDeals, refreshing: false });
+          console.tron.log('salon deals', this.state);
+        } /* else {
+          showMessage({
+            message: 'Data Not Found',
+            backgroundColor: color.error_message,
+            color: color.white,
+          });
+        }  */
+      }
+      if (props.salonReviews){
+        if (Object.keys(props.salonReviews).length > 0) {
+  
+          this.setState({ reviews: props.salonReviews,refreshing: false });
+        } /* else {
+          showMessage({
+            message: 'Data Not Found',
+            backgroundColor: color.error_message,
+            color: color.white,
+          });
+        } */
       }
     }
     componentDidMount(){
@@ -151,11 +155,9 @@ export const SalonScreen = connect(
         salon: data.salon
       });
     }
-    handleIndexChange = (index) => {
+    handleIndexChange = (index=0) => {
       const { salon } = this.state;
-      this.setState({
-        selectedIndex: index,
-      });
+      this.setState({ selectedIndex: index  });
       if(index == 1){
         this.setState({ refreshing: true });
         this.onDealPress(salon.vendor_id);
@@ -363,13 +365,6 @@ export const SalonScreen = connect(
       const { refreshing, reviews} = this.state;
       return (
         <View style={{ height: SH - 190 }}>
-          {/* <ScrollView style={style.SERVICES_LIST} onEndReached={console.log('end')}>
-            <ReviewList item={SERVICE} />
-            <ReviewList item={SERVICE} />
-            <ReviewList item={SERVICE} />
-            <ReviewList item={SERVICE} />
-            <ReviewList item={SERVICE} />
-          </ScrollView> */}
           <FlatList
             data={reviews}
             keyExtractor={(r) => r.customer_id}
