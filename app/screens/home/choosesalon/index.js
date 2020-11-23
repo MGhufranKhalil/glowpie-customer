@@ -121,7 +121,7 @@ export const ChooseSalonScreen = connect(
       setTimeout(() => { this.setState({ refreshing: false }) }, 1000)
     }
 
-    onServicePress = (item) => {
+    onServiceHeaderPress = (item) => {
       const payload = { id: item.vendor_id, offset:0};
       this.props.onfetchSalonServices(payload);
 
@@ -133,6 +133,23 @@ export const ChooseSalonScreen = connect(
           'address': item.address, 
           'rating': item.rating 
         } 
+      })
+    }
+    // not using
+    onServicePress = (item) => {
+      // console.log(item);return false;
+      
+      const payload = { id: item.vendor_id, offset: 0 };
+      this.props.onfetchSalonServices(payload);
+
+      this.props.navigation.navigate('saloon', {
+        vendor_id: item.vendor_id,
+        salon: {
+          'vendor_id': item.vendor_id,
+          'business_name': item.business_name,
+          'address': item.address,
+          'rating': item.rating
+        }
       })
     }
     
@@ -177,7 +194,7 @@ export const ChooseSalonScreen = connect(
                     data={filteredData} 
                     keyExtractor={(service) => service.vs_id}
                     style={style.SERVICES_LIST} 
-                    renderItem={(service) => (<LargeList item={service.item} onPress={() => this.onServicePress(service.item) } />) }
+                    renderItem={(service) => (<LargeList item={service.item} onPressMain={() => this.onServiceHeaderPress(service.item)} onPress={() => { this.onServiceHeaderPress(service.item)}} />) }
                     onEndReached={() => this.paginationIncrease()}
                     onEndReachedThreshold={0.1}
                     refreshControl={<RefreshControl

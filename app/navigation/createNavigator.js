@@ -20,6 +20,7 @@ import {VerificationScreen} from '../screens/verification';
 import { ChooseServiceScreen } from '../screens/home/service';
 import { ChooseSalonScreen } from '../screens/home/choosesalon';
 import { SalonScreen } from '../screens/home/salon';
+import { DealScreen } from '../screens/home/deal';
 
 import {color} from '../theme';
 
@@ -69,6 +70,7 @@ const SaloonNavigator = createStackNavigator(
     home: { screen: ChooseServiceScreen },
     chooseSalon: { screen: ChooseSalonScreen },
     saloon: { screen: SalonScreen },
+    deal: { screen: DealScreen },
   },
   {
     headerMode: 'none',

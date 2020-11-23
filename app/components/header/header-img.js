@@ -10,8 +10,7 @@ import {SM, XL,SW} from '../../utils/helpers';
 import { twoDigits } from '../../store/constants';
 
 const RIGHT = {width: 32};
-const PLACE_HOLDER = { width: 20, height: 20 }; //i changed it 40
-const ICON_SIZE = { height: 15, width: 17 }; 
+const PLACE_HOLDER = { width: 20, height: 20 }; //i changed it 40 
 const TOP_HEADER = { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',paddingHorizontal:10 };
 const IMAGE = {
   position: 'absolute',
@@ -35,18 +34,7 @@ const BOTTOM_HEADER = {
   bottom: 0,
   width: '100%'
 };
-
-const KM_BUTTON = {
-  backgroundColor: color.darkgray,
-  borderRadius: 20,
-  color: color.white,
-  width: 40,
-  // paddingHorizontal: 9,
-  paddingVertical: 2,
-  fontSize: 10, 
-  textAlign: 'center',
-  fontFamily: typography.regular
-};
+ 
 export const HeaderWithImage = withNavigation(
   class extends React.Component {
     constructor(props) {
@@ -65,12 +53,12 @@ export const HeaderWithImage = withNavigation(
 
     render() {
       const {
+        leftComponent,
         rightComponent,
         heading,
         centerHeading,
         sub,
         title,
-        mode,
         progress,
         shadow,
         noBack,
@@ -86,18 +74,7 @@ export const HeaderWithImage = withNavigation(
       } = this.props;
       const onGoBack = onBack ? onBack : this.props.navigation.goBack;
       const headingStyle = headingSize ? {...styles.PAGE_HEADER_HEADING, fontSize: headingSize} : styles.PAGE_HEADER_HEADING;
-      const ratingUI = [];
-      for (let i = 0; i < 5; i++){
-        if (i < Math.floor(item !== undefined ? item.rating : 4) ){
-          ratingUI.push(
-            <Icon icon="star_x" style={ICON_SIZE} />
-          )
-        }else{
-          ratingUI.push(
-            <Icon icon="star" style={ICON_SIZE} />
-          )
-        }
-      }
+      
       return (
         <View
           style={
@@ -107,6 +84,7 @@ export const HeaderWithImage = withNavigation(
             source={headerImage2}
             style={IMAGE}
           />
+
           {/* TOP_HEADER */}
           <View style={TOP_HEADER} >
             <View>
@@ -125,32 +103,31 @@ export const HeaderWithImage = withNavigation(
               {rightIcon && <View style={PLACE_HOLDER} />}
             </View>
           </View>
+
           {/* header bottom */}
           <View style={BOTTOM_HEADER}>
-              
-            <View style={styles.FLEX_COL,{flex:1}}>
-
+            {leftComponent}
+            {rightComponent}
+            {/* <View style={styles.FLEX_COL,{flex:1}}>
               <View>
                 <Text preset="h3" style={{ color: color.white, fontFamily: typography.bold }} text={item !== undefined ? ' ' +item.business_name:'Business Name' } />
               </View>
-
               <View style={styles.FLEX_ROW}>
                 <Icon icon="map_pin" style={ICON_SIZE} />
                 <Text preset="h5" style={{color: color.white, fontFamily: typography.regular }} text={item !== undefined ? ' ' + item.address : 'Address'} />
               </View>
-            </View>
+            </View> */}
 
-            <View style={styles.FLEX_COL}>
-
+            {/* <View style={styles.FLEX_COL}>
               <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
                 {ratingUI}
                 <Text preset="h6" style={{ color: color.white }} text={item !== undefined ? Number(item.rating).toFixed(1)  : 'Rating'} />
               </View>
-
               <View style={{position:'absolute',bottom:0,right:0}}>
                 <Text preset="h6" style={KM_BUTTON}>5 km</Text>
               </View>
-            </View>
+            </View> */}
+
           </View>
         </View>
       );

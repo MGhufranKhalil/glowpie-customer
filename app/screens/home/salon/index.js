@@ -9,7 +9,7 @@ import { SmallList, LargeList, DealList, ReviewList } from '../../../components/
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import { color, spacing, styles, servicePlaceholder, icons, typography } from '../../../theme';
 import { HeaderWithImage } from '../../../components/header';
-import { fetchDeals, fetchReview } from '../../../store/actions/salon';
+import { fetchDeals, fetchReview, fetchDealDetails } from '../../../store/actions/salon';
 import { style } from './style';
 import ScrollableTabView, { DefaultTabBar, ScrollableTabBar } from 'react-native-scrollable-tab-view-forked';
 import SegmentedControlTab from 'react-native-segmented-control-tab'
@@ -36,6 +36,7 @@ const stateProps = state => ({
 const actionProps = (dispatch, ownProps) => ({
   onfetchDeals: (payload) => dispatch(fetchDeals(payload)),
   onfetchReview: (payload) => dispatch(fetchReview(payload)),
+  onfetchDealDetails: (payload) => dispatch(fetchDealDetails(payload)), 
 });
 
 
@@ -327,7 +328,7 @@ export const SalonScreen = connect(
                 data={filteredGroomData}
                 keyExtractor={(groomServices) => groomServices.vs_id}
                   style={style.SERVICES_LIST}
-                renderItem={(groomServices) => (<SmallList item={groomServices.item} onPress={() => { }} />)}
+                  renderItem={(groomServices) => (<SmallList item={groomServices.item} onPress={() => { }} />)}
                   refreshControl={<RefreshControl
                     colors={[color.primary, color.secondary]}
                     refreshing={refreshing}
@@ -340,6 +341,22 @@ export const SalonScreen = connect(
         </View>
       );
     }
+    onDealItemPress(item){
+      // console.log(item);
+      const payload = { id: item.vendor_id, deal_id: item.deal_id, offset: 0 };
+      this.props.onfetchDealDetails(payload); 
+
+      this.props.navigation.navigate('deal', {
+        vendor_id: item.vendor_id,
+        deal_id: item.deal_id,
+        deal: {
+          'deal_name': item.title,
+          'discount_rate': item.discount_rate,
+          'discount_price': item.discount_price,
+          'image': item.image
+        }
+      });
+    }
     renderTabTwo() {
       const { refreshing, deals} = this.state;
       // this.onDealPress(salon.vendor_id);
@@ -350,7 +367,7 @@ export const SalonScreen = connect(
             data={deals}
             keyExtractor={(d) => d.deal_id}
             style={style.SERVICES_LIST}
-            renderItem={(d) => (<DealList item={d.item} onPress={() => { }} />)}
+            renderItem={(d) => (<DealList item={d.item} onPress={() => this.onDealItemPress(d.item)} />)}
             refreshControl={<RefreshControl
               colors={[color.primary, color.secondary]}
               refreshing={refreshing}
@@ -380,6 +397,47 @@ export const SalonScreen = connect(
         </View> 
       );
     }
+    headerRightComponent(item) {
+
+      const ratingUI = [];
+      for (let i = 0; i < 5; i++) {
+        if (i < Math.floor(item !== undefined ? item.rating : 4)) {
+          ratingUI.push(
+            <Icon icon="star_x" style={style.ICON_SIZE} />
+          )
+        } else {
+          ratingUI.push(
+            <Icon icon="star" style={style.ICON_SIZE} />
+          )
+        }
+      }
+      return (
+        <View style={styles.FLEX_COL}>
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            {ratingUI}
+            <Text preset="h6" style={{ color: color.white }} text={item !== undefined ? Number(item.rating).toFixed(1) : 'Rating'} />
+          </View>
+          <View style={{ position: 'absolute', bottom: 0, right: 0 }}>
+            <Text preset="h6" style={style.KM_BUTTON}>5 km</Text>
+          </View>
+        </View>
+      );
+
+      
+    }
+    headerLeftComponent(item) {
+      return (
+        <View style={styles.FLEX_COL, { flex: 1 }}>
+          <View>
+            <Text preset="h3" style={{ color: color.white, fontFamily: typography.bold }} text={item !== undefined ? ' ' + item.business_name : 'Business Name'} />
+          </View>
+          <View style={styles.FLEX_ROW}>
+            <Icon icon="map_pin" style={style.ICON_SIZE} />
+            <Text preset="h5" style={{ color: color.white, fontFamily: typography.regular }} text={item !== undefined ? ' ' + item.address : 'Address'} />
+          </View>
+        </View>
+      );
+    }
     render() {
       const { selectedIndex, salon } = this.state;
       return (
@@ -391,8 +449,10 @@ export const SalonScreen = connect(
                 noBack={false}
                 shadow={false}
                 menu={false}
-                item={salon}
+                // item={salon}
                 headingSize={25}
+                leftComponent={this.headerLeftComponent(salon)}
+                rightComponent={this.headerRightComponent(salon)}
               />
                 <View style={{ paddingHorizontal: 10, paddingVertical: 10}}>
                   <SegmentedControlTab

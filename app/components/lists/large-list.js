@@ -6,7 +6,7 @@ import { Button } from '../button';
 import { Icon } from '../icon';
 import { styles, color, servicePlaceholder, icons} from '../../theme';
 import { imageUrl } from '../../utils/helpers';
-
+import {} from '../../store/constants'
 import { style } from './style'
 import { withNavigation } from 'react-navigation';
 
@@ -17,23 +17,24 @@ export const LargeList = withNavigation(
     }
 
     render() {
-      const { item,onPress } = this.props;
+      const { item, onPress, onPressMain } = this.props;
       const imageStyle = item.image ? style.REAL_IMAGE : style.PLACEHOLDER_IMAGE;
       const image = item.image ? imageUrl(item.image) : servicePlaceholder;
       return (
         <View style={style.SERVICE_SMALL}>
-          <TouchableOpacity onPress={onPress}>
-            <View style={style.SERVICE_HEADER}>
-              <View style={style.SERVICE_HEADER_HEADING}>
-                <Text text={item.business_name} style={{ fontWeight: 'bold' }} preset="h3" />
-              </View>
+          <TouchableOpacity onPress={onPressMain}>
+            <TouchableOpacity onPress={onPress}>
+              <View style={style.SERVICE_HEADER}>
+                <View style={style.SERVICE_HEADER_HEADING}>
+                  <Text text={item.business_name} style={{ fontWeight: 'bold' }} preset="h3" />
+                </View>
 
-              <View style={style.SERVICE_HEADER_RATING}>
-                <Text text={' (' + item.rating + ')'} style={{ fontSize: 10, color: color.gray }} preset="message" />
-                <Icon icon={'star_x'} style={{ width: 15, height: 15 }} />
+                <View style={style.SERVICE_HEADER_RATING}>
+                  <Text text={' (' + Number(item.rating).toFixed(1) + ')'} style={{ fontSize: 10, color: color.gray }} preset="message" />
+                  <Icon icon={'star_x'} style={{ width: 15, height: 15 }} />
+                </View>
               </View>
-            </View>
-
+            </TouchableOpacity>
             <View style={{ flexDirection: 'row' }}>
               <View style={style.SERVICE_SMALL_IMAGE_CONTENT}>
                 <View style={{ width: '40%' }}>

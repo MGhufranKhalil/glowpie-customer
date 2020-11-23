@@ -139,6 +139,7 @@ const ICON = {
   height: 20,
   resizeMode: 'contain',
 };
+const ICON_SIZE = { height: 15, width: 17 };
 
 const ICON_TEXT = {
   ...styles.CONTENT,
@@ -168,6 +169,18 @@ const SEARCH_ICON = {
   flex: 1 
 };
 const SEARCH_CLOSE_ICON = { width: 15, height: 15 }
+const KM_BUTTON = {
+  backgroundColor: color.darkgray,
+  borderRadius: 20,
+  color: color.white,
+  width: 40,
+  // paddingHorizontal: 9,
+  paddingVertical: 2,
+  fontSize: 10,
+  textAlign: 'center',
+  fontFamily: typography.regular
+};
+
 export const style = StyleSheet.create({
   VFLEX_PADDED,
   CONTAINER,
@@ -197,5 +210,7 @@ export const style = StyleSheet.create({
   SEARCH_CONTAINER,
   SEARCH_INPUT_CONTAINER,
   SEARCH_ICON,
-  SEARCH_CLOSE_ICON
+  SEARCH_CLOSE_ICON,
+  ICON_SIZE,
+  KM_BUTTON
 });
